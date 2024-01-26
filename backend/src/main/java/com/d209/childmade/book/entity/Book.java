@@ -33,7 +33,7 @@ public class Book extends BaseTime {
     @Column(nullable = false)
     private int maxNum;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<Role> roles = new ArrayList<>();
 
     @Builder

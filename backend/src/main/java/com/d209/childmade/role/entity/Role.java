@@ -27,10 +27,10 @@ public class Role {
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", nullable = false)
+    @JoinColumn(name = "book_id")
     private Book book;
 
-    @OneToMany(mappedBy = "helper", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private List<Helper> helpers = new ArrayList<>();
 
     @Builder
