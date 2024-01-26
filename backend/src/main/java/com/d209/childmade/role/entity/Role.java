@@ -27,7 +27,7 @@ public class Role {
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
