@@ -2,6 +2,7 @@ package com.d209.childmade._common.response;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public class ErrorResponse {
@@ -25,10 +26,10 @@ public class ErrorResponse {
                 .build();
     }
 
-    public static ErrorResponse of(int statusCode, String statusName, String msg) {
+    public static ErrorResponse of(HttpStatus status, String msg) {
         return ErrorResponse.builder()
-                .statusCode(statusCode)
-                .statusName(statusName)
+                .statusCode(status.value())
+                .statusName(status.name())
                 .msg(msg)
                 .build();
     }
