@@ -57,10 +57,13 @@ public class S3Util {
 
     /**
      * 파일 업로드 공통 메서드
+     *
      * file: 업로드할 파일
      * directory: 파일을 업로드할 경로에서 마지막 폴더 이름을 뺀 값. /로 시작하고 /로 끝난다.
      * lastFolder: 파일을 업로드할 경로의 마지막 폴더 이름
      * fileName: 파일을 저장할 이름
+     *
+     * S3 파일 열람 url을 반환한다.
      */
     public String upload(MultipartFile file, String directory, String lastFolder, String fileName){
         createFolder(bucketName + directory, lastFolder);
@@ -72,6 +75,26 @@ public class S3Util {
             return null;
         }
         return amazonS3.getUrl(bucketName + directory + lastFolder, fileName).toString();
+    }
+
+    /**
+     * 파일 다운로드 공통 메서드
+     *
+     * directory: 다운로드 받을 파일의 경로. /로 시작한다.
+     * fileName: 다운로드 받을 파일의 이름
+     *
+     * 파일을 byte[] 형태로 반환한다.
+     */
+    public byte[] downloadVideo(String directory, String fileName){
+        S3Object s3Object = amazonS3.getObject(bucketName + directory, fileName);
+        S3ObjectInputStream inputStream = s3Object.getObjectContent();
+        try {
+            byte[] content = IOUtils.toByteArray(inputStream);
+            return content;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
