@@ -67,3 +67,6 @@ cloud:
       secretKey: ${S3_SECRETKEY}
     s3:
       bucket: ${S3_NAME}
+
+jwt:
+  secret: ${JWT_SECRET}

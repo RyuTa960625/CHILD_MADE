@@ -1,5 +1,6 @@
 package com.d209.childmade._common.oauth2.handler;
 
+import com.d209.childmade._common.jwt.JwtUtil;
 import com.d209.childmade._common.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.d209.childmade._common.oauth2.service.OAuth2UserPrincipal;
 import com.d209.childmade._common.oauth2.user.ProviderType;
@@ -33,6 +34,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final OAuth2UserUnlinkManager oAuth2UserUnlinkManager;
+    private final JwtUtil jwtUtil;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -85,7 +87,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     principal.getUserInfo().getAccessToken()
             );
 
-            String accessToken = "jwtUtil.createToken(authentication)";
+            String accessToken = jwtUtil.createToken(authentication);
             String refreshToken = "test_refresh_token";
 
             return UriComponentsBuilder.fromUriString(targetUrl)
