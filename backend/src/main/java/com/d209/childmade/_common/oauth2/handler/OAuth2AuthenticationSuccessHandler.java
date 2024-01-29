@@ -2,7 +2,7 @@ package com.d209.childmade._common.oauth2.handler;
 
 import com.d209.childmade._common.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.d209.childmade._common.oauth2.service.OAuth2UserPrincipal;
-import com.d209.childmade._common.oauth2.user.OAuth2Provider;
+import com.d209.childmade._common.oauth2.user.ProviderType;
 import com.d209.childmade._common.oauth2.user.OAuth2UserUnlinkManager;
 import com.d209.childmade._common.oauth2.util.CookieUtils;
 import jakarta.servlet.http.Cookie;
@@ -96,7 +96,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         } else if ("unlink".equalsIgnoreCase(mode)) {
 
             String accessToken = principal.getUserInfo().getAccessToken();
-            OAuth2Provider provider = principal.getUserInfo().getProvider();
+            ProviderType provider = principal.getUserInfo().getProvider();
 
             // TODO: DB 삭제
             // TODO: 리프레시 토큰 삭제

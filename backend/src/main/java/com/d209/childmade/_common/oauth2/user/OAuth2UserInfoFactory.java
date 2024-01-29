@@ -13,9 +13,9 @@ public class OAuth2UserInfoFactory {
     public static OAuth2UserInfo getOAuth2UserInfo(String registrationId, String accessToken,
                                                    Map<String, Object> attributes) {
 
-        if (OAuth2Provider.GOOGLE.getRegistrationId().equals(registrationId)) {
+        if (ProviderType.GOOGLE.getRegistrationId().equals(registrationId)) {
             return GoogleOAuth2UserInfo.of(accessToken, attributes);
-        } else if(OAuth2Provider.KAKAO.getRegistrationId().equals(registrationId)) {
+        } else if(ProviderType.KAKAO.getRegistrationId().equals(registrationId)) {
             return KakaoOAuth2UserInfo.of(accessToken, attributes);
         } else  {
             //AuthenticationException은 OAuth2AuthenticationFailureHandler가 잡는다.

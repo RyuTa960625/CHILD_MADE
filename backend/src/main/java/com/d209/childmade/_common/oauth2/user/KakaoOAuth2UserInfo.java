@@ -45,8 +45,8 @@ public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
     }
 
     @Override
-    public OAuth2Provider getProvider() {
-        return OAuth2Provider.KAKAO;
+    public ProviderType getProvider() {
+        return ProviderType.KAKAO;
     }
 
     @Override

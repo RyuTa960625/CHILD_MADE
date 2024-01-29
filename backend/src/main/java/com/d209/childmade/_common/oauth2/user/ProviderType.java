@@ -5,10 +5,11 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum OAuth2Provider {
+public enum ProviderType {
 
     GOOGLE("google"),
-    KAKAO("kakao");
+    KAKAO("kakao"),
+    ;
 
     private final String registrationId;
 }
