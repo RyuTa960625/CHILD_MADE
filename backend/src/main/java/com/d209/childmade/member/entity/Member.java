@@ -1,5 +1,6 @@
 package com.d209.childmade.member.entity;
 
+import com.d209.childmade._common.oauth2.user.ProviderType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,6 +17,9 @@ public class Member {
     @Column(name = "member_id")
     private Integer id;
 
+    @Column
+    private ProviderType providerType; //로그인 형태
+
     @Column(nullable = false, length = 20)
     private String email;
 
@@ -29,10 +33,11 @@ public class Member {
     private String password;
 
     @Column
-    private String profile;
+    private String profile; //프로필 사진 url
 
     @Builder
-    private Member(String email, String name, String nickname, String password, String profile) {
+    private Member(ProviderType providerType, String email, String name, String nickname, String password, String profile) {
+        this.providerType = providerType;
         this.email = email;
         this.name = name;
         this.nickname = nickname;
@@ -40,8 +45,9 @@ public class Member {
         this.profile = profile;
     }
 
-    public static Member of(String email, String name, String nickname, String encodePw, String profile) {
+    public static Member of(ProviderType providerType, String email, String name, String nickname, String encodePw, String profile) {
         return builder()
+                .providerType(providerType)
                 .email(email)
                 .name(name)
                 .nickname(nickname)

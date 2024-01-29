@@ -9,6 +9,7 @@ public enum ProviderType {
 
     GOOGLE("google"),
     KAKAO("kakao"),
+    LOCAL("local")
     ;
 
     private final String registrationId;
