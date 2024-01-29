@@ -3,6 +3,7 @@ package com.d209.childmade._common.oauth2.handler;
 import com.d209.childmade._common.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.d209.childmade._common.oauth2.service.OAuth2UserPrincipal;
 import com.d209.childmade._common.oauth2.user.OAuth2Provider;
+import com.d209.childmade._common.oauth2.user.OAuth2UserUnlinkManager;
 import com.d209.childmade._common.oauth2.util.CookieUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ import static com.d209.childmade._common.oauth2.HttpCookieOAuth2AuthorizationReq
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+    private final OAuth2UserUnlinkManager oAuth2UserUnlinkManager;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -75,6 +77,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             // TODO: DB 저장
             // TODO: 액세스 토큰, 리프레시 토큰 발급
             // TODO: 리프레시 토큰 DB 저장
+
             log.info("email={}, name={}, nickname={}, profileUrl={}, accessToken={}", principal.getUserInfo().getEmail(),
                     principal.getUserInfo().getName(),
                     principal.getUserInfo().getNickname(),
@@ -97,6 +100,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
             // TODO: DB 삭제
             // TODO: 리프레시 토큰 삭제
+
+            oAuth2UserUnlinkManager.unlink(provider, accessToken);
+
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .build().toUriString();
         }
