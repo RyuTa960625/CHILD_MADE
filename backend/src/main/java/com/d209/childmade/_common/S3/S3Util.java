@@ -27,7 +27,7 @@ public class S3Util {
      * 컷 동영상을 방 id(roodId)와 대사 순서(scriptNum)를 통해
      * S3상의 'bucketName/cutvideo/roodId/' 경로에 scriptNum으로 저장하는 메서드
      */
-    public String uploadCutVideo(MultipartFile file, Long roomId, int scriptNum){
+    public void uploadCutVideo(MultipartFile file, Long roomId, int scriptNum){
         createFolder(bucketName + "/cutvideo", Long.toString(roomId));
         ObjectMetadata objectMetadata = getObjectMetadata(file);
         try {
@@ -35,12 +35,11 @@ public class S3Util {
         } catch (IOException e) {
 //            log.error("Error uploading file to S3", e);
         }
-        return amazonS3.getUrl(bucketName + "/cutvideo/" + Long.toString(roomId), Integer.toString(scriptNum)).toString();
     }
 
     /**
      * roomId에 해당하는 방에서 녹화된 모든 컷 동영상들을
-     * S3에서 다운로드 받아 byte[]형태로 리스트에 저장한다.
+     * S3에서 다운로드 받아 byte[]형태로 리스트에 저장해 반환한다.
      */
     public List<byte[]> downloadCutVideos(Long roodId, int scriptCount){
         List<byte[]> cutVideos = new ArrayList<>();
@@ -54,6 +53,25 @@ public class S3Util {
             }
         }
         return cutVideos;
+    }
+
+    /**
+     * 파일 업로드 공통 메서드
+     * file: 업로드할 파일
+     * directory: 파일을 업로드할 경로에서 마지막 폴더 이름을 뺀 값. /로 시작하고 /로 끝난다.
+     * lastFolder: 파일을 업로드할 경로의 마지막 폴더 이름
+     * fileName: 파일을 저장할 이름
+     */
+    public String upload(MultipartFile file, String directory, String lastFolder, String fileName){
+        createFolder(bucketName + directory, lastFolder);
+        ObjectMetadata objectMetadata = getObjectMetadata(file);
+        try {
+            amazonS3.putObject(new PutObjectRequest(bucketName + directory + lastFolder, fileName, file.getInputStream(), objectMetadata));
+        }catch (IOException e){
+//            log.error("Error uploading file to S3", e);
+            return null;
+        }
+        return amazonS3.getUrl(bucketName + directory + lastFolder, fileName).toString();
     }
 
     /**
