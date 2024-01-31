@@ -1,7 +1,6 @@
 package com.d209.childmade.member.service;
 
 import com.d209.childmade._common.exception.CustomBadRequestException;
-import com.d209.childmade._common.oauth2.user.ProviderType;
 import com.d209.childmade._common.response.ErrorType;
 import com.d209.childmade.member.dto.request.SingUpRequestDto;
 import com.d209.childmade.member.dto.response.MemberInfoResponseDto;
@@ -12,8 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.security.Provider;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,7 +28,7 @@ public class MemberService {
         return memberRepository.findById(memberId);
     }
 
-    public MemberInfoResponseDto memberInfo(Integer memberId) {
+    public MemberInfoResponseDto findMemberById(Integer memberId) {
 
         Optional<Member> findMember = memberRepository.findById(memberId);
 
@@ -55,5 +52,15 @@ public class MemberService {
         }
 
         return memberRepository.save(member).getId();
+    }
+
+    @Transactional
+    public void updateMemberName(Integer memberId, String name) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
+
+        if(findMember.isEmpty())
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
+
+        findMember.get().updateName(name);
     }
 }
