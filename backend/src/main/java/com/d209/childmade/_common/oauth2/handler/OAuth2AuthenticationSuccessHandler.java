@@ -7,6 +7,9 @@ import com.d209.childmade._common.oauth2.service.OAuth2UserPrincipal;
 import com.d209.childmade._common.oauth2.user.ProviderType;
 import com.d209.childmade._common.oauth2.user.OAuth2UserUnlinkManager;
 import com.d209.childmade._common.util.CookieUtils;
+import com.d209.childmade.member.dto.request.SingUpRequestDto;
+import com.d209.childmade.member.entity.Member;
+import com.d209.childmade.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,6 +38,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final OAuth2UserUnlinkManager oAuth2UserUnlinkManager;
+    private final MemberService memberService;
     private final JwtUtil jwtUtil;
 
     @Override
@@ -87,22 +91,33 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     principal.getUserInfo().getAttributes().get("exist")
             );
 
-            //로그인한 회원 존재 여부
-            boolean isExist = (boolean) principal.getUserInfo().getAttributes().get("exist");
-            GeneratedToken token = jwtUtil.generateToken(principal.getUserInfo().getAttributes().get("memberId").toString());
+            String socialId = principal.getUserInfo().getId();
+            Optional<Member> findMember = memberService.findBySocialId(socialId);
 
-            //회원이 존재하는 경우
-            if(isExist) {
-                //TODO: 로그인 후 페이지로 리다이렉트
-                return UriComponentsBuilder.fromUriString(targetUrl)
-                        .queryParam("access-token", token.getAccessToken())
-                        .build().toUriString();
-            } else {
+            //로그인한 회원 존재 여부
+            if (findMember.isEmpty()) {
+                //회원이 존재하지 않는 경우
+                SingUpRequestDto singUpRequestDto = SingUpRequestDto.of(principal.getUserInfo().getId(), principal.getUserInfo().getProvider(), principal.getUserInfo().getEmail(),
+                        principal.getUserInfo().getName(), principal.getUserInfo().getProvider().ordinal() + principal.getUserInfo().getName().substring(0, 1) + principal.getUserInfo().getId(), principal.getUserInfo().getProfileImageUrl());
+
+                Integer memberId = memberService.saveSocialMember(singUpRequestDto);
+                GeneratedToken token = jwtUtil.generateToken(memberId.toString());
+
                 //TODO: 회원가입 페이지(닉네임)로 리다이렉트
                 return UriComponentsBuilder.fromUriString(targetUrl)
                         .queryParam("access-token", token.getAccessToken())
                         .build().toUriString();
+
+            } else {
+                //회원이 존재하는 경우
+                GeneratedToken token = jwtUtil.generateToken(principal.getUserInfo().getAttributes().get("memberId").toString());
+
+                //TODO: 로그인 후 페이지로 리다이렉트
+                return UriComponentsBuilder.fromUriString(targetUrl)
+                        .queryParam("access-token", token.getAccessToken())
+                        .build().toUriString();
             }
+
         } else if ("unlink".equalsIgnoreCase(mode)) {
 
             String accessToken = principal.getUserInfo().getAccessToken();

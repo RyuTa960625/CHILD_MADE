@@ -3,9 +3,6 @@ package com.d209.childmade._common.oauth2.service;
 import com.d209.childmade._common.oauth2.exception.OAuth2AuthenticationProcessingException;
 import com.d209.childmade._common.oauth2.user.OAuth2UserInfo;
 import com.d209.childmade._common.oauth2.user.OAuth2UserInfoFactory;
-import com.d209.childmade._common.oauth2.user.ProviderType;
-import com.d209.childmade.member.dto.request.SingUpRequestDto;
-import com.d209.childmade.member.entity.Member;
 import com.d209.childmade.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -16,8 +13,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import java.util.Optional;
 
 /**
  * loadUser 매서드는 스프링 시큐리티 OAuth2LoginAuthenticationFilter에서 시작된 OAuth2 인증 과정중에 호출
@@ -62,23 +57,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (!StringUtils.hasText(socialId)) {
             //AuthenticationException은 OAuth2AuthenticationFailureHandler가 잡는다.
             throw new OAuth2AuthenticationProcessingException("ID not found from OAuth2 provider");
-        }
-
-        Optional<Member> findMember = memberService.findBySocialId(socialId);
-
-        if (findMember.isEmpty()) {
-            //회원이 존재하지 않는 경우
-            oAuth2UserInfo.getAttributes().put("exist", false);
-
-            SingUpRequestDto singUpRequestDto = SingUpRequestDto.of(oAuth2UserInfo.getId(), oAuth2UserInfo.getProvider(), oAuth2UserInfo.getEmail(),
-                    oAuth2UserInfo.getName(), oAuth2UserInfo.getProvider().ordinal() + oAuth2UserInfo.getName().substring(0, 1) + oAuth2UserInfo.getId(), oAuth2UserInfo.getProfileImageUrl());
-
-            Integer memberId = memberService.saveSocialMember(singUpRequestDto);
-            oAuth2UserInfo.getAttributes().put("memberId", memberId);
-        } else {
-            //회원이 존재하는 경우
-            oAuth2UserInfo.getAttributes().put("exist", true);
-            oAuth2UserInfo.getAttributes().put("memberId", findMember.get().getId());
         }
 
         return new OAuth2UserPrincipal(oAuth2UserInfo);
