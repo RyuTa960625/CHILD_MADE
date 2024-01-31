@@ -18,38 +18,40 @@ public class Member {
     private Integer id;
 
     @Column
+    private String socialId;
+
+    @Enumerated(EnumType.STRING)
+    @Column
     private ProviderType providerType; //로그인 형태
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false)
     private String nickname;
-
-    private String password;
 
     private String profile; //프로필 사진 url
 
     @Builder
-    private Member(ProviderType providerType, String email, String name, String nickname, String password, String profile) {
+    public Member(String socialId, ProviderType providerType, String email, String name, String nickname, String profile) {
+        this.socialId = socialId;
         this.providerType = providerType;
         this.email = email;
         this.name = name;
         this.nickname = nickname;
-        this.password = password;
         this.profile = profile;
     }
 
-    public static Member of(ProviderType providerType, String email, String name, String nickname, String encodePw, String profile) {
+    public static Member of(String socialId, ProviderType providerType, String email, String name, String nickname, String profile) {
         return builder()
+                .socialId(socialId)
                 .providerType(providerType)
                 .email(email)
                 .name(name)
                 .nickname(nickname)
-                .password(encodePw)
                 .profile(profile)
                 .build();
     }
