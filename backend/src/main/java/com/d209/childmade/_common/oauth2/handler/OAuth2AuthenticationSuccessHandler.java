@@ -1,11 +1,12 @@
 package com.d209.childmade._common.oauth2.handler;
 
+import com.d209.childmade._common.jwt.GeneratedToken;
 import com.d209.childmade._common.jwt.JwtUtil;
 import com.d209.childmade._common.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.d209.childmade._common.oauth2.service.OAuth2UserPrincipal;
 import com.d209.childmade._common.oauth2.user.ProviderType;
 import com.d209.childmade._common.oauth2.user.OAuth2UserUnlinkManager;
-import com.d209.childmade._common.oauth2.util.CookieUtils;
+import com.d209.childmade._common.util.CookieUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -76,25 +77,30 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         if ("login".equalsIgnoreCase(mode)) {
-            // TODO: DB 저장
-            // TODO: 액세스 토큰, 리프레시 토큰 발급
-            // TODO: 리프레시 토큰 DB 저장
-
-            log.info("email={}, name={}, nickname={}, profileUrl={}, accessToken={}", principal.getUserInfo().getEmail(),
+            log.info("email={}, name={}, profileUrl={}, accessToken={}, providerType={}, exist={}", principal.getUserInfo().getEmail(),
                     principal.getUserInfo().getName(),
-                    principal.getUserInfo().getNickname(),
                     principal.getUserInfo().getProfileImageUrl(),
-                    principal.getUserInfo().getAccessToken()
+                    principal.getUserInfo().getAccessToken(),
+                    principal.getUserInfo().getProvider(),
+                    principal.getUserInfo().getAttributes().get("exist")
             );
 
-            String accessToken = jwtUtil.createToken(authentication);
-            String refreshToken = "test_refresh_token";
+            //로그인한 회원 존재 여부
+            boolean isExist = (boolean) principal.getUserInfo().getAttributes().get("exist");
+            GeneratedToken token = jwtUtil.generateToken(principal.getUserInfo().getEmail(), principal.getUserInfo().getAttributes().get("memberId").toString());
 
-            return UriComponentsBuilder.fromUriString(targetUrl)
-                    .queryParam("access_token", accessToken)
-                    .queryParam("refresh_token", refreshToken)
-                    .build().toUriString();
-
+            //회원이 존재하는 경우
+            if(isExist) {
+                //TODO: 로그인 후 페이지로 리다이렉트
+                return UriComponentsBuilder.fromUriString(targetUrl)
+                        .queryParam("access-token", token.getAccessToken())
+                        .build().toUriString();
+            } else {
+                //TODO: 회원가입 페이지(닉네임)로 리다이렉트
+                return UriComponentsBuilder.fromUriString(targetUrl)
+                        .queryParam("access-token", token.getAccessToken())
+                        .build().toUriString();
+            }
         } else if ("unlink".equalsIgnoreCase(mode)) {
 
             String accessToken = principal.getUserInfo().getAccessToken();

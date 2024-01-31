@@ -29,10 +29,8 @@ public class Member {
     @Column(nullable = false, length = 30)
     private String nickname;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column
     private String profile; //프로필 사진 url
 
     @Builder
@@ -54,5 +52,9 @@ public class Member {
                 .password(encodePw)
                 .profile(profile)
                 .build();
+    }
+
+    public void updateProfileImage(String imgUrl) {
+        this.profile = imgUrl;
     }
 }

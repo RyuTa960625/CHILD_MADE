@@ -1,4 +1,4 @@
-package com.d209.childmade._common.oauth2.util;
+package com.d209.childmade._common.util;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

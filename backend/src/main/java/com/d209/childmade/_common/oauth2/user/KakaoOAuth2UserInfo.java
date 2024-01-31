@@ -12,7 +12,6 @@ public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
     private final String id;
     private final String email;
     private final String name;
-    private final String nickName;
     private final String profileImageUrl;
 
     @Builder
@@ -27,13 +26,11 @@ public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
         this.email = (String) kakaoAccount.get("email");
 
         this.name = (String) kakaoAccount.get("name");
-        this.nickName = (String) kakaoProfile.get("nickname");
 
         this.profileImageUrl = (String) kakaoProfile.get("profile_image_url");
 
         this.attributes.put("id", id);
         this.attributes.put("email", this.email);
-        this.attributes.put("nickname", nickName);
         this.attributes.put("profile_image_url", profileImageUrl);
     }
 
@@ -72,11 +69,6 @@ public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String getNickname() {
-        return nickName;
     }
 
     @Override

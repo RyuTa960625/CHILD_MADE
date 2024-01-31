@@ -1,11 +1,13 @@
 package com.d209.childmade._common.config;
 
 import com.d209.childmade._common.jwt.JwtAuthorizationFilter;
+import com.d209.childmade._common.jwt.JwtExceptionFilter;
 import com.d209.childmade._common.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.d209.childmade._common.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import com.d209.childmade._common.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import com.d209.childmade._common.oauth2.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +27,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
  * CSRF설정 Disable
  * OAuth2 핸들러 및 서비스 빈으로 등록
  */
+@Slf4j
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
@@ -35,6 +38,7 @@ public class SecurityConfig {
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -51,6 +55,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(antMatcher("/api/user/**")).authenticated()
                         .requestMatchers(antMatcher("/h2-console/**")).permitAll()
+                        .requestMatchers(antMatcher("/api/auth/**")).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(configure ->
@@ -59,7 +64,8 @@ public class SecurityConfig {
                                 .successHandler(oAuth2AuthenticationSuccessHandler)
                                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 )
-                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtAuthorizationFilter.class);
 
         return http.build();
     }

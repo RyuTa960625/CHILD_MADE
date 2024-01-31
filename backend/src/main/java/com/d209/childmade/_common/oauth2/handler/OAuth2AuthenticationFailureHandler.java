@@ -1,7 +1,7 @@
 package com.d209.childmade._common.oauth2.handler;
 
 import com.d209.childmade._common.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.d209.childmade._common.oauth2.util.CookieUtils;
+import com.d209.childmade._common.util.CookieUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

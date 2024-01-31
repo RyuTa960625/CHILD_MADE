@@ -2,6 +2,7 @@ package com.d209.childmade._common.oauth2.user;
 
 import lombok.Builder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class GoogleOAuth2UserInfo implements OAuth2UserInfo {
@@ -11,17 +12,15 @@ public class GoogleOAuth2UserInfo implements OAuth2UserInfo {
     private final String id;
     private final String email;
     private final String name;
-    private final String nickName;
     private final String profileImageUrl;
 
     @Builder
     private GoogleOAuth2UserInfo(String accessToken, Map<String, Object> attributes) {
         this.accessToken = accessToken;
-        this.attributes = attributes;
+        this.attributes = new HashMap<>();
         this.id = (String) attributes.get("sub");
         this.email = (String) attributes.get("email");
         this.name = (String) attributes.get("name");
-        this.nickName = null;
         this.profileImageUrl = (String) attributes.get("picture");
     }
 
@@ -60,11 +59,6 @@ public class GoogleOAuth2UserInfo implements OAuth2UserInfo {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String getNickname() {
-        return nickName;
     }
 
     @Override
