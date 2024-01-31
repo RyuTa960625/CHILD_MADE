@@ -3,6 +3,7 @@ package com.d209.childmade._common.oauth2.service;
 import com.d209.childmade._common.oauth2.exception.OAuth2AuthenticationProcessingException;
 import com.d209.childmade._common.oauth2.user.OAuth2UserInfo;
 import com.d209.childmade._common.oauth2.user.OAuth2UserInfoFactory;
+import com.d209.childmade._common.oauth2.user.ProviderType;
 import com.d209.childmade.member.dto.request.SingUpRequestDto;
 import com.d209.childmade.member.entity.Member;
 import com.d209.childmade.member.service.MemberService;
@@ -62,13 +63,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         String email = oAuth2UserInfo.getEmail();
-        Optional<Member> findMember = memberService.findByEmail(email);
+        ProviderType provider = oAuth2UserInfo.getProvider();
+        Optional<Member> findMember = memberService.findByEmailAndProviderType(email, provider);
 
         if (findMember.isEmpty()) {
             //회원이 존재하지 않는 경우
             oAuth2UserInfo.getAttributes().put("exist", false);
 
-            SingUpRequestDto singUpRequestDto = SingUpRequestDto.of(oAuth2UserInfo.getProvider(), oAuth2UserInfo.getEmail(), oAuth2UserInfo.getName(),
+            SingUpRequestDto singUpRequestDto = SingUpRequestDto.of(provider, oAuth2UserInfo.getEmail(), oAuth2UserInfo.getName(),
                     oAuth2UserInfo.getEmail(), null, oAuth2UserInfo.getProfileImageUrl());
 
             Integer memberId = memberService.saveSocialMember(singUpRequestDto);
