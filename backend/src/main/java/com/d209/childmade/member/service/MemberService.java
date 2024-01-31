@@ -87,6 +87,14 @@ public class MemberService {
         findMember.get().updateNickname(nickname);
     }
 
+    @Transactional
+    public void deleteMember(Optional<Member> member) {
+        if(member.isEmpty())
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
+
+        memberRepository.delete(member.get());
+    }
+
     public boolean isDuplicated(String nickname) {
         Optional<Member> findMember = memberRepository.findByNickname(nickname);
 

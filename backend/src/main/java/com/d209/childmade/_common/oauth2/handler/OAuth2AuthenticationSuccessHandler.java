@@ -1,5 +1,6 @@
 package com.d209.childmade._common.oauth2.handler;
 
+import com.d209.childmade.Auth.service.AuthTokenService;
 import com.d209.childmade._common.jwt.GeneratedToken;
 import com.d209.childmade._common.jwt.JwtUtil;
 import com.d209.childmade._common.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
@@ -38,6 +39,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final OAuth2UserUnlinkManager oAuth2UserUnlinkManager;
+    private final AuthTokenService authTokenService;
     private final MemberService memberService;
     private final JwtUtil jwtUtil;
 
@@ -81,14 +83,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         if ("login".equalsIgnoreCase(mode)) {
-            log.info("id={}, email={}, name={}, profileUrl={}, accessToken={}, providerType={}, exist={}",
+            log.info("id={}, email={}, name={}, profileUrl={}, accessToken={}, providerType={}",
                     principal.getUserInfo().getId(),
                     principal.getUserInfo().getEmail(),
                     principal.getUserInfo().getName(),
                     principal.getUserInfo().getProfileImageUrl(),
                     principal.getUserInfo().getAccessToken(),
-                    principal.getUserInfo().getProvider(),
-                    principal.getUserInfo().getAttributes().get("exist")
+                    principal.getUserInfo().getProvider()
             );
 
             String socialId = principal.getUserInfo().getId();
@@ -110,7 +111,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
             } else {
                 //회원이 존재하는 경우
-                GeneratedToken token = jwtUtil.generateToken(principal.getUserInfo().getAttributes().get("memberId").toString());
+                GeneratedToken token = jwtUtil.generateToken(findMember.get().getId().toString());
 
                 //TODO: 로그인 후 페이지로 리다이렉트
                 return UriComponentsBuilder.fromUriString(targetUrl)
@@ -122,11 +123,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
             String accessToken = principal.getUserInfo().getAccessToken();
             ProviderType provider = principal.getUserInfo().getProvider();
-
-            // TODO: DB 삭제
-            // TODO: 리프레시 토큰 삭제
-
             oAuth2UserUnlinkManager.unlink(provider, accessToken);
+            Optional<Member> findMember = memberService.findBySocialId(principal.getUserInfo().getId());
+            authTokenService.removeRefreshTokenById(findMember.get().getId().toString());
+            memberService.deleteMember(findMember);
 
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .build().toUriString();

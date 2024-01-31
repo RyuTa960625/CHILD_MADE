@@ -49,6 +49,11 @@ public class AuthTokenService {
         tokenRepository.delete(token);
     }
 
+    @Transactional
+    public void removeRefreshTokenById(String memberId) {
+        tokenRepository.deleteById(memberId);
+    }
+
     private String resolveToken(String token) {
 
         if (StringUtils.hasText(token) && token.startsWith(BEARER_PREFIX)) {
