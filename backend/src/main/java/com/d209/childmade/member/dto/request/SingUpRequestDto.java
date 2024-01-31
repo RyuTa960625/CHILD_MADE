@@ -5,46 +5,44 @@ import com.d209.childmade.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 public class SingUpRequestDto {
 
-    private ProviderType providerType;
-    private String email;
-    private String name;
-    private String nickname;
-    private String password;
-    private String profile;
+    private final String socialId;
+    private final ProviderType providerType;
+    private final String email;
+    private final String name;
+    private final String nickname;
+    private final String profile;
 
     @Builder
-    private SingUpRequestDto(ProviderType providerType, String email, String name, String nickname, String password, String profile) {
+    public SingUpRequestDto(String socialId, ProviderType providerType, String email, String name, String nickname, String profile) {
+        this.socialId = socialId;
         this.providerType = providerType;
         this.email = email;
         this.name = name;
         this.nickname = nickname;
-        this.password = password;
         this.profile = profile;
     }
 
-    public static SingUpRequestDto of(ProviderType providerType, String email, String name, String nickname, String password, String profile) {
+    public static SingUpRequestDto of(String socialId, ProviderType providerType, String email, String name, String nickname, String profile) {
         return builder()
+                .socialId(socialId)
                 .providerType(providerType)
                 .email(email)
                 .name(name)
                 .nickname(nickname)
-                .password(password)
                 .profile(profile)
                 .build();
     }
 
     public Member toEntity() {
         return Member.builder()
+                .socialId(socialId)
                 .providerType(providerType)
                 .email(email)
                 .name(name)
                 .nickname(nickname)
-                .password(password)
                 .profile(profile)
                 .build();
     }

@@ -1,22 +1,25 @@
 package com.d209.childmade.member.dto;
 
 import com.d209.childmade._common.oauth2.user.ProviderType;
+import com.d209.childmade.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class SecurityMemberDto {
 
-    private Integer id;
-    private ProviderType providerType;
-    private String email;
-    private String name;
-    private String nickname;
-    private String profile;
+    private final Integer id;
+    private final String socialId;
+    private final ProviderType providerType;
+    private final String email;
+    private final String name;
+    private final String nickname;
+    private final String profile;
 
     @Builder
-    private SecurityMemberDto(Integer id, ProviderType providerType, String email, String name, String nickname, String profile) {
+    private SecurityMemberDto(Integer id, String socialId, ProviderType providerType, String email, String name, String nickname, String profile) {
         this.id = id;
+        this.socialId = socialId;
         this.providerType = providerType;
         this.email = email;
         this.name = name;
@@ -24,14 +27,15 @@ public class SecurityMemberDto {
         this.profile = profile;
     }
 
-    public static SecurityMemberDto of(Integer id, ProviderType providerType, String email, String name, String nickname, String profile) {
+    public static SecurityMemberDto from(Member member) {
         return builder()
-                .id(id)
-                .providerType(providerType)
-                .email(email)
-                .name(name)
-                .nickname(nickname)
-                .profile(profile)
+                .id(member.getId())
+                .socialId(member.getSocialId())
+                .providerType(member.getProviderType())
+                .email(member.getEmail())
+                .name(member.getName())
+                .nickname(member.getNickname())
+                .profile(member.getProfile())
                 .build();
     }
 }

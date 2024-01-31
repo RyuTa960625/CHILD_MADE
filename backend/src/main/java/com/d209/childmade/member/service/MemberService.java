@@ -19,8 +19,12 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Optional<Member> findByEmailAndProviderType(String email, ProviderType providerType) {
-        return memberRepository.findByEmailAndProviderType(email, providerType);
+    public Optional<Member> findBySocialId(String socialId) {
+        return memberRepository.findBySocialId(socialId);
+    }
+
+    public Optional<Member> findById(Integer memberId) {
+        return memberRepository.findById(memberId);
     }
 
     @Transactional
