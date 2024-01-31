@@ -81,6 +81,15 @@ public class MemberService {
         if(findMember.isEmpty())
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
 
+        if(isDuplicated(nickname))
+            throw new CustomBadRequestException(ErrorType.ALREADY_EXIST_MEMBER_NICKNAME);
+
         findMember.get().updateNickname(nickname);
+    }
+
+    public boolean isDuplicated(String nickname) {
+        Optional<Member> findMember = memberRepository.findByNickname(nickname);
+
+        return findMember.isPresent();
     }
 }
