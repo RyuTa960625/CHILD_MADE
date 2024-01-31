@@ -19,7 +19,7 @@ public class AuthController {
 
     private final AuthTokenService authTokenService;
 
-    @PostMapping("/token/logout")
+    @PostMapping("/logout")
     public ResponseEntity<SuccessType> logout(@RequestHeader(value = "Authorization") final String accessToken) {
         System.out.println("access token : " + accessToken);
         // 엑세스 토큰으로 현재 Redis 정보 삭제
@@ -28,8 +28,8 @@ public class AuthController {
         return ResponseEntity.ok(SuccessType.LOGOUT_SUCCESSFULLY);
     }
 
-    @PostMapping("/token/refresh")
-    public ResponseEntity<String> refresh(@RequestHeader("Authorization") final String accessToken) {
+    @PostMapping("/regenerate-token")
+    public ResponseEntity<String> regenerateToken(@RequestHeader("Authorization") final String accessToken) {
 
         String newAccessToken = authTokenService.republishAccessToken(accessToken);
         if (StringUtils.hasText(newAccessToken)) {
