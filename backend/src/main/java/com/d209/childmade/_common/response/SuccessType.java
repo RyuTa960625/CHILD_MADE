@@ -10,6 +10,7 @@ public enum SuccessType {
 
     SIGNUP_SUCCESSFULLY(HttpStatus.OK, "회원 가입 성공"), //status code 200
     LOGIN_SUCCESSFULLY(HttpStatus.OK,"로그인 성공"),
+    LOGOUT_SUCCESSFULLY(HttpStatus.OK, "로그아웃 성공"),
     ;
 
     private final HttpStatus status; //http status
