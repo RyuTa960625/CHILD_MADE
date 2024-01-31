@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class ErrorResponse {
 
-    private int statusCode; //http status code
-    private String statusName; //http status name
-    private String msg; //error message
+    private final int statusCode; //http status code
+    private final String statusName; //http status name
+    private final String msg; //error message
 
     @Builder
     private ErrorResponse(int statusCode, String statusName, String msg) {
