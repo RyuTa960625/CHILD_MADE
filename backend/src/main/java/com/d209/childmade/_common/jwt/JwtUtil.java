@@ -37,21 +37,20 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(key);
     }
 
-    public GeneratedToken generateToken(String email, String memberId) {
+    public GeneratedToken generateToken(String memberId) {
         // refreshToken과 accessToken을 생성한다.
-        String refreshToken = generateRefreshToken(email, memberId);
-        String accessToken = generateAccessToken(email, memberId);
+        String refreshToken = generateRefreshToken(memberId);
+        String accessToken = generateAccessToken(memberId);
 
         // 토큰을 Redis에 저장한다.
-        jwtTokenService.saveTokenInfo(email, refreshToken, accessToken);
+        jwtTokenService.saveTokenInfo(memberId, refreshToken, accessToken);
         return new GeneratedToken(accessToken, refreshToken);
     }
 
-    public String generateRefreshToken(String email , String memberId) {
+    public String generateRefreshToken(String memberId) {
 
         //새로운 클레임 객체 생성, 이메일 세팅
-        Claims claims = Jwts.claims().setSubject(email);
-        claims.put("memberId", memberId);
+        Claims claims = Jwts.claims().setSubject(memberId);
 
         //현재 시간과 날짜
         Date now = new Date();
@@ -64,11 +63,10 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String generateAccessToken(String email, String memberId) {
+    public String generateAccessToken(String memberId) {
 
         //새로운 클레임 객체 생성, 이메일 세팅
-        Claims claims = Jwts.claims().setSubject(email);
-        claims.put("memberId", memberId);
+        Claims claims = Jwts.claims().setSubject(memberId);
 
         //현재 시간과 날짜
         Date now = new Date();
@@ -114,13 +112,8 @@ public class JwtUtil {
                 Collections.emptyList());
     }
 
-    //토큰에서 email을 추출한다.
-    public String getUid(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
-    }
-
     //토큰에서 memberId를 추출한다.
     public String getMemberId(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().get("memberId", String.class);
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
 }

@@ -49,29 +49,29 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         String registrationId = userRequest.getClientRegistration()
                 .getRegistrationId();
-        System.out.println("registrationId : " + registrationId);
+
         String accessToken = userRequest.getAccessToken().getTokenValue();
 
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(registrationId,
                 accessToken,
                 oAuth2User.getAttributes());
 
+        String socialId = oAuth2UserInfo.getId();
+
         //OAuth2UserInfo field 검증
-        if (!StringUtils.hasText(oAuth2UserInfo.getEmail())) {
+        if (!StringUtils.hasText(socialId)) {
             //AuthenticationException은 OAuth2AuthenticationFailureHandler가 잡는다.
-            throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
+            throw new OAuth2AuthenticationProcessingException("ID not found from OAuth2 provider");
         }
 
-        String email = oAuth2UserInfo.getEmail();
-        ProviderType provider = oAuth2UserInfo.getProvider();
-        Optional<Member> findMember = memberService.findByEmailAndProviderType(email, provider);
+        Optional<Member> findMember = memberService.findBySocialId(socialId);
 
         if (findMember.isEmpty()) {
             //회원이 존재하지 않는 경우
             oAuth2UserInfo.getAttributes().put("exist", false);
 
-            SingUpRequestDto singUpRequestDto = SingUpRequestDto.of(provider, oAuth2UserInfo.getEmail(), oAuth2UserInfo.getName(),
-                    oAuth2UserInfo.getEmail(), null, oAuth2UserInfo.getProfileImageUrl());
+            SingUpRequestDto singUpRequestDto = SingUpRequestDto.of(oAuth2UserInfo.getId(), oAuth2UserInfo.getProvider(), oAuth2UserInfo.getEmail(),
+                    oAuth2UserInfo.getName(), oAuth2UserInfo.getProvider().ordinal() + oAuth2UserInfo.getName().substring(0, 1) + oAuth2UserInfo.getId(), oAuth2UserInfo.getProfileImageUrl());
 
             Integer memberId = memberService.saveSocialMember(singUpRequestDto);
             oAuth2UserInfo.getAttributes().put("memberId", memberId);

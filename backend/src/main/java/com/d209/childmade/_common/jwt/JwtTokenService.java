@@ -11,8 +11,8 @@ public class JwtTokenService {
     private final TokenRepository tokenRepository;
 
     @Transactional
-    public void saveTokenInfo(String email, String refreshToken, String accessToken) {
-        tokenRepository.save(new SavedToken(email, accessToken, refreshToken));
+    public void saveTokenInfo(String memberId, String refreshToken, String accessToken) {
+        tokenRepository.save(new SavedToken(memberId, accessToken, refreshToken));
     }
 
 

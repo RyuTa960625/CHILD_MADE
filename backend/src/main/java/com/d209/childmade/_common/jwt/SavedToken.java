@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class SavedToken implements Serializable {
 
     @Id
-    private String id;
+    private String id; //memberId
 
     @Indexed
     private String accessToken;

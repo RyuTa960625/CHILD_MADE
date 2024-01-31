@@ -77,7 +77,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         if ("login".equalsIgnoreCase(mode)) {
-            log.info("email={}, name={}, profileUrl={}, accessToken={}, providerType={}, exist={}", principal.getUserInfo().getEmail(),
+            log.info("id={}, email={}, name={}, profileUrl={}, accessToken={}, providerType={}, exist={}",
+                    principal.getUserInfo().getId(),
+                    principal.getUserInfo().getEmail(),
                     principal.getUserInfo().getName(),
                     principal.getUserInfo().getProfileImageUrl(),
                     principal.getUserInfo().getAccessToken(),
@@ -87,7 +89,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
             //로그인한 회원 존재 여부
             boolean isExist = (boolean) principal.getUserInfo().getAttributes().get("exist");
-            GeneratedToken token = jwtUtil.generateToken(principal.getUserInfo().getEmail(), principal.getUserInfo().getAttributes().get("memberId").toString());
+            GeneratedToken token = jwtUtil.generateToken(principal.getUserInfo().getAttributes().get("memberId").toString());
 
             //회원이 존재하는 경우
             if(isExist) {
