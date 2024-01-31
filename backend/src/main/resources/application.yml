@@ -37,3 +37,9 @@ cloud:
       secretKey: ${S3_SECRETKEY}
     s3:
       bucket: ${S3_NAME}
+      
+# OpenVidu 설정
+openvidu:
+  url: ${OPENVIDU_URL}
+  secret: ${OPENVIDU_SECRET}
+
