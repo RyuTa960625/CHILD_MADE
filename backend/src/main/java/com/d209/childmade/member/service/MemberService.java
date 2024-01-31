@@ -63,4 +63,24 @@ public class MemberService {
 
         findMember.get().updateName(name);
     }
+
+    @Transactional
+    public void updateMemberEmail(Integer memberId, String email) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
+
+        if(findMember.isEmpty())
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
+
+        findMember.get().updateEmail(email);
+    }
+
+    @Transactional
+    public void updateMemberNickname(Integer memberId, String nickname) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
+
+        if(findMember.isEmpty())
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
+
+        findMember.get().updateNickname(nickname);
+    }
 }

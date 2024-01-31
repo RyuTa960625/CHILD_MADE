@@ -28,4 +28,18 @@ public class MemberController {
 
         return SuccessResponse.from(SuccessType.UPDATE_MEMBER_NAME_SUCCESSFULLY);
     }
+
+    @PutMapping("/email/{id}")
+    public SuccessResponse<Void> updateMemberEmail(@PathVariable(value = "id")Integer memberId, String email) {
+        memberService.updateMemberEmail(memberId, email);
+
+        return SuccessResponse.from(SuccessType.UPDATE_MEMBER_EMAIL_SUCCESSFULLY);
+    }
+
+    @PutMapping("/nickname/{id}")
+    public SuccessResponse<Void> updateMemberNickname(@PathVariable(value = "id")Integer memberId, String nickname) {
+        memberService.updateMemberNickname(memberId, nickname);
+
+        return SuccessResponse.from(SuccessType.UPDATE_MEMBER_NICKNAME_SUCCESSFULLY);
+    }
 }
