@@ -50,4 +50,8 @@ public class MemberRoom extends BaseTime {
                 .role(role)
                 .build();
     }
+
+    public void updateBoss(){
+        this.isBoss = true;
+    }
 }
