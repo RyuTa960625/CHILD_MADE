@@ -1,15 +1,18 @@
 package com.d209.childmade.member.service;
 
+import com.d209.childmade._common.S3.S3Util;
 import com.d209.childmade._common.exception.CustomBadRequestException;
 import com.d209.childmade._common.response.ErrorType;
 import com.d209.childmade.member.dto.request.SingUpRequestDto;
 import com.d209.childmade.member.dto.response.MemberInfoResponseDto;
+import com.d209.childmade.member.dto.response.UpdateProfileResponseDto;
 import com.d209.childmade.member.entity.Member;
 import com.d209.childmade.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -19,6 +22,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final S3Util s3Util;
 
     public Optional<Member> findBySocialId(String socialId) {
         return memberRepository.findBySocialId(socialId);
@@ -85,6 +89,18 @@ public class MemberService {
             throw new CustomBadRequestException(ErrorType.ALREADY_EXIST_MEMBER_NICKNAME);
 
         findMember.get().updateNickname(nickname);
+    }
+
+    @Transactional
+    public UpdateProfileResponseDto updateMemberProfile(Integer memberId, MultipartFile file) {
+        String profile = s3Util.upload(file, "/user/", "profile", memberId.toString());
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        if(findMember.isEmpty())
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
+
+        findMember.get().updateProfileImage(profile);
+
+        return new UpdateProfileResponseDto(profile);
     }
 
     @Transactional

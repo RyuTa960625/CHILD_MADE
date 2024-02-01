@@ -6,8 +6,10 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
@@ -15,13 +17,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
+@Component
 public class S3Util {
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;  // S3 Bucket name
 
-    @Autowired
-    private AmazonS3 amazonS3;
+    private final AmazonS3 amazonS3;
 
     /**
      * 컷 동영상을 방 id(roodId)와 대사 순서(scriptNum)를 통해

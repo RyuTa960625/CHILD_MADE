@@ -1,12 +1,15 @@
 package com.d209.childmade.member.controller;
 
+import com.d209.childmade._common.S3.S3Util;
 import com.d209.childmade._common.response.SuccessResponse;
 import com.d209.childmade._common.response.SuccessType;
 import com.d209.childmade.member.dto.response.MemberInfoResponseDto;
+import com.d209.childmade.member.dto.response.UpdateProfileResponseDto;
 import com.d209.childmade.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/members")
@@ -41,5 +44,12 @@ public class MemberController {
         memberService.updateMemberNickname(memberId, nickname);
 
         return SuccessResponse.from(SuccessType.UPDATE_MEMBER_NICKNAME_SUCCESSFULLY);
+    }
+
+    @PutMapping("/profile/{id}")
+    public SuccessResponse<UpdateProfileResponseDto> updateMemberProfile(@PathVariable(value = "id")Integer memberId, MultipartFile file) {
+        UpdateProfileResponseDto updateProfileResponseDto = memberService.updateMemberProfile(memberId, file);
+
+        return SuccessResponse.of(SuccessType.UPDATE_MEMBER_PROFILE_SUCCESSFULLY, updateProfileResponseDto);
     }
 }
