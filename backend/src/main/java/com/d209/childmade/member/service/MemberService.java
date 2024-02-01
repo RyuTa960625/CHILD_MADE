@@ -3,7 +3,11 @@ package com.d209.childmade.member.service;
 import com.d209.childmade._common.S3.S3Util;
 import com.d209.childmade._common.exception.CustomBadRequestException;
 import com.d209.childmade._common.response.ErrorType;
+import com.d209.childmade.member.dto.SecurityMemberDto;
 import com.d209.childmade.member.dto.request.SingUpRequestDto;
+import com.d209.childmade.member.dto.request.UpdateEmailRequestDto;
+import com.d209.childmade.member.dto.request.UpdateNameRequestDto;
+import com.d209.childmade.member.dto.request.UpdateNicknameRequestDto;
 import com.d209.childmade.member.dto.response.MemberInfoResponseDto;
 import com.d209.childmade.member.dto.response.UpdateProfileResponseDto;
 import com.d209.childmade.member.entity.Member;
@@ -28,27 +32,22 @@ public class MemberService {
         return memberRepository.findBySocialId(socialId);
     }
 
-    public Optional<Member> findById(Integer memberId) {
-        return memberRepository.findById(memberId);
+    public SecurityMemberDto getSecurityMember(Integer memberId) {
+        Member member = findById(memberId)
+                .orElseThrow(IllegalStateException::new);
+        
+        return SecurityMemberDto.from(member);
     }
+    
+    public MemberInfoResponseDto getMember(Integer memberId) {
 
-    public MemberInfoResponseDto findMemberById(Integer memberId) {
-
-        Optional<Member> findMember = memberRepository.findById(memberId);
-
-        if (findMember.isEmpty()) {
-            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
-        }
-
-        return MemberInfoResponseDto.of(findMember.get().getId(), findMember.get().getProviderType(),
-                findMember.get().getEmail(), findMember.get().getName(), findMember.get().getNickname(),
-                findMember.get().getProfile());
+        return MemberInfoResponseDto.from(findMember(memberId));
     }
 
     @Transactional
     public Integer saveSocialMember(SingUpRequestDto singUpRequestDto) {
 
-        Member member = singUpRequestDto.toEntity();
+        Member member = Member.from(singUpRequestDto);
 
         //프로필이 없으면 기본 이미지 넣기
         if(!StringUtils.hasText(singUpRequestDto.getProfile())) {
@@ -59,46 +58,35 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateMemberName(Integer memberId, String name) {
-        Optional<Member> findMember = memberRepository.findById(memberId);
-
-        if(findMember.isEmpty())
-            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
-
-        findMember.get().updateName(name);
+    public void updateMemberName(Integer memberId, UpdateNameRequestDto updateNameRequestDto) {
+        Member member = findMember(memberId);
+        member.updateName(updateNameRequestDto.getName());
     }
 
     @Transactional
-    public void updateMemberEmail(Integer memberId, String email) {
-        Optional<Member> findMember = memberRepository.findById(memberId);
-
-        if(findMember.isEmpty())
-            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
-
-        findMember.get().updateEmail(email);
+    public void updateMemberEmail(Integer memberId, UpdateEmailRequestDto updateEmailRequestDto) {
+        Member member = findMember(memberId);
+        member.updateEmail(updateEmailRequestDto.getEmail());
     }
 
     @Transactional
-    public void updateMemberNickname(Integer memberId, String nickname) {
-        Optional<Member> findMember = memberRepository.findById(memberId);
+    public void updateMemberNickname(Integer memberId, UpdateNicknameRequestDto updateNicknameRequestDto) {
+        Member member = findMember(memberId);
 
-        if(findMember.isEmpty())
-            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
+        String nickname = updateNicknameRequestDto.getNickname();
+        validateDuplicatedNickname(nickname);
 
-        if(isDuplicated(nickname))
-            throw new CustomBadRequestException(ErrorType.ALREADY_EXIST_MEMBER_NICKNAME);
-
-        findMember.get().updateNickname(nickname);
+        member.updateNickname(nickname);
     }
 
     @Transactional
     public UpdateProfileResponseDto updateMemberProfile(Integer memberId, MultipartFile file) {
         String profile = s3Util.upload(file, "/user/", "profile", memberId.toString());
-        Optional<Member> findMember = memberRepository.findById(memberId);
-        if(findMember.isEmpty())
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(member.isEmpty())
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
 
-        findMember.get().updateProfileImage(profile);
+        member.get().updateProfileImage(profile);
 
         return new UpdateProfileResponseDto(profile);
     }
@@ -111,9 +99,18 @@ public class MemberService {
         memberRepository.delete(member.get());
     }
 
-    public boolean isDuplicated(String nickname) {
-        Optional<Member> findMember = memberRepository.findByNickname(nickname);
+    private Optional<Member> findById(Integer memberId) {
+        return memberRepository.findById(memberId);
+    }
 
-        return findMember.isPresent();
+    private Member findMember(Integer memberId) {
+        return findById(memberId)
+                .orElseThrow(() -> new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER));
+    }
+
+    private void validateDuplicatedNickname(String nickname) {
+        if (!memberRepository.existsByNickname(nickname)) {
+            throw new CustomBadRequestException(ErrorType.ALREADY_EXIST_MEMBER_NICKNAME);
+        }
     }
 }

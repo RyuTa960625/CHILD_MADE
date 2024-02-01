@@ -1,16 +1,19 @@
 package com.d209.childmade.member.controller;
 
-import com.d209.childmade._common.S3.S3Util;
 import com.d209.childmade._common.response.SuccessResponse;
 import com.d209.childmade._common.response.SuccessType;
+import com.d209.childmade.member.dto.request.UpdateEmailRequestDto;
+import com.d209.childmade.member.dto.request.UpdateNameRequestDto;
+import com.d209.childmade.member.dto.request.UpdateNicknameRequestDto;
 import com.d209.childmade.member.dto.response.MemberInfoResponseDto;
 import com.d209.childmade.member.dto.response.UpdateProfileResponseDto;
 import com.d209.childmade.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RestController
 @RequestMapping("api/members")
 @RequiredArgsConstructor
@@ -19,34 +22,32 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/{id}")
-    public SuccessResponse<MemberInfoResponseDto> findMemberById(@PathVariable(value = "id")Integer memberId) {
-        MemberInfoResponseDto memberInfoResponseDto = memberService.findMemberById(memberId);
-
-        return SuccessResponse.of(SuccessType.GET_MEMBER_INFO_SUCCESSFULLY, memberInfoResponseDto);
+    public SuccessResponse<MemberInfoResponseDto> getMember(@PathVariable(value = "id")Integer memberId) {
+        return SuccessResponse.of(SuccessType.GET_MEMBER_INFO_SUCCESSFULLY, memberService.getMember(memberId));
     }
 
-    @PutMapping("/name/{id}")
-    public SuccessResponse<Void> updateMemberName(@PathVariable(value = "id")Integer memberId, String name) {
-        memberService.updateMemberName(memberId, name);
+    @PutMapping("/{id}/name")
+    public SuccessResponse<Void> updateMemberName(@PathVariable(value = "id")Integer memberId, @RequestBody UpdateNameRequestDto updateNameRequestDto) {
+        memberService.updateMemberName(memberId, updateNameRequestDto);
 
         return SuccessResponse.from(SuccessType.UPDATE_MEMBER_NAME_SUCCESSFULLY);
     }
 
-    @PutMapping("/email/{id}")
-    public SuccessResponse<Void> updateMemberEmail(@PathVariable(value = "id")Integer memberId, String email) {
-        memberService.updateMemberEmail(memberId, email);
+    @PutMapping("/{id}/email")
+    public SuccessResponse<Void> updateMemberEmail(@PathVariable(value = "id")Integer memberId, @RequestBody UpdateEmailRequestDto updateEmailRequestDto) {
+        memberService.updateMemberEmail(memberId, updateEmailRequestDto);
 
         return SuccessResponse.from(SuccessType.UPDATE_MEMBER_EMAIL_SUCCESSFULLY);
     }
 
-    @PutMapping("/nickname/{id}")
-    public SuccessResponse<Void> updateMemberNickname(@PathVariable(value = "id")Integer memberId, String nickname) {
-        memberService.updateMemberNickname(memberId, nickname);
+    @PutMapping("/{id}/nickname")
+    public SuccessResponse<Void> updateMemberNickname(@PathVariable(value = "id")Integer memberId, @RequestBody UpdateNicknameRequestDto updateNicknameRequestDto) {
+        memberService.updateMemberNickname(memberId, updateNicknameRequestDto);
 
         return SuccessResponse.from(SuccessType.UPDATE_MEMBER_NICKNAME_SUCCESSFULLY);
     }
 
-    @PutMapping("/profile/{id}")
+    @PutMapping("/{id}/profile")
     public SuccessResponse<UpdateProfileResponseDto> updateMemberProfile(@PathVariable(value = "id")Integer memberId, MultipartFile file) {
         UpdateProfileResponseDto updateProfileResponseDto = memberService.updateMemberProfile(memberId, file);
 

@@ -50,11 +50,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         if (StringUtils.hasText(token) && jwtUtil.validateToken(token)) {
-            Member findMember = memberService.findById(Integer.parseInt(jwtUtil.getMemberId(token)))
-                    .orElseThrow(IllegalStateException::new);
-
             //SecurityContext에 저장할 Member 객체 생성
-            SecurityMemberDto securityDto = SecurityMemberDto.from(findMember);
+            SecurityMemberDto securityDto = memberService.getSecurityMember(Integer.parseInt(jwtUtil.getMemberId(token)));
 
             Authentication authentication = jwtUtil.getAuthentication(securityDto);
             SecurityContextHolder.getContext().setAuthentication(authentication);
