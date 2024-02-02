@@ -2,6 +2,7 @@ package com.d209.childmade.role.entity;
 
 import com.d209.childmade.book.entity.Book;
 import jakarta.persistence.*;
+import java.util.Arrays;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,19 +35,21 @@ public class Role {
     private List<Helper> helpers = new ArrayList<>();
 
     @Builder
-    private Role(String roleName, String imageUrl, Book book, List<Helper> helpers) {
+    private Role(String roleName, String imageUrl, Book book) {
         this.roleName = roleName;
         this.imageUrl = imageUrl;
         this.book = book;
-        this.helpers = helpers;
     }
 
-    public static Role of(Integer id, String roleName, String imageUrl, Book book, List<Helper> helpers) {
+    public static Role of(String roleName, String imageUrl, Book book) {
         return builder()
                 .roleName(roleName)
                 .imageUrl(imageUrl)
                 .book(book)
-                .helpers(helpers)
                 .build();
+    }
+
+    public void addHelper(Helper... helper){
+        this.helpers.addAll(Arrays.asList(helper));
     }
 }

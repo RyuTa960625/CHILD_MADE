@@ -4,8 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class RoomJoinRequestDto {
+public class RoomLeaveRequestDto {
 
-    private int roleId;
-    private int bookId;
+    private int memberId;
+    private long roomId;
 }

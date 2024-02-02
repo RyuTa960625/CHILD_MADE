@@ -10,7 +10,6 @@ public class RoomJoinResponseDto {
     private final int curNum;
     private final String token;
 
-
     @Builder
     private RoomJoinResponseDto(Long roomId, int curNum, String token) {
         this.roomId = roomId;
