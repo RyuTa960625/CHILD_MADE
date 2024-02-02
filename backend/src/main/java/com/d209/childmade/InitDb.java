@@ -33,7 +33,6 @@ public class InitDb {
         private final MemberRepository memberRepository;
         private final RoleRepository roleRepository;
 
-
         public void dbinit() {
 
             // 초기 Member 데이터 추가

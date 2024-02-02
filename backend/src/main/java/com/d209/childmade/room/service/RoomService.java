@@ -52,11 +52,11 @@ public class RoomService {
     private String OPENVIDU_SECRET;
 
     private OpenVidu openvidu;
+
     @PostConstruct
     public void init() {
         this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
     }
-
 
     /**
      * 자동 방 배정 메서드
@@ -126,8 +126,6 @@ public class RoomService {
             memberRoomRepository.save(MemberRoom.of(false, member, room, role));
         }
 
-        // MemberRoom을 생성하고 저장
-
         //찾은 방 세션에 접근할 수 있는 토큰 발급
         Map<String, Object> params = new HashMap<>();
         ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
@@ -136,7 +134,6 @@ public class RoomService {
 
         return RoomJoinResponseDto.of(room.getId(),room.getCurNum(),token);
     }
-
 
     /**
      *  방 상태 변경 메서드
@@ -196,7 +193,6 @@ public class RoomService {
                 }
                 memberRoomRepository.delete(memberRoom);
             }
-
         }
     }
 }

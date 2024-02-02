@@ -10,6 +10,4 @@ public interface MemberRoomRepository extends JpaRepository<MemberRoom, Long> {
 
     Optional<MemberRoom> findByMemberId(int memberId);
     List<MemberRoom> findAllByRoomIdAndMemberRoomIdNot(long roomId, long memberRoomId, Pageable pageable);
-
 }
-

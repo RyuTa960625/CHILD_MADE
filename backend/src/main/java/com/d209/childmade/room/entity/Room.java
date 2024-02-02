@@ -48,17 +48,19 @@ public class Room extends BaseTime {
                 .build();
     }
 
-    //비즈니스 로직
     public void incrementCurNum() {
-        this.curNum++;return;
+        this.curNum++;
     }
-    public void decreaseCurNum() {  this.curNum--;return;
+
+    public void decreaseCurNum() {
+        this.curNum--;
     }
+
     public void updateRoomStatusProceeding() {
         this.roomStatus = RoomStatus.PROCEEDING;
     }
+
     public void updateRoomStatusFinished() {
         this.roomStatus = RoomStatus.FINISHED;
     }
-
 }
