@@ -8,4 +8,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class VideoService {
+
+    public String videoList(int limit, int pageNum){
+
+        return "Video List : ";
+    }
+
+    public String deleteVideo(Long videoId){
+
+        return "Delete Video : ";
+    }
+
+    public String downloadVideo(Long videoId){
+
+        return "Download Video : ";
+    }
 }
