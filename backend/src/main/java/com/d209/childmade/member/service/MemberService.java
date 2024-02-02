@@ -109,7 +109,7 @@ public class MemberService {
     }
 
     private void validateDuplicatedNickname(String nickname) {
-        if (!memberRepository.existsByNickname(nickname)) {
+        if (memberRepository.existsByNickname(nickname)) {
             throw new CustomBadRequestException(ErrorType.ALREADY_EXIST_MEMBER_NICKNAME);
         }
     }
