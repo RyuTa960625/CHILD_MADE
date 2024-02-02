@@ -1,10 +1,13 @@
 package com.d209.childmade.member.dto.response;
 
 import com.d209.childmade._common.oauth2.user.ProviderType;
+import com.d209.childmade.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class MemberInfoResponseDto {
 
     private Integer id;
@@ -32,6 +35,17 @@ public class MemberInfoResponseDto {
                 .name(name)
                 .nickname(nickname)
                 .profile(profile)
+                .build();
+    }
+
+    public static MemberInfoResponseDto from(Member member) {
+        return builder()
+                .id(member.getId())
+                .providerType(member.getProviderType())
+                .email(member.getEmail())
+                .name(member.getName())
+                .nickname(member.getNickname())
+                .profile(member.getProfile())
                 .build();
     }
 }

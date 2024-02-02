@@ -1,6 +1,7 @@
 package com.d209.childmade.member.entity;
 
 import com.d209.childmade._common.oauth2.user.ProviderType;
+import com.d209.childmade.member.dto.request.SingUpRequestDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -53,6 +54,17 @@ public class Member {
                 .name(name)
                 .nickname(nickname)
                 .profile(profile)
+                .build();
+    }
+
+    public static Member from(SingUpRequestDto singUpRequestDto) {
+        return builder()
+                .socialId(singUpRequestDto.getSocialId())
+                .providerType(singUpRequestDto.getProviderType())
+                .email(singUpRequestDto.getEmail())
+                .name(singUpRequestDto.getName())
+                .nickname(singUpRequestDto.getNickname())
+                .profile(singUpRequestDto.getProfile())
                 .build();
     }
 
