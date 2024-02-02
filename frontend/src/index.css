@@ -5,9 +5,31 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  overflow: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: 'Maplestory_b';
+  src: url('../public/fonts/Maplestory\ Bold.ttf');
+  font-family: 'Maplestory_l';
+  src: url('../public/fonts/Maplestory\ Light.ttf');
+}
+
+.custom-cursor{
+  cursor: url(/public/imgs/d2M.png) 20 20, auto;
+  overflow: hidden;
+}
+
+/* html{
+  cursor: url(/public/imgs/d2M.png), auto;
+} */
+/* 
+.other-element{
+  cursor: url('../public/imgs/d1.png'), auto;
+} */

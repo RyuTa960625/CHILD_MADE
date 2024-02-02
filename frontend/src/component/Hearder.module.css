@@ -1,0 +1,56 @@
+@font-face {
+    font-family: 'Maplestory_b';
+    src: url(/public/fonts/Maplestory\ Bold.ttf);
+}
+
+@font-face {
+    font-family: 'Maplestory_l';
+    src: url(/public/fonts/Maplestory\ Light.ttf);
+}
+
+.nav{
+    position: absolute;
+    display: flex;
+    width: 100vw;
+    height: 70px;            
+    background: rgba(0, 0, 0, 0.43);
+    color: #fff;
+    z-index: 10;
+    justify-content: center;
+}
+
+.icon{
+    width: 45px;
+    margin-top: 5px;
+}
+
+.icon:hover{
+    cursor: url(/public/imgs/d2sM.png), auto;
+}
+
+.icon2{
+    width: 57px;
+    margin-top: 5px;
+}
+
+.icon2:hover{
+    cursor: url(/public/imgs/d2sM.png), auto;
+}
+
+.iconText{
+    font-family: 'Maplestory_b';
+    font-size: 14px;
+}
+
+.iconText:hover{
+    cursor: url(/public/imgs/d2sM.png), auto;
+}
+/* 
+div{
+    border: 1px solid black;
+} */
+/* 
+img{
+    border: 1px solid black;
+} */
+
