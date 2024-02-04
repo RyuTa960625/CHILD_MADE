@@ -1,11 +1,14 @@
 package com.d209.childmade.video.controller;
 
 import com.d209.childmade.video.dto.request.CutVideoRequestDto;
+import com.d209.childmade.video.entity.Video;
 import com.d209.childmade.video.service.CutVideoService;
 import com.d209.childmade.video.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,11 +42,11 @@ public class VideoController {
     }
 
     @GetMapping
-    public ResponseEntity<String> videoList(@RequestParam(value = "limit") int limit,
-                                            @RequestParam(value = "page-num") int pageNum){
-        String str = service.videoList(limit, pageNum);
+    public ResponseEntity<Page<Video>> videoList(@RequestParam(value = "user-id") int userId,
+                                                 Pageable pageable){
+        Page<Video> videos= service.videoList(userId, pageable);
 
-        return new ResponseEntity<String>(str, HttpStatus.OK);   //TODO: response 수정 예정
+        return new ResponseEntity<Page<Video>>(videos, HttpStatus.OK);   //TODO: response 수정 예정
     }
 
     @DeleteMapping("/{video-id}")
