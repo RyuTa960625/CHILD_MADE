@@ -7,6 +7,7 @@ import com.d209.childmade.video.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -53,14 +54,15 @@ public class VideoController {
     public ResponseEntity<String> deleteVideo(@PathVariable("user-id") int userId,
                                               @PathVariable("video-id") Long videoId){
         service.deleteVideo(userId, videoId);
+
         return new ResponseEntity<String>("good", HttpStatus.OK);   //TODO: response 수정 예정
     }
 
     @GetMapping("/{video-id}/download")
-    public ResponseEntity<String> downloadVideo(@PathVariable("video-id") Long videoId){
-        String str = service.downloadVideo(videoId);
+    public ResponseEntity<ByteArrayResource> downloadVideo(@PathVariable("video-id") Long videoId){
+        ByteArrayResource video = new ByteArrayResource(service.downloadVideo(videoId));
 
-        return new ResponseEntity<String>(str, HttpStatus.OK);   //TODO: response 수정 예정
+        return new ResponseEntity<ByteArrayResource>(video, HttpStatus.OK);   //TODO: response 수정 예정
     }
 
 }

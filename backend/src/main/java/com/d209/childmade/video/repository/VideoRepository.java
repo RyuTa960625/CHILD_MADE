@@ -12,4 +12,6 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     Page<Video> findAllByMemberId(int memberId, Pageable pageable);
 
     void deleteByIdAndMemberId(Long Id, int memberId);
+
+    String findVideoUrlById(Long Id);
 }

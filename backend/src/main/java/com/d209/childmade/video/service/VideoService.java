@@ -1,5 +1,6 @@
 package com.d209.childmade.video.service;
 
+import com.d209.childmade._common.S3.S3Util;
 import com.d209.childmade.video.entity.Video;
 import com.d209.childmade.video.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class VideoService {
 
+    private final S3Util s3Util;
     private final VideoRepository videoRepository;
 
     public Page<Video> videoList(int userId, Pageable pageable){
@@ -23,8 +25,11 @@ public class VideoService {
         videoRepository.deleteByIdAndMemberId(videoId, userId);
     }
 
-    public String downloadVideo(Long videoId){
+    public byte[] downloadVideo(Long videoId){
+        String videoUrl = videoRepository.findVideoUrlById(videoId);
+        String[] tmp = videoUrl.split("/");
+        String roomId = tmp[tmp.length - 1];
 
-        return "Download Video : ";
+        return s3Util.downloadVideo("/video", roomId);
     }
 }
