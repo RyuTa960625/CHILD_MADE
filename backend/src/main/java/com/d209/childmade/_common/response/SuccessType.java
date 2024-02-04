@@ -16,8 +16,10 @@ public enum SuccessType {
     UPDATE_MEMBER_EMAIL_SUCCESSFULLY(HttpStatus.OK, "사용자 이메일 수정 성공"),
     UPDATE_MEMBER_NICKNAME_SUCCESSFULLY(HttpStatus.OK, "사용자 닉네임 수정 성공"),
     UPDATE_MEMBER_PROFILE_SUCCESSFULLY(HttpStatus.OK, "사용자 프로필 수정 성공"),
-
     ROOM_JOIN_SUCCESSFULLY(HttpStatus.OK,"방 배정 성공"),
+    UPDATE_ROOM_START_SUCCESSFULLY(HttpStatus.OK,"방 시작 성공"),
+    UPDATE_ROOM_FINISH_SUCCESSFULLY(HttpStatus.OK,"방 종료 성공"),
+    ROOM_LEAVE_SUCCESSFULLY(HttpStatus.OK,"방 떠나기 성공"),
 
     ;
 
