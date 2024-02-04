@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class S3Util {
     public List<byte[]> downloadCutVideos(Long roodId, int scriptCount){
         List<byte[]> cutVideos = new ArrayList<>();
         for(int i = 1; i <= scriptCount; i++){
-            S3Object s3Object = amazonS3.getObject(bucketName + "/cutvideo/" + Long.toString(roodId), Integer.toString(scriptCount) + ".mp4");
+            S3Object s3Object = amazonS3.getObject(bucketName + "/cutvideo/" + Long.toString(roodId), Integer.toString(i) + ".mp4");
             S3ObjectInputStream inputStream = s3Object.getObjectContent();
             try {
                 cutVideos.add(IOUtils.toByteArray(inputStream));
@@ -60,6 +61,21 @@ public class S3Util {
             }
         }
         return cutVideos;
+    }
+
+    /**
+     * MultipartFile이 아닌 File을 업로드하기 위한 메서드
+     *
+     * file: 업로드할 파일
+     * directory: 파일을 업로드할 경로에서 마지막 폴더 이름을 뺀 값. /로 시작하고 /로 끝난다.
+     * lastFolder: 파일을 업로드할 경로의 마지막 폴더 이름
+     * fileName: 파일을 저장할 이름
+     *
+     * S3 파일 열람 url을 반환한다.
+     */
+    public String uploadFile(File file, String directory, String lastFolder, String fileName){
+        amazonS3.putObject(new PutObjectRequest(bucketName + directory + lastFolder, fileName, file));
+        return amazonS3.getUrl(bucketName + directory + lastFolder, fileName).toString();
     }
 
     /**

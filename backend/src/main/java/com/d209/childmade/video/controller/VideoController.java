@@ -30,9 +30,10 @@ public class VideoController {
         return new ResponseEntity<String>(info.toString(), HttpStatus.OK);   //TODO: response 수정 예정
     }
 
-    @GetMapping("/{room-id}/merge")
-    public ResponseEntity<String> mergeVideoUpload(@PathVariable(value = "rood-id") Long roomId){
-        String str = cservice.mergeVideoUpload(roomId);
+    @GetMapping("/{room-id}/{max-script}/merge")
+    public ResponseEntity<String> mergeVideoUpload(@PathVariable(value = "room-id") Long roomId,
+                                                   @PathVariable(value = "max-script") int maxScript){
+        String str = cservice.mergeVideoUpload(roomId, maxScript);
 
         return new ResponseEntity<String>(str, HttpStatus.OK);   //TODO: response 수정 예정
     }
