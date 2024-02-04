@@ -16,12 +16,11 @@ public class VideoService {
     private final VideoRepository videoRepository;
 
     public Page<Video> videoList(int userId, Pageable pageable){
-        return videoRepository.findAllByUserId(userId, pageable);
+        return videoRepository.findAllByMemberId(userId, pageable);
     }
 
-    public String deleteVideo(Long videoId){
-
-        return "Delete Video : ";
+    public void deleteVideo(int userId, Long videoId){
+        videoRepository.deleteByIdAndMemberId(videoId, userId);
     }
 
     public String downloadVideo(Long videoId){
