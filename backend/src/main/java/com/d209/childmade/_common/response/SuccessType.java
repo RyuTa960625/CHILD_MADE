@@ -18,6 +18,9 @@ public enum SuccessType {
     UPDATE_MEMBER_PROFILE_SUCCESSFULLY(HttpStatus.OK, "사용자 프로필 수정 성공"),
 
     ROOM_JOIN_SUCCESSFULLY(HttpStatus.OK,"방 배정 성공"),
+    BOOK_LIST_SUCCESSFULLY(HttpStatus.OK,"동화책 리스트 조회 성공"),
+    SCRIPT_LIST_SUCCESSFULLY(HttpStatus.OK,"대사 리스트 조회 성공"),
+    ROLE_LIST_SUCCESSFULLY(HttpStatus.OK,"대사 리스트 조회 성공"),
 
     ;
 
