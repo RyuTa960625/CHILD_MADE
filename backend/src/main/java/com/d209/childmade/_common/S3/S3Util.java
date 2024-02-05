@@ -7,16 +7,18 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class S3Util {
@@ -34,9 +36,9 @@ public class S3Util {
         createFolder(bucketName + "/cutvideo", Long.toString(roomId));
         ObjectMetadata objectMetadata = getObjectMetadata(file);
         try {
-            amazonS3.putObject(new PutObjectRequest(bucketName + "/cutvideo/" + Long.toString(roomId), Integer.toString(scriptNum), file.getInputStream(), objectMetadata));
+            amazonS3.putObject(new PutObjectRequest(bucketName + "/cutvideo/" + Long.toString(roomId), Integer.toString(scriptNum)+".mp4", file.getInputStream(), objectMetadata));
         } catch (IOException e) {
-//            log.error("Error uploading file to S3", e);
+            log.error("Error uploading file to S3", e);
         }
     }
 
@@ -47,7 +49,7 @@ public class S3Util {
     public List<byte[]> downloadCutVideos(Long roodId, int scriptCount){
         List<byte[]> cutVideos = new ArrayList<>();
         for(int i = 1; i <= scriptCount; i++){
-            S3Object s3Object = amazonS3.getObject(bucketName + "/cutvideo/" + Long.toString(roodId), Integer.toString(scriptCount) + ".mp4");
+            S3Object s3Object = amazonS3.getObject(bucketName + "/cutvideo/" + Long.toString(roodId), Integer.toString(i) + ".mp4");
             S3ObjectInputStream inputStream = s3Object.getObjectContent();
             try {
                 cutVideos.add(IOUtils.toByteArray(inputStream));
@@ -56,6 +58,21 @@ public class S3Util {
             }
         }
         return cutVideos;
+    }
+
+    /**
+     * MultipartFile이 아닌 File을 업로드하기 위한 메서드
+     *
+     * file: 업로드할 파일
+     * directory: 파일을 업로드할 경로에서 마지막 폴더 이름을 뺀 값. /로 시작하고 /로 끝난다.
+     * lastFolder: 파일을 업로드할 경로의 마지막 폴더 이름
+     * fileName: 파일을 저장할 이름
+     *
+     * S3 파일 열람 url을 반환한다.
+     */
+    public String uploadFile(File file, String directory, String lastFolder, String fileName){
+        amazonS3.putObject(new PutObjectRequest(bucketName + directory + lastFolder, fileName, file));
+        return amazonS3.getUrl(bucketName + directory + lastFolder, fileName).toString();
     }
 
     /**
