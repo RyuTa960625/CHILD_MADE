@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 public class RoomJoinRequestDto {
 
-    private int roleId;
-    private int bookId;
+    private Integer roleId;
+    private Integer bookId;
 }

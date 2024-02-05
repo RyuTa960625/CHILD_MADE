@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface MemberRoomRepository extends JpaRepository<MemberRoom, Long> {
 
-    Optional<MemberRoom> findByMemberIdAndRoomId(int memberId,long roomId);
+    Optional<MemberRoom> findByMemberIdAndRoomId(Integer memberId,Long roomId);
 //    List<MemberRoom> findAllByRoomIdAndMemberRoomIdNot(long roomId, long memberRoomId, Pageable pageable);
     @Query("SELECT mr FROM MemberRoom mr WHERE mr.room.id = :roomId AND mr.id <> :memberRoomId")
     Page<MemberRoom> findMemberRoomsByRoomIdAndNotMemberRoomId(Long roomId, Long memberRoomId, Pageable pageable);

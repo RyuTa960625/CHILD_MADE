@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class BookListResponseDto {
 
-    private final int id;
+    private final Integer id;
     private final String title;
     private final String imageUrl;
     private final int maxNum;
