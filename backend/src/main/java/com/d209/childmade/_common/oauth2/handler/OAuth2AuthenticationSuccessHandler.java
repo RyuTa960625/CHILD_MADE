@@ -107,6 +107,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 //TODO: 회원가입 페이지(닉네임)로 리다이렉트
                 return UriComponentsBuilder.fromUriString(targetUrl)
                         .queryParam("access-token", token.getAccessToken())
+                        .queryParam("member-id", memberId)
+                        .queryParam("next", "get-user-nickname")
                         .build().toUriString();
 
             } else {
@@ -116,6 +118,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 //TODO: 로그인 후 페이지로 리다이렉트
                 return UriComponentsBuilder.fromUriString(targetUrl)
                         .queryParam("access-token", token.getAccessToken())
+                        .queryParam("member-id", findMember.get().getId())
+                        .queryParam("next", "main")
                         .build().toUriString();
             }
 
