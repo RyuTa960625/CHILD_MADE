@@ -20,6 +20,7 @@ public class InitDb {
     private  final InitService initService;
 
     @PostConstruct
+    @Transactional
     public void init() {
         initService.dbinit();
     }
@@ -36,8 +37,10 @@ public class InitDb {
         public void dbinit() {
 
             // 초기 Member 데이터 추가
-            Member member = Member.of("socialId", ProviderType.GOOGLE, "example@example.com", "John Doe", "johnny", "profile.jpg");
-            memberRepository.save(member);
+            Member member1 = Member.of("socialId", ProviderType.GOOGLE, "example@example.com", "John Doe", "johnny", "profile.jpg");
+            Member member2 = Member.of("socialIdddd", ProviderType.GOOGLE, "example22@example.com", "John Doe", "johnny", "profile.jpg");
+            memberRepository.save(member1);
+            memberRepository.save(member2);
 
             // 테스트용 Book 데이터 추가
             Book book = Book.of("Book Title", "book_image_url", "Book Summary", 10);
@@ -45,8 +48,10 @@ public class InitDb {
             // 테스트용 Role 데이터 추가
             Role role1 = Role.of("Role 1", "role1_image_url", book);
             Role role2 = Role.of("Role 2", "role2_image_url", book);
+            Role role3 = Role.of("Role 3", "role3_image_url", book);
+            Role role4 = Role.of("Role 4", "role4_image_url", book);
 
-            roleRepository.saveAll(List.of(role1, role2));
+            roleRepository.saveAll(List.of(role1, role2,role3,role4));
 
         }
     }

@@ -1,5 +1,7 @@
 package com.d209.childmade.room.service;
 
+import com.d209.childmade._common.exception.CustomBadRequestException;
+import com.d209.childmade._common.response.ErrorType;
 import com.d209.childmade.book.entity.Book;
 import com.d209.childmade.book.repository.BookRepository;
 import com.d209.childmade.member.entity.Member;
@@ -29,6 +31,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -85,13 +88,14 @@ public class RoomService {
         Optional<Role> findRole = roleRepository.findById(roomJoinRequestDto.getRoleId());
         Optional<Member> findMember = memberRepository.findById(memberId);
 
-        if(findRole.isEmpty() || findMember.isEmpty()){
-            //전달받은 member가 없거나 선택한 역할에 해당하는 데이터가 없을 때 오류 처리
-        }else{
-            role = findRole.get();
-            member = findMember.get();
+        if (findMember.isEmpty()) {
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
         }
-
+        if(findRole.isEmpty()) {
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROLE);
+        }
+        role = findRole.get();
+        member = findMember.get();
         if(findRoom.isEmpty()){
 
             //동화와 역할에 맞는 Room이 존재하지 않는 경우
@@ -105,11 +109,10 @@ public class RoomService {
             Optional<Book> findBook = bookRepository.findById(roomJoinRequestDto.getBookId());
             
             if(findBook.isEmpty()){
-                //찾는 book 데이터가 없을 경우 오류처리
+                throw new CustomBadRequestException(ErrorType.NOT_FOUND_BOOK);
             }
-            else {
-                book = findBook.get();
-            }
+
+            book = findBook.get();
             // Room을 DB에 저장
             room = roomRepository.save(Room.of(1, RoomStatus.WAITING,session.getSessionId(),book));
             memberRoomRepository.save(MemberRoom.of(true, member, room, role));
@@ -142,16 +145,17 @@ public class RoomService {
      *  roomStatus : 바꿀 방 상태 ( WAITING, PROCEEDING ,FINISHED )
      *
      */
+    @Transactional
     public void changeRoomStatus(long roomId, RoomStatus roomStatus) {
         Optional<Room> findRoom = roomRepository.findById(roomId);
         if(findRoom.isEmpty()){
-            //전달 받은 방이 없을 때 오류 처리
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
-        else{
-            if(roomStatus.name().equals("PROCEEDING")) findRoom.get().updateRoomStatusProceeding();
-            else if(roomStatus.name().equals("FINISHED")) {
-                findRoom.get().updateRoomStatusFinished();
-            }
+        if(roomStatus.name().equals("PROCEEDING")) {
+            findRoom.get().updateRoomStatusProceeding();
+        }
+        else if(roomStatus.name().equals("FINISHED")) {
+            findRoom.get().updateRoomStatusFinished();
         }
     }
 
@@ -167,32 +171,31 @@ public class RoomService {
     public void roomLeave(RoomLeaveRequestDto roomLeaveRequestDto){
         Optional<Room> findRoom = roomRepository.findById(roomLeaveRequestDto.getRoomId());
         if(findRoom.isEmpty()){
-            //전달 받은 방이 없을 때 오류 처리
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
-        else{
-            Room room = findRoom.get();
-            room.decreaseCurNum();
-            if(room.getCurNum() == 0){
-                //방에 있는 모든 사람이 나갈 경우
-                changeRoomStatus(room.getId(),RoomStatus.FINISHED);
-            }
 
-            Optional<MemberRoom> findMemberRoom = memberRoomRepository.findByMemberId(roomLeaveRequestDto.getMemberId());
-            if(findMemberRoom.isEmpty()){
-                //오류 처리
-            }
-            else{
-                MemberRoom memberRoom = findMemberRoom.get();
-                
-                //삭제하려는 사용자가 방장일 경우 방장을 다른 사람에게 넘겨 줌
-                if(memberRoom.isBoss()){
-                    Pageable pageable = PageRequest.of(0, 1);
-                    List<MemberRoom> findMemberRooms = memberRoomRepository.findAllByRoomIdAndMemberRoomIdNot(roomLeaveRequestDto.getRoomId(),memberRoom.getId(),
-                            pageable);
-                    findMemberRooms.get(0).updateBoss();
-                }
-                memberRoomRepository.delete(memberRoom);
-            }
+        Room room = findRoom.get();
+        room.decreaseCurNum();
+        if(room.getCurNum() == 0){
+            //방에 있는 모든 사람이 나갈 경우
+            changeRoomStatus(room.getId(),RoomStatus.FINISHED);
         }
+
+        Optional<MemberRoom> findMemberRoom = memberRoomRepository.findByMemberIdAndRoomId(roomLeaveRequestDto.getMemberId(),roomLeaveRequestDto.getRoomId());
+
+        if(findMemberRoom.isEmpty()){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER_ROOM);
+        }
+        MemberRoom memberRoom = findMemberRoom.get();
+        //방에 참여중인 사용자가 1명 이상이고, 삭제하려는 사용자가 방장일 경우 방장을 다른 사람에게 넘겨 줌
+        if(memberRoom.isBoss()&&room.getCurNum()>0){
+            Pageable pageable = PageRequest.of(0, 1);
+            Page<MemberRoom> memberRoomsByRoomIdAndNotMemberRoomId = memberRoomRepository.findMemberRoomsByRoomIdAndNotMemberRoomId(
+                    roomLeaveRequestDto.getRoomId(), memberRoom.getId(),
+                    pageable);
+            List<MemberRoom> content = memberRoomsByRoomIdAndNotMemberRoomId.getContent();
+            content.get(0).updateBoss();
+        }
+        memberRoomRepository.delete(memberRoom);
     }
 }
