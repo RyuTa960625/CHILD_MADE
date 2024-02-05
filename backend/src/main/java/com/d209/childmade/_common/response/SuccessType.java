@@ -23,6 +23,12 @@ public enum SuccessType {
     UPDATE_ROOM_START_SUCCESSFULLY(HttpStatus.OK,"방 시작 성공"),
     UPDATE_ROOM_FINISH_SUCCESSFULLY(HttpStatus.OK,"방 종료 성공"),
     ROOM_LEAVE_SUCCESSFULLY(HttpStatus.OK,"방 떠나기 성공"),
+    UPLOAD_CUT_VIDEO_SUCCESSFULLY(HttpStatus.OK, "컷 동영상 업로드 성공"),
+    UPLOAD_MERGE_VIDEO_SUCCESSFULLY(HttpStatus.OK, "동영상 합치기 및 업로드 성공"),
+    VIDEO_LIST_SUCCESSFULLY(HttpStatus.OK, "동영상 리스트 조회 성공"),
+    DELETE_VIDEO_SUCCESSFULLY(HttpStatus.OK, "동영상 삭제 성공"),
+    DOWNLOAD_VIDEO_SUCCESSFULLY(HttpStatus.OK, "동영상 다운로드 성공"),
+
 
     ;
 
