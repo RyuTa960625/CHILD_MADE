@@ -154,6 +154,195 @@
     animation: anim2 2.5s infinite;
 }
 
+.modal_background{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 11;
+}
+
+.book_info_container{
+    width: 700px;
+    height: 700px;    
+    top: 50%;
+    left: 50%;
+    z-index: 12;
+    position: absolute;
+    border-radius: 30px;
+    transform: translate(-50%, -50%);
+    background: white;
+}
+
+.close_icon{
+    position: absolute;
+    z-index: 13;
+    width: 50px;
+    top: 20px;
+    right: 20px;
+}
+
+.close_icon:hover{
+    filter: brightness(0.7);
+    cursor: url(/public/imgs/d2sM.png), auto;
+}
+
+.book_info_img_container{
+    width: 100%;
+    height: 300px;
+    border: 2px solid white;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+    box-sizing: border-box;
+}
+
+.book_info_bigimg{
+    width: 695px;
+    height: 300px;
+    filter: brightness(0.);
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
+    filter: blur(5px);
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.book_info_img{
+    width: 180px;
+    height: 210px;
+    margin-top: -5%;
+    margin-left: 180px;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+}
+
+.book_info_title{    
+    top: 57.5%;
+    left: 50%;
+    font-family: 'Maplestory_b';
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.choose_container{
+    width: 695px;
+    height: 250px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.story_container{
+    font-family: 'Maplestory_b';
+    border-bottom: 1px solid rgb(205, 205, 205);
+}
+
+.story_info{
+    font-size: 20px;
+    margin: 1% 3%;
+    text-align: left;
+    line-height: 30px;
+    font-family: 'Maplestory_l';
+}
+
+.character_choose_container{
+    font-family: 'Maplestory_b';
+}
+
+.character_container{
+    display: flex;
+}
+
+.character_btn_img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.character_btn1{
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    background: #D4057B;      
+    box-shadow: 3px 3px 3px gray;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.character_btn2{
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    background: #FA8F05;
+    box-shadow: 3px 3px 3px gray;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.character_btn3{
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    background: #A2F105;
+    box-shadow: 3px 3px 3px gray;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.character_btn4{
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    background: #0F6EB3;
+    box-shadow: 3px 3px 3px gray;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.role_container{
+    margin: 3% 0% 3% 3%;
+}
+
+.character_btn1:hover{
+    filter: brightness(0.7);
+    cursor: url(/public/imgs/d2sM.png), auto;
+}
+
+.character_btn2:hover{
+    filter: brightness(0.7);
+    cursor: url(/public/imgs/d2sM.png), auto;
+}
+
+.character_btn3:hover{
+    filter: brightness(0.7);
+    cursor: url(/public/imgs/d2sM.png), auto;
+}
+
+.character_btn4:hover{
+    filter: brightness(0.7);
+    cursor: url(/public/imgs/d2sM.png), auto;
+}
+
+.start_btn{
+    width: 170px;
+    height: 65px;
+    box-shadow: inset;
+    border-radius: 20px;
+    background: #FFE71E;
+    align-items: center;
+    box-shadow: 5px 5px 5px gray;
+    font-family: 'Maplestory_b';
+    margin: 20px 265px 20px 265px;
+}
+
+.start_text{
+    line-height: 65px;
+}
+
+.start_btn:hover{
+    filter: brightness(0.7);
+    cursor: url(/public/imgs/d2sM.png), auto;
+}
+
 .books_container{
     top: 50%;
     left: 50%;
@@ -345,7 +534,7 @@ input:focus{
 }
 
 .character1{
-    margin-top: 48%;
+    margin-top: 47%;
     position: absolute;
     left: -300px;
 }
