@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface VideoRepository extends JpaRepository<Video, Long> {
 
-    Page<Video> findAllByMemberId(int memberId, Pageable pageable);
+    Page<Video> findAllByMemberId(Integer memberId, Pageable pageable);
 
-    void deleteByIdAndMemberId(Long Id, int memberId);
+    void deleteByIdAndMemberId(Long Id, Integer memberId);
 
     String findVideoUrlById(Long Id);
 }

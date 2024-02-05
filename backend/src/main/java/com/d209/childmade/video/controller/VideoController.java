@@ -42,18 +42,18 @@ public class VideoController {
         return new ResponseEntity<String>(videoUrl, HttpStatus.OK);   //TODO: response 수정 예정
     }
 
-    @GetMapping("/{user-id}")
-    public ResponseEntity<Page<Video>> videoList(@PathVariable(value = "user-id") int userId,
+    @GetMapping("/{member-id}")
+    public ResponseEntity<Page<Video>> videoList(@PathVariable(value = "member-id") Integer memberId,
                                                  Pageable pageable){
-        Page<Video> videos= service.videoList(userId, pageable);
+        Page<Video> videos= service.videoList(memberId, pageable);
 
         return new ResponseEntity<Page<Video>>(videos, HttpStatus.OK);   //TODO: response 수정 예정
     }
 
-    @DeleteMapping("/{user-id}/{video-id}")
-    public ResponseEntity<String> deleteVideo(@PathVariable("user-id") int userId,
+    @DeleteMapping("/{member-id}/{video-id}")
+    public ResponseEntity<String> deleteVideo(@PathVariable("member-id") Integer memberId,
                                               @PathVariable("video-id") Long videoId){
-        service.deleteVideo(userId, videoId);
+        service.deleteVideo(memberId, videoId);
 
         return new ResponseEntity<String>("good", HttpStatus.OK);   //TODO: response 수정 예정
     }

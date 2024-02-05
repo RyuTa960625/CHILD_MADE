@@ -30,8 +30,8 @@ public class VideoService {
     private final MemberRepository memberRepository;
     private final RoomRepository roomRepository;
 
-    public Page<Video> videoList(int userId, Pageable pageable){
-        return videoRepository.findAllByMemberId(userId, pageable);
+    public Page<Video> videoList(Integer memberId, Pageable pageable){
+        return videoRepository.findAllByMemberId(memberId, pageable);
     }
 
     public void addVideo(Long roomId, String videoUrl){
@@ -68,8 +68,8 @@ public class VideoService {
         videoRepository.saveAll(videos);
     }
 
-    public void deleteVideo(int userId, Long videoId){
-        videoRepository.deleteByIdAndMemberId(videoId, userId);
+    public void deleteVideo(Integer memberId, Long videoId){
+        videoRepository.deleteByIdAndMemberId(videoId, memberId);
     }
 
     public byte[] downloadVideo(Long videoId){
