@@ -6,7 +6,6 @@ import com.d209.childmade.video.service.CutVideoService;
 import com.d209.childmade.video.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,9 +36,10 @@ public class VideoController {
     @GetMapping("/{room-id}/{max-script}/merge")
     public ResponseEntity<String> mergeVideoUpload(@PathVariable(value = "room-id") Long roomId,
                                                    @PathVariable(value = "max-script") int maxScript){
-        String str = cservice.mergeVideoUpload(roomId, maxScript);
+        String videoUrl = cservice.mergeVideoUpload(roomId, maxScript);
+        service.addVideo(roomId, videoUrl);
 
-        return new ResponseEntity<String>(str, HttpStatus.OK);   //TODO: response 수정 예정
+        return new ResponseEntity<String>(videoUrl, HttpStatus.OK);   //TODO: response 수정 예정
     }
 
     @GetMapping("/{user-id}")
