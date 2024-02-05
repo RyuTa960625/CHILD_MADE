@@ -1,6 +1,8 @@
 package com.d209.childmade.video.service;
 
 import com.d209.childmade._common.S3.S3Util;
+import com.d209.childmade._common.exception.CustomBadRequestException;
+import com.d209.childmade._common.response.ErrorType;
 import com.d209.childmade.member.entity.Member;
 import com.d209.childmade.member.repository.MemberRepository;
 import com.d209.childmade.room.entity.MemberRoom;
@@ -34,33 +36,33 @@ public class VideoService {
         return videoRepository.findAllByMemberId(memberId, pageable);
     }
 
+    /**
+     * Video 테이블에 데이터를 추가하는 메서드
+     */
+    @Transactional
     public void addVideo(Long roomId, String videoUrl){
 
         List<Video> videos = new ArrayList<>();
 
-        //책(이미지 url, 제목), 사용자, 역할명
         List<MemberRoom> memberRooms = memberRoomRepository.findAllByRoomId(roomId);
         if(memberRooms.isEmpty()){
-            // TODO 방멤버 없음 예외처리
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER_BY_ROOMID);
         }
 
         for(MemberRoom mr : memberRooms) {
-            // member
             Optional<Member> m = memberRepository.findById(mr.getMember().getId());
             if(m.isEmpty()){
-                // TODO 멤버 없음 예외처리
+                throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER_BY_MEMBERID);
             }
             Member member = m.get();
 
-            // 책
             Optional<Room> b = roomRepository.findAllById(roomId);
             if(b.isEmpty()){
-                // TODO 책 없음 예외처리
+                throw new CustomBadRequestException(ErrorType.NOT_FOUND_BOOK);
             }
             String imageUrl = b.get().getBook().getImageUrl();
             String title = b.get().getBook().getTitle();
 
-            // 역할명
             String roleName = mr.getRole().getRoleName();
 
             videos.add(Video.of(videoUrl, imageUrl, title, roleName, member));
@@ -68,6 +70,7 @@ public class VideoService {
         videoRepository.saveAll(videos);
     }
 
+    @Transactional
     public void deleteVideo(Integer memberId, Long videoId){
         videoRepository.deleteByIdAndMemberId(videoId, memberId);
     }

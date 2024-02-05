@@ -1,6 +1,8 @@
 package com.d209.childmade.video.util;
 
 import com.d209.childmade._common.S3.S3Util;
+import com.d209.childmade._common.exception.CustomServerErrorException;
+import com.d209.childmade._common.response.ErrorType;
 import lombok.RequiredArgsConstructor;
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
@@ -21,7 +23,7 @@ public class FfmpegUtil {
 
     /**
      * 서버 로컬에 저장된 컷 동영상들을 하나의 동영상으로 합하여 S3서버에 저장하는 메서드
-     *
+     * .
      * roomId와 maxScript(대사 개수 = 컷 동영상 개수)를 받고 S3 url을 리턴한다.
      */
     public String mergeVideo(Long roomId, int maxScript){
@@ -29,7 +31,7 @@ public class FfmpegUtil {
         List<byte[]> data = s3Util.downloadCutVideos(roomId, maxScript);
 
         // 컷 동영상들을 저장할 경로 설정
-        String directory = ".\\cutvideo\\" + Long.toString(roomId);
+        String directory = ".\\cutvideo\\" + roomId;
         File folder = new File(directory);
         folder.mkdirs();
 
@@ -37,13 +39,13 @@ public class FfmpegUtil {
         try{
             for(int i = 0; i < maxScript; i++){
                 ByteArrayInputStream in = new ByteArrayInputStream(data.get(i));
-                FileOutputStream out = new FileOutputStream(new File(directory + "\\" + Integer.toString(i) + ".mp4"));
+                FileOutputStream out = new FileOutputStream(new File(directory + "\\" + i + ".mp4"));
                 IOUtils.copy(in, out);
                 IOUtils.closeQuietly(in);
                 IOUtils.closeQuietly(out);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new CustomServerErrorException(ErrorType.CANNOT_SAVE_CUT_VIDEO_IN_LOCAL);
         }
 
         // 현재 backend 파일의 로컬 절대 위치
@@ -51,15 +53,17 @@ public class FfmpegUtil {
 
         // 컷 동영상들을 하나의 동영상으로 합치기
         try {
-
             // concat.txt 파일로 합칠 컷 동영상 파일들 목록 저장
             String fileName = directory + "\\concat.txt";
-            String input = "";
-            String folderroot = System.getProperty("user.dir") + "\\cutvideo\\" + Long.toString(roomId);
 
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < maxScript; i++) {
-                input += "file " + Integer.toString(i) + ".mp4\n";
+                sb.append("file ");
+                sb.append(i);
+                sb.append(".mp4\n");
             }
+
+            String input = sb.toString();
 
             File file = new File(fileName);
             FileWriter fw = new FileWriter(file, true);
@@ -83,9 +87,9 @@ public class FfmpegUtil {
             FFmpegBuilder builder = new FFmpegBuilder()
                     .addExtraArgs("-f", "concat")   //concat 명령어
                     .addExtraArgs("-safe", "0")
-                    .addInput(curDirectory + "\\cutvideo\\" + Long.toString(roomId) + "\\concat.txt")   // 합칠 동영상 목록
+                    .addInput(curDirectory + "\\cutvideo\\" + roomId + "\\concat.txt")   // 합칠 동영상 목록
                     .addOutput(output)
-                    .addOutput(curDirectory + "\\cutvideo\\" + Long.toString(roomId) + "\\result.mp4")  // 합친 동영상 저장 위치
+                    .addOutput(curDirectory + "\\cutvideo\\" + roomId + "\\result.mp4")  // 합친 동영상 저장 위치
                     .setFormat("mp4")   // 저장 파일 파일형 설정
                     .done();
 
@@ -94,12 +98,12 @@ public class FfmpegUtil {
             executor.createJob(builder).run();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new CustomServerErrorException(ErrorType.CANNOT_CONCAT_CUT_VIDEO);
         }
 
         // 저장된 합친 동영상 읽어오기
-        File file = new File(curDirectory + "\\cutvideo\\"+ Long.toString(roomId) +"\\result.mp4");
-        String fileUrl = s3Util.uploadFile(file, "/", "video", Long.toString(roomId) + ".mp4");
+        File file = new File(curDirectory + "\\cutvideo\\"+ roomId +"\\result.mp4");
+        String fileUrl = s3Util.uploadFile(file, "/", "video", roomId + ".mp4");
 
         // 로컬에 저장된 컷 동영상, 합친 동영상, concat.txt 삭제
         File delFolder = new File(curDirectory + "\\cutvideo\\" + roomId);
@@ -117,7 +121,7 @@ public class FfmpegUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new CustomServerErrorException(ErrorType.CANNOT_DELETE_LOCAL_FILES);
         }
 
         return fileUrl;

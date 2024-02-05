@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,5 +60,4 @@ public class VideoController {
     public SuccessResponse<ByteArrayResource> downloadVideo(@PathVariable("video-id") Long videoId){
         return SuccessResponse.of(SuccessType.DOWNLOAD_VIDEO_SUCCESSFULLY, new ByteArrayResource(service.downloadVideo(videoId)));
     }
-
 }
