@@ -42,6 +42,7 @@ dependencies {
 	implementation 'io.openvidu:openvidu-java-client:2.29.0'
 
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+	implementation 'net.bramp.ffmpeg:ffmpeg:0.6.2'
 }
 
 tasks.named('test') {
