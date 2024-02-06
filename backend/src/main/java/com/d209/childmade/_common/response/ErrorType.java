@@ -15,6 +15,7 @@ public enum ErrorType {
     NOT_FOUND_BOOK(HttpStatus.UNAUTHORIZED, "등록된 동화가 없습니다."),
     NOT_FOUND_ROOM(HttpStatus.UNAUTHORIZED, "요청한 방이 없습니다."),
     NOT_FOUND_MEMBER_ROOM(HttpStatus.UNAUTHORIZED, "참여 중인 방이 없습니다."),
+    NOT_ALLOWED_ROOM_START(HttpStatus.UNAUTHORIZED, "방이 이미 종료되어 시작할 수 없습니다."),
     ;
 
     private final HttpStatus status; //http status

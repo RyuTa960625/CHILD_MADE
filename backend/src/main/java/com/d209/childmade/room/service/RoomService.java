@@ -152,6 +152,10 @@ public class RoomService {
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROOM);
         }
         if(roomStatus.name().equals("PROCEEDING")) {
+            if(findRoom.get().getRoomStatus().name().equals("FINISHED")){
+                //방 상태가 FINISHED 인 경우 방을 다시 시작할 수 없음
+                throw new CustomBadRequestException(ErrorType.NOT_ALLOWED_ROOM_START);
+            }
             findRoom.get().updateRoomStatusProceeding();
         }
         else if(roomStatus.name().equals("FINISHED")) {
