@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 public class RoomLeaveRequestDto {
 
-    private int memberId;
-    private long roomId;
+    private Integer memberId;
+    private Long roomId;
 }

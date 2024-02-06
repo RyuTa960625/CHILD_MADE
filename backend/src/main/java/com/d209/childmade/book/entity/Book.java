@@ -17,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book extends BaseTime {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
@@ -45,6 +44,7 @@ public class Book extends BaseTime {
         this.summary = summary;
         this.maxNum = maxNum;
     }
+
     public static Book of(String title, String imageUrl, String summary, int maxNum) {
         return builder()
                 .title(title)
@@ -53,6 +53,7 @@ public class Book extends BaseTime {
                 .maxNum(maxNum)
                 .build();
     }
+
     public void addRole(Role... role){
         this.roles.addAll(Arrays.asList(role));
     }

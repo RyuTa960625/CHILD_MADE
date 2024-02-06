@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class RoleListDto {
 
-    private int roleId;
+    private Integer roleId;
     private String roleName;
     private String imageUrl;
 
