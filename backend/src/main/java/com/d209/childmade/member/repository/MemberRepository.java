@@ -11,4 +11,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     Optional<Member> findBySocialId(String socialId);
 
     boolean existsByNickname(String nickname);
+
+    Optional<Member> findById(Integer id);
 }

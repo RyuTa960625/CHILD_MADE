@@ -2,6 +2,8 @@ package com.d209.childmade.room.repository;
 
 import com.d209.childmade.room.entity.Room;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +16,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             "AND NOT EXISTS (SELECT 1 FROM MemberRoom mr WHERE mr.room.id = r.id AND mr.role.id = :roleId) " +
             "ORDER BY r.createdAt ASC")
     List<Room> findByBookIdAndRoomStatusAndNotRoleIdOrderByCreatedAtAsc(int bookId, int roleId, Pageable pageable);
+
+    Optional<Room> findAllById(Long Id);
 }
