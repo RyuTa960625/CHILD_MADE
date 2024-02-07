@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import BookList from './component/BookList';
 import RecordList from './component/RecordList';
 
+import Single from './component/Single'
+
 function App() {
   return (
     <div className="App custom-cursor" >
@@ -17,6 +19,7 @@ function App() {
           </Route>
           <Route path='/recordlist' element={<RecordList/>}>
           </Route>
+          <Route path='/single' element={<Single />}></Route>
         </Routes>
       </BrowserRouter>
     </div> 
