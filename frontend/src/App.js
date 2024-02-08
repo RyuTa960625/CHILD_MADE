@@ -6,12 +6,11 @@ import BookList from './component/BookList';
 import RecordList from './component/RecordList';
 import Single from './component/Single'
 import React, { Component } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Intro from "./IntroPage/Intro";
 import Signup from "./SignupPage/Signup";
 import Login from "./LoginPage/Login";
-import Vidu from "./ViduTestT/ViduTest";
+// import Vidu from "./ViduTestT/ViduTest";
 import LoginCallback from "./LoginPage/LoginCallback";
 import GetUserNickname from "./LoginPage/GetUserNickname";
 import Main from "./MainT/MainT";
