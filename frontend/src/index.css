@@ -21,6 +21,18 @@ code {
   src: url('../public/fonts/Maplestory\ Light.ttf');
 }
 
+@font-face {
+  font-family: "MapleStory Light Font";
+  font-weight: 700;
+  src: url("fonts/Maplestory-Light.woff") format("woff");
+}
+
+@font-face {
+  font-family: "MapleStory Bold Font";
+  font-weight: 700;
+  src: url("fonts/Maplestory-Bold.woff") format("woff");
+}
+
 .custom-cursor{
   cursor: url(/public/imgs/d2M.png) 20 20, auto;
   overflow: hidden;
