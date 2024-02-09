@@ -9,6 +9,7 @@ const BookList = function(){
     const navigate = useNavigate();
     const playMode = location.state ? location.state.playMode : null;
     const [bookId, setBookId] = useState(1);
+    const roleStyles = [styles.character_btn1, styles.character_btn2, styles.character_btn3, styles.character_btn4]
 
     useEffect(() => {
         loadBookList();
@@ -87,23 +88,6 @@ const BookList = function(){
         }
     }
 
-    const 서버에서온데이터 = [
-        {
-            imageUrl: 'https://pj1.s3.ap-northeast-2.amazonaws.com/img/cover/1.png',
-            title: "해님과 달님",
-            story: "해님과 달님, 그 두 개의 존재는 어둠과 빛, 미지의 영역과 밝히기 어려운 비밀을 지닌다. 해님은 뜨거운 불길과 함께 땅을 불태우며, 끝없이 번뜩이는 불빛으로 모든 것을 드러내는 존재다. 그러나 그 불꽃 속에는 타오르는 고통과 끝없는 욕망이 감춰져 있다. 한편 달님은 어둠 속에서 나타나는 정적이고 차가운 빛이다. 그 눈에 비치는 빛은 불안과 심연의 신비로움을 안고 있다. 달님은 끊임없이 변하는 얼굴을 갖고 있어서 때로는 숨겨진 고요와 휴식, 때로는 어둠의 깊은 비밀을 드러내는 존재이다. 해님과 달님, 양립하는 두 세계의 존재는 우리에게 숨겨진 현실의 양면을 상징한다. 그들의 존재는 무서움과 경외, 놀라움과 감동을 동시에 안겨준다. 이 두 날개를 가진 존재들은 우리가 알지 못하는 세계의 문을 열어주며, 우리에게 새로운 이야기를 간직하고 있다.",   
-            ch1: 'https://pj1.s3.ap-northeast-2.amazonaws.com/samplepng.png',
-            ch2: 'https://pj1.s3.ap-northeast-2.amazonaws.com/samplepng.png',
-            ch3: 'https://pj1.s3.ap-northeast-2.amazonaws.com/samplepng.png',
-            ch4: 'https://pj1.s3.ap-northeast-2.amazonaws.com/samplepng.png',
-            role1: '해',
-            role2: '달',
-            role3: '호랑이',
-            role4: '옥상황제'
-        
-        },
-    ]
-
     return(
            <>
         <div>
@@ -142,48 +126,21 @@ const BookList = function(){
                             </div>
                             <div className={styles.character_choose_container}>
                                 <h1 style={{marginTop : '1.5%', marginLeft : '-78%'}}>역할선택</h1>
-                                {/* {
-                                    bookInfo.map((data, index)=>{
+                                <div className={styles.character_container}>
+                                {
+                                    bookInfo.roleListDtoList.map((data, index)=>{
                                         return(
                                             <>
-                                                <div className={styles.character_container}>
-                                                    <div className={styles.role_container}>
-                                                        <div className={styles.character_btn1}>
-                                                            <img className={styles.character_btn_img} src={data.roleListDtoList[index].imageUrl} alt='역할1'></img>
-                                                        </div>
-                                                        <h2 style={{marginTop : 15}}>{data.roleListDtoList[index].roleName}</h2>
+                                                <div className={styles.role_container}>
+                                                    <div className={roleStyles[index]}>
+                                                        <img className={styles.character_btn_img} src={data.imageUrl} alt='역할1'></img>
                                                     </div>
+                                                    <h2 style={{marginTop : 15}}>{data.roleName}</h2>
                                                 </div>
                                             </>
                                         )
                                     })
-                                } */}
-                               
-                                <div className={styles.character_container}>
-                                    <div className={styles.role_container}>
-                                        <div className={styles.character_btn1}>
-                                            <img className={styles.character_btn_img} src={bookInfo.roleListDtoList[0].imageUrl} alt='역할1'></img>
-                                        </div>
-                                        <h2 style={{marginTop : 15}}>{bookInfo.roleListDtoList[0].roleName}</h2>
-                                    </div>
-                                    <div className={styles.role_container}>
-                                        <div className={styles.character_btn2}>
-                                            <img className={styles.character_btn_img} src={서버에서온데이터[0].ch2} alt='역할2'></img>
-                                        </div>
-                                        <h2 style={{marginTop : 15}}>{서버에서온데이터[0].role2}</h2>
-                                    </div>
-                                    <div className={styles.role_container}> 
-                                        <div className={styles.character_btn3}>
-                                            <img className={styles.character_btn_img} src={서버에서온데이터[0].ch3} alt='역할3'></img>
-                                        </div>
-                                        <h2 style={{marginTop : 15}}>{서버에서온데이터[0].role3}</h2>
-                                    </div>
-                                    <div className={styles.role_container}> 
-                                        <div className={styles.character_btn4}>
-                                            <img className={styles.character_btn_img} src={서버에서온데이터[0].ch4} alt='역할4'></img>
-                                        </div>
-                                        <h2 style={{marginTop : 15}}>{서버에서온데이터[0].role4}</h2>
-                                    </div>
+                                }
                                 </div>
                             </div>
                             <div className={styles.start_btn}>
