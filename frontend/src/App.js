@@ -15,6 +15,7 @@ import LoginCallback from "./LoginPage/LoginCallback";
 import GetUserNickname from "./LoginPage/GetUserNickname";
 import Main from "./MainT/MainT";
 import "./App.css";
+import ViewPage from './component/ViewPage';
 
 function App() {
   return (
@@ -38,7 +39,10 @@ function App() {
           </Route>
           <Route path='/recordlist' element={<RecordList/>}>
           </Route>
+          <Route path='/viewpage' element={<ViewPage/>}>
+          </Route>
           <Route path='/single' element={<Single />}></Route>
+          <Route path='/error' element={<h1 style={{color: 'white', marginTop: '300px'}}>에러임ㅋㅋ</h1>}/>
         </Routes>
       </BrowserRouter>
     </div> 
