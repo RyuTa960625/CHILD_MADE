@@ -22,15 +22,15 @@ code {
 }
 
 @font-face {
-  font-family: "MapleStory Light Font";
+  font-family: "MapleStory Light";
   font-weight: 700;
-  src: url("fonts/Maplestory-Light.woff") format("woff");
+  src: url("fonts/Maplestory Light.ttf") format("ttf");
 }
 
 @font-face {
-  font-family: "MapleStory Bold Font";
+  font-family: "MapleStory Bold";
   font-weight: 700;
-  src: url("fonts/Maplestory-Bold.woff") format("woff");
+  src: url("fonts/Maplestory Bold.ttf") format("ttf");
 }
 
 .custom-cursor{
