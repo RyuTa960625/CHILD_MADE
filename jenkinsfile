@@ -30,19 +30,19 @@ pipeline {
             }
         }
         
-        stage("Delete old frontend") {
-            steps {
-                sh "docker rm -f front_react"
-                // sh "docker rmi -f ${env.FRONT_IMAGE}"
-            }
-        }
+        // stage("Delete old frontend") {
+        //     steps {
+        //         sh "docker rm -f front_react"
+        //         // sh "docker rmi -f ${env.FRONT_IMAGE}"
+        //     }
+        // }
         
-        stage("Delete old backend") {
-            steps {
-                sh "docker rm -f back_spring"
-                // sh "docker rmi -f ${env.BACK_IMAGE}"
-            }
-        }
+        // stage("Delete old backend") {
+        //     steps {
+        //         sh "docker rm -f back_spring"
+        //         // sh "docker rmi -f ${env.BACK_IMAGE}"
+        //     }
+        // }
         
         stage("Deploy") {
             steps {
