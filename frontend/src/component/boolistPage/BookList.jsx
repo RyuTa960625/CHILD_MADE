@@ -121,11 +121,11 @@ const BookList = function(){
                         <hr style={{marginTop : 130}}></hr>
                         <div className={styles.choose_container}>
                             <div className={styles.story_container}>
-                                <h1 style={{marginLeft : '-82%'}}>줄거리</h1>
+                                <h1 className={styles.info_title} style={{marginLeft : '-82%'}}>줄거리</h1>
                                 <p className={styles.story_info}>{bookInfo.summary}</p>
                             </div>
                             <div className={styles.character_choose_container}>
-                                <h1 style={{marginTop : '1.5%', marginLeft : '-78%'}}>역할선택</h1>
+                                <h1 className={styles.info_title} style={{marginTop : '1.5%', marginLeft : '-78%'}}>역할선택</h1>
                                 <div className={styles.character_container}>
                                 {
                                     bookInfo.roleListDtoList.map((data, index)=>{
@@ -135,7 +135,7 @@ const BookList = function(){
                                                     <div className={roleStyles[index]}>
                                                         <img className={styles.character_btn_img} src={data.imageUrl} alt='역할1'></img>
                                                     </div>
-                                                    <h2 style={{marginTop : 15}}>{data.roleName}</h2>
+                                                    <h2 className={styles.role} style={{marginTop : 15}}>{data.roleName}</h2>
                                                 </div>
                                             </>
                                         )

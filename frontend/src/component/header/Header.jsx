@@ -1,13 +1,19 @@
 import { useState, useRef } from "react";
 import styles from "./Hearder.module.css";
-import Profile from "./Profile";
+import Profile from "../Profile";
+import { useNavigate } from "react-router-dom";
 
 const Header = function () {
   const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const openModal = () => {
     setModalOpen(true);
   };
+
+  const moveToMain = function(){
+    navigate('/main');
+  }
 
   return (
     <>
@@ -17,6 +23,7 @@ const Header = function () {
             src="../imgs/homeIcon.PNG"
             alt="홈"
             className={styles.icon}
+            onClick={moveToMain}
           ></img>
           <h1 className={styles.iconText}>홈</h1>
         </div>

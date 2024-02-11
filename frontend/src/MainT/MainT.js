@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import Header from "../component/Header"
+import Header from "../component/header/Header"
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 

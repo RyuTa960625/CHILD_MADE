@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./RecordList.module.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function RecordList() {
 
@@ -10,10 +11,16 @@ export default function RecordList() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [bookList, setBookList] = useState([]);
+  const navigate = useNavigate();
 
   const openModal = function(){
       setIsOpen(!isOpen);
   };
+
+  const moveToViewPage = function(){
+    navigate('/viewpage');
+  }
+
 
   // const apiTest = function(){
   //     axios.get('http://localhost:8080/api/books/')
@@ -86,15 +93,14 @@ export default function RecordList() {
 
           <img className={styles.video_img} src={서버에서온데이터[0].imageUrl} alt="동영상 썸네일"></img>
           <div className={styles.video_info}>
-            <h1>동화제목 : {서버에서온데이터[0].title}</h1>
-            <h1>저장날짜 : {서버에서온데이터[0].savedDate}</h1>
-            <h1>녹화시간 : {서버에서온데이터[0].time}</h1>
-            <h1>나의 역할 : {서버에서온데이터[0].myRole}</h1>
+            <h1 className={styles.info_text}>동화제목 : {서버에서온데이터[0].title}</h1>
+            <h1 className={styles.info_text}>저장날짜 : {서버에서온데이터[0].savedDate}</h1>
+            <h1 className={styles.info_text}>나의 역할 : {서버에서온데이터[0].myRole}</h1>
           </div>
 
           <div className={styles.video_btn_container}>
             <div className={styles.video_btn}>
-              <h1 className={styles.btn_text}>동화책 보러가기</h1>
+              <h1 className={styles.btn_text} onClick={moveToViewPage}>동화책 보러가기</h1>
             </div>
             <div className={styles.video_btn}>
               <h1 className={styles.btn_text}>동화책 저장하기</h1>
