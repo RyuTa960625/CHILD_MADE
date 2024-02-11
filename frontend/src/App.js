@@ -1,9 +1,8 @@
 import './App.css';
-import Home from './component/Home';
-import Header from './component/Header';
+import Header from './component/header/Header';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import BookList from './component/BookList';
-import RecordList from './component/RecordList';
+import BookList from './component/boolistPage/BookList';
+import RecordList from './component/recordlistPage/RecordList';
 import Single from './component/Single'
 import React, { Component } from "react";
 
@@ -15,7 +14,8 @@ import LoginCallback from "./LoginPage/LoginCallback";
 import GetUserNickname from "./LoginPage/GetUserNickname";
 import Main from "./MainT/MainT";
 import "./App.css";
-import ViewPage from './component/ViewPage';
+import ViewPage from './component/viewPage/ViewPage';
+import Home from './component/mainPage/Home';
 
 function App() {
   return (

@@ -219,14 +219,22 @@
 .book_info_title{    
     top: 57.5%;
     left: 50%;
+    font-size: 32px;
+    color: black;
     font-family: 'Maplestory_b';
     position: absolute;
     transform: translate(-50%, -50%);
 }
 
+.info_title{
+    font-family: 'Maplestory_b';
+    font-size: 32px;
+}
+
 .choose_container{
     width: 695px;
     height: 250px;
+    font-family: 'Maplestory_b';
     overflow: hidden;
     overflow-y: auto;
 }
@@ -249,6 +257,7 @@
 }
 
 .character_container{
+    font-family: 'Maplestory_b';
     display: flex;
 }
 
@@ -259,6 +268,10 @@
 }
 
 .character_btn1{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 70px;
     height: 70px;
     border-radius: 50px;
@@ -269,6 +282,10 @@
 }
 
 .character_btn2{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 70px;
     height: 70px;
     border-radius: 50px;
@@ -279,6 +296,10 @@
 }
 
 .character_btn3{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 70px;
     height: 70px;
     border-radius: 50px;
@@ -289,6 +310,10 @@
 }
 
 .character_btn4{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 70px;
     height: 70px;
     border-radius: 50px;
@@ -298,7 +323,21 @@
     overflow: hidden;
 }
 
+.role{
+    position: absolute;
+    top: 70%;
+    left: 45%;
+    width: 100%;
+    color: black;
+    transform: translate(-50%, -50%);
+    font-family: 'Maplestory_b';
+    font-size: 24px;
+}
+
 .role_container{
+    width: 90px;
+    height: 120px;
+    position: relative;
     margin: 3% 0% 3% 3%;
 }
 
@@ -335,6 +374,9 @@
 }
 
 .start_text{
+    font-family: 'Maplestory_b';
+    color: black;
+    font-size: 32px;
     line-height: 65px;
 }
 
@@ -352,6 +394,7 @@
 }
 
 .search_container{
+    width: 900px;
     top: 50%;
     left: 50%;
     position: absolute;
@@ -359,16 +402,16 @@
 }
 
 .search{
-    width: 796px;
-    height: 50px;
-    margin-left: -37px;
-    margin-top: -330px;
+    width: 827px;
+    height: 60px;
+    margin-top: -355px;
     position: absolute;
     z-index: 2;
     background: #FFA939;
     border-radius: 20px;
+    font-family: 'Maplestory_b';
+    text-align: left;
     border: 8px solid #DC7C00 ;
-    transform: translate(-50%, -50%);
 }
 
 .search:hover{
@@ -387,16 +430,17 @@ input:focus{
 }
 
 .find_container{
-    width: 50px;
-    height: 50px;
-    margin-top: -330px;
+    width: 60px;
+    height: 60px;
+    margin-top: -325px;
     position: absolute;
-    margin-left: 420px;
+    margin-left: 867px;
     z-index: 2;
     background: #FFA939;
     border-radius: 20px;
     cursor: pointer;
     border: 8px solid #DC7C00 ;
+    size: 24px;
     /* border: 2px solid white; */
     transform: translate(-50%, -50%);
 }
@@ -406,12 +450,10 @@ input:focus{
 }
 
 .find{
-    width: 40px;
-    margin-top: 25px;
-    margin-left: 25px;
+    width: 38px;
+    margin-top: 22px;
+    margin-left: 21px;
     z-index: 3;
-    top: 50%;
-    left: 50%;
     transform: translate(-50%, -50%);
 }
 
@@ -480,13 +522,14 @@ input:focus{
     position: relative;
     width: 180px;
     height: 210px;
+    border-radius: 10px;
     object-fit: cover;
 }
 
 .book_text_box{
     position: absolute;
-    width: 170px;
-    height: 50px;
+    width: 180px;
+    height: 60px;
     margin-top: -30px;
     background: #0A5F9C;
     border-radius: 10px;
