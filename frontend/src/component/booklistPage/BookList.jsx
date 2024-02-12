@@ -70,7 +70,7 @@ const BookList = function(){
     }
 
     const moveNextPage = function(){
-        // totalPage - 1을 한 이유: 아싸리 페이지가 0부터 시작함(db의 인덱스 값을 그대로 넘기기 때문)
+        // totalPage - 1을 한 이유: 페이지가 0부터 시작함(db의 인덱스 값을 그대로 넘기기 때문)
         if(pageNum < totalPage-1){
             console.log(pageNum)
             // 원하는 페이지 번호로 변경하고

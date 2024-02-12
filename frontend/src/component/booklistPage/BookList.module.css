@@ -411,6 +411,7 @@
     border-radius: 20px;
     font-family: 'Maplestory_b';
     text-align: left;
+    font-size: 32px;
     border: 8px solid #DC7C00 ;
 }
 
@@ -475,6 +476,7 @@ input:focus{
     z-index: 3;
     place-items: center;
     grid-template-columns: 250px 250px 250px;
+    grid-template-rows: 1fr 1fr;
     justify-content: center;
     transform: translate(-50%, -50%);
     position: absolute;                                                                                                                                                                                                                                                             

@@ -1,7 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../viewPage/ViewPage.module.css";
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from "axios";
+
 export default function ViewPage() {
-    const [click, setClick] = useState(false);
+    
+    const location = useLocation();
+    const videoId = location.state ? location.state.videoId : null;
+    const pageNum = location.state ? location.state.pageNum : null;
+    const [videoUrl, setVideoUrl] = useState('');
+
+    useEffect(() => {
+        loadVideoUrl();
+    }, [videoUrl]);
+
+    useEffect(() => {
+        console.log(videoUrl)
+    }, [videoUrl]);
+
+    const loadVideoUrl = function(){
+        axios.get(`https://i10d209.p.ssafy.io/api/videos/2?page=${pageNum}&size=4&sort=id`)
+        .then(response=>{
+            console.log(response.data.data.content[videoId - 1].videoUrl)
+            setVideoUrl(response.data.data.content[videoId - 1].videoUrl)
+        })
+    }
 
     return (
         // 배경
@@ -53,8 +76,9 @@ export default function ViewPage() {
                 <div className={styles.main_view_container}>
                     <video className={styles.view} controls>
                         <source
-                            src="https://pj1.s3.ap-northeast-2.amazonaws.com/test.mp4"
-                            type="video/mp4"
+                            src={videoUrl}
+                            // src={videoList[videoId - 1].videoUrl}
+                            type='video/mp4'
                         ></source>
                     </video>
                 </div>
