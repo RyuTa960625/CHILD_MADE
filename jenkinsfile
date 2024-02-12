@@ -56,7 +56,7 @@ pipeline {
                     // def dockerComposeCmd = "docker-compose up -d"
                     sh 'cd /var/jenkins_home/workspace/S10P12D209'
                     sh 'pwd'
-                    def dockerComposeCmd = "docker-compose up -d --build -e DB_URL=${env.DB_URL} -e DB_USERNAME=${env.DB_USERNAME} -e DB_PASSWORD=${env.DB_PASSWORD} -e S3_ACCESSKEY=${env.S3_ACCESSKEY} -e S3_SECRETKEY=${env.S3_SECRETKEY} -e S3_NAME=${env.S3_NAME} -e GOOGLE_CLIENT_ID=${env.GOOGLE_CLIENT_ID} -e GOOGLE_CLIENT_SECRET=${env.GOOGLE_CLIENT_SECRET} -e KAKAO_CLIENT_ID=${env.KAKAO_CLIENT_ID} -e KAKAO_CLIENT_SECRET=${env.KAKAO_CLIENT_SECRET} -e JWT_SECRET=${env.JWT_SECRET} -e EC2_PUBLIC_IP=${env.EC2_PUBLIC_IP} -e REDIS_PW=${env.REDIS_PW} -e OPENVIDU_URL=${env.OPENVIDU_URL} -e OPENVIDU_SECRET=${env.OPENVIDU_SECRET}"
+                    def dockerComposeCmd = "DB_URL=${env.DB_URL} DB_USERNAME=${env.DB_USERNAME} DB_PASSWORD=${env.DB_PASSWORD} S3_ACCESSKEY=${env.S3_ACCESSKEY} S3_SECRETKEY=${env.S3_SECRETKEY} S3_NAME=${env.S3_NAME} GOOGLE_CLIENT_ID=${env.GOOGLE_CLIENT_ID} GOOGLE_CLIENT_SECRET=${env.GOOGLE_CLIENT_SECRET} KAKAO_CLIENT_ID=${env.KAKAO_CLIENT_ID} KAKAO_CLIENT_SECRET=${env.KAKAO_CLIENT_SECRET} JWT_SECRET=${env.JWT_SECRET} EC2_PUBLIC_IP=${env.EC2_PUBLIC_IP} REDIS_PW=${env.REDIS_PW} OPENVIDU_URL=${env.OPENVIDU_URL} OPENVIDU_SECRET=${env.OPENVIDU_SECRET} docker-compose up -d --build -e "
                     sh dockerComposeCmd
                 }
             }
