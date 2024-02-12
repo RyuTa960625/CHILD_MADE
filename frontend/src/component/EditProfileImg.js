@@ -8,19 +8,29 @@ function EditProfileImg({ setEditProfileModalOpen, profile }) {
     const fileInputRef = useRef();
     const [newProfile, setNewProfile] = useState(profile);
 
+    // const handleFileChange = (e) => {
+    //     const file = e.target.files[0];
+    //     setNewProfile(file);
+
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.readAsDataURL(file);
+    //     }
+    // };
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         // setNewProfile(file);
 
         if (file) {
             const reader = new FileReader();
-            reader.onload = () => {
+            reader.onload = (event) => {
                 setNewProfile(file);
             };
             reader.readAsDataURL(file);
         }
+        console.log(newProfile);
     };
-
 
     const handleEditProfile = () => {
         console.log(localStorage.getItem("accessToken"));
