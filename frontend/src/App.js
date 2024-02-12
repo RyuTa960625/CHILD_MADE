@@ -3,7 +3,7 @@ import Header from "./component/header/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import BookList from "./component/booklistPage/BookList";
 import RecordList from "./component/recordlistPage/RecordList";
-import Single from "./component/Single";
+import Single from "./component/openviduPage/Single";
 import React, { useState } from "react";
 
 import Intro from "./component/IntroPage/Intro";
