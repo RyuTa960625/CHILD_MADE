@@ -1,7 +1,7 @@
 import "./App.css";
 import Header from "./component/header/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import BookList from "./component/boolistPage/BookList";
+import BookList from "./component/booklistPage/BookList";
 import RecordList from "./component/recordlistPage/RecordList";
 import Single from "./component/Single";
 import React, { useState } from "react";
@@ -16,7 +16,9 @@ import Main from "./MainT/MainT";
 import "./App.css";
 import ViewPage from "./component/viewPage/ViewPage";
 import Home from "./component/mainPage/Home";
+import ErrorPage from './component/errorPage/ErrorPage'
 
+import LoginErrorPage from "./component/loginerrorPage/LoginErrorPage";
 import PrivateRoute from "./component/PrivateRoute";
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
             <BrowserRouter>
                 {showHeader && <Header />}
                 <Routes>
+                    <Route path="/loginerrorpage" element={<LoginErrorPage />}></Route>
                     <Route
                         path="/intro"
                         element={<Intro setShowHeader={setShowHeader} />}
@@ -55,21 +58,9 @@ function App() {
                         ></Route>
                         <Route path="/viewpage" element={<ViewPage />}></Route>
                         <Route path="/single" element={<Single />}></Route>
-                        <Route
-                            path="/error"
-                            element={
-                                <h1
-                                    style={{
-                                        color: "white",
-                                        marginTop: "300px",
-                                    }}
-                                >
-                                    에러임ㅋㅋ
-                                </h1>
-                            }
-                        />
-                    </Route>
+                        <Route path="/errorpage" element={<ErrorPage />}></Route>
                     {/* <Route path="*" element={<Error />} /> */}
+                    </Route>
                 </Routes>
             </BrowserRouter>
         </div>

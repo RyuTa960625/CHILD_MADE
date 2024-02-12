@@ -10,13 +10,17 @@ function EditProfileImg({ setEditProfileModalOpen, profile }) {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        setNewProfile(file);
+        // setNewProfile(file);
 
         if (file) {
             const reader = new FileReader();
+            reader.onload = () => {
+                setNewProfile(file);
+            };
             reader.readAsDataURL(file);
         }
     };
+
 
     const handleEditProfile = () => {
         console.log(localStorage.getItem("accessToken"));

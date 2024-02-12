@@ -16,7 +16,7 @@ const BookList = function(){
         loadBookInfo();
         console.log(playMode)
         if(!playMode){
-            navigate('/error')
+            navigate('/errorpage')
         }
     }, [bookId])
     // step1. "npm install axios" 를 터미널에 입력한다. v
@@ -36,29 +36,30 @@ const BookList = function(){
     };
 
     const apiTest = function(){
-        axios.get(`http://localhost:8080/api/books/?page=${pageNum}&size=6`)
+        axios.get(`https://i10d209.p.ssafy.io/api/books/?page=${pageNum}&size=6&sort=title`)
         .then(response=>{
             console.log(response.data)
         })
     }
 
     const apiTest2 = function(){
-        axios.get(`http://localhost:8080/api/books/${bookId}/roles`)
+        axios.get(`https://i10d209.p.ssafy.io/api/books/${bookId}/roles`)
         .then(response=>{
             console.log(response.data);
         })
     }
 
     const loadBookList = function(){
-        axios.get(`http://localhost:8080/api/books/?page=${pageNum}&size=6`)
+        axios.get(`https://i10d209.p.ssafy.io/api/books/?page=${pageNum}&size=6&sort=title`)
         .then(response=>{
             setBookList(response.data.data.content)
             setTotalPage(response.data.data.totalPages);
         })
     }
 
+
     const loadBookInfo = function(){
-        axios.get(`http://localhost:8080/api/books/${bookId}/roles`)
+        axios.get(`https://i10d209.p.ssafy.io/api/books/${bookId}/roles`)
         .then(response=>{
             setBookInfo(response.data.data);
         })
@@ -74,7 +75,7 @@ const BookList = function(){
             console.log(pageNum)
             // 원하는 페이지 번호로 변경하고
             setPageNum(pageNum + 1);
-            axios.get(`http://localhost:8080/api/books/?page=${pageNum + 1}&size=6`)
+            axios.get(`https://i10d209.p.ssafy.io/api/books/?page=${pageNum + 1}&size=6&sort=title`)
             .then(res => setBookList(res.data.data.content));
         }
     }
@@ -83,7 +84,7 @@ const BookList = function(){
         if(pageNum > 0){
             console.log(pageNum)
             setPageNum(pageNum - 1);
-            axios.get(`http://localhost:8080/api/books/?page=${pageNum - 1}&size=6`)
+            axios.get(`https://i10d209.p.ssafy.io/api/books/?page=${pageNum - 1}&size=6&sort=title`)
             .then(res => setBookList(res.data.data.content));
         }
     }
