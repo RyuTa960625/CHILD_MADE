@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import styles from "./Hearder.module.css";
-import Profile from "../Profile";
+import Profile from "../profilePage/Profile";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 

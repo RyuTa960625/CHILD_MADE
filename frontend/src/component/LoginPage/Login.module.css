@@ -1,6 +1,66 @@
+@font-face {
+    font-family: 'Maplestory_b';
+    src: url(/public/fonts/Maplestory\ Bold.ttf);
+}
+
+@font-face {
+    font-family: 'Maplestory_l';
+    src: url(/public/fonts/Maplestory\ Light.ttf);
+}
+
 .LoginBackgroundImg {
     width: 100vw;
     height: 100vh;
+    /* object-fit: cover; */
+}
+
+@keyframes shine {
+    0% {
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.9); 
+    }
+    100% {
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.6); 
+    }
+}
+
+@keyframes shine2 {
+    0% {
+        filter: brightness(0.8);
+    }
+    50% {
+        filter: brightness(1.2); 
+    }
+    100% {
+        filter: brightness(0.8);
+    }
+}
+
+
+@keyframes anim {
+    0%{
+        background-position: right 10% bottom -20%;
+    }
+    50%{
+        background-position: right 10% bottom -10%;
+    }
+    100%{
+        background-position: right 10% bottom -20%;
+    }
+}
+
+@keyframes anim2 {
+    0%{
+        transform: translateX(0px);
+    }
+    50%{
+        transform: translateX(40px);
+    }
+    100%{
+        transform: translateX(0px)
+    }
 }
 
 .LoginComponent {
@@ -16,13 +76,51 @@
     position: absolute;
 }
 
+.back_img {
+    position: relative;
+    z-index: 0;
+    width: 360px;
+    height: 470px;
+}
+
+.backgroundImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(/public/imgs/loginbackM.png);
+    background-position: right 10% bottom -20%;
+    background-size: 200px 300px;
+    background-repeat: no-repeat;
+    animation: anim 3s infinite, shine2 5s infinite;
+}
+
+.bear_text{
+    width: 350px;
+    z-index: 3;
+    font-size: 52px;
+    line-height: 64px;
+    color: black;
+    -webkit-text-stroke: 1px white;
+    font-family: 'Maplestory_b';
+    animation: shine 3s infinite; 
+    filter: none !important;
+}
+
 .BearS {
     /* position: absolute; */
     width: 350px;
+    z-index: 3;
+    filter: none !important;
 }
 
 .BearS > img {
-    width: 300px;
+    margin-top: 30%;
+    margin-left: -170px;
+    width: 110px;
+    filter: none !important;
+    animation: anim2 5s infinite;
 }
 
 .LoginForm {
@@ -47,32 +145,23 @@
     /* margin: 50px auto; */
 }
 
-.LoginButton {
-    font-size: 32px;
-    color: white;
-    width: 210px;
-    height: 50px;
-    background-color: #6f573f;
-    border-radius: 30px;
-    border: none;
-    margin: 24px auto 8px;
-}
-
 .SocialLoginButtons {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-top: -10%;
 }
 
 .SocialLoginButtons > img {
-    margin: 8px 8px;
+    margin: 8px 20px;
     /* box-shadow: 2px 2px 12px; */
 }
 
 .KakaoLoginButton {
     width: 96px;
     height: 96px;
-    border: solid 2px #747775;
+    border: solid 6px #6f573f;
+    box-shadow: 3px 3px 3px gray;
     border-radius: 12px;
 }
 
@@ -84,7 +173,8 @@
     background-color: white;
     width: 96px;
     height: 96px;
-    border: solid 2px #747775;
+    border: solid 6px #6f573f;
+    box-shadow: 3px 3px 3px gray;
     border-radius: 12px;
 }
 

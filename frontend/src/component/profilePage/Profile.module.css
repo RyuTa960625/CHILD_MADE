@@ -1,0 +1,160 @@
+.btnWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 5rem;
+}
+
+/* .modalOpenButton {
+  cursor: pointer;
+  margin-left: auto;
+} */
+
+.modalCloseBtn {
+    position: absolute;
+    top: -40px;
+    right: 20px;
+}
+
+.modalContainer {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    object-fit: cover;
+}
+
+.modalContent {
+    /* background-color: #ffffff; */
+    width: 800px;
+    /* height: px; */
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* object-fit: cover; */
+}
+
+.modalBook {
+    width: 800px;
+    height: 100%;
+    /* object-fit: cover; */
+}
+
+.modalForm {
+    position: absolute;
+    display: flex;
+    direction: row;
+}
+
+.userProfileImgArea {
+    width: 325px;
+}
+
+.userProfileImg {
+    background: black;
+    width: 200px;
+    height: 300px;
+    border-radius: 10px;
+    margin: 16px auto;
+}
+
+.userProgileForm {
+    width: 325px;
+}
+
+table {
+    display: flex;
+    align-items: center;
+    padding-left: 24px;
+}
+
+tr {
+    height: auto;
+    display: flex;
+    direction: row;
+}
+
+td {
+    display: block;
+    text-align: start;
+    margin-bottom: 0px;
+}
+
+.tableInfo {
+    width: 225px;
+}
+
+.tableTitle {
+    /* display:block; */
+    font-size: 32px;
+    margin: 12px auto 0px;
+}
+
+.tableValue {
+    font-size: 20px;
+    display: inline-block;
+    text-align: start;
+}
+
+.tableButton {
+    margin: 0px;
+    width: 70px;
+    height: 36px;
+    align-self: end;
+    background-color: #6f573f;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    position: relative;
+    bottom: 8px;
+}
+
+.confirmProfile {
+    font-size: 24px;
+    width: 150px;
+    height: 35px;
+    background-color: #6f573f;
+    color: white;
+    border: none;
+    border-radius: 30px;
+}
+
+hr {
+    border: 2px solid;
+    border-radius: 2px;
+    margin: 0px 12px auto;
+}
+
+.tableEmail {
+    display: flex;
+    direction: column;
+}
+
+.tableEmail > .tableInfo {
+    width: 300px;
+}
+
+.modalCloseBtn {
+    background: none;
+    border: none;
+}
+
+.cancelButton {
+    width: 25px;
+}
+
+.progileEditOpenButton {
+    font-size: 16px;
+    width: 175px;
+    height: 35px;
+    background-color: #6f573f;
+    color: white;
+    border: none;
+    border-radius: 30px;
+}
