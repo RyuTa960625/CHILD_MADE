@@ -1,0 +1,19 @@
+.swiper-pagination-bullet {
+    /* background: red !important; */
+    /* margin-bottom: 50px; */
+}
+.swiper-pagination-bullet-active {
+    /* background: yellow !important; */
+    width: 32px !important;
+    border-radius: 25px !important;
+    background-color: white !important;
+}
+.swiper-pagination-bullet-active:hover {
+    cursor: url(/public/imgs/d2sM.png), auto;
+}
+.swiper-pagination-bullets {
+    margin-bottom: 50px;
+}
+.swiper-pagination-bullets:hover {
+    cursor: url(/public/imgs/d2sM.png), auto;
+}

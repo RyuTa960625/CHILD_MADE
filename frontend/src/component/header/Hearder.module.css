@@ -39,17 +39,10 @@
 
 .iconText{
     font-family: 'Maplestory_b';
+    margin-top: 5%;
     font-size: 14px;
 }
 
 .iconText:hover{
     cursor: url(/public/imgs/d2sM.png), auto;
 }
-/* 
-div{
-    border: 1px solid black;
-} */
-/* 
-img{
-    border: 1px solid black;
-} */

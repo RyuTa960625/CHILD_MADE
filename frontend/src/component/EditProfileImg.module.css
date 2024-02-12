@@ -1,68 +1,115 @@
 .modalContainer {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 10;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    object-fit: cover;
+}
+
+button:hover {
+    cursor: url(/public/imgs/d2sM.png), auto !important;
 }
 
 .editImgForm {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
 }
 
 .modalBgImg {
-  transform: rotate(-90deg);
+    transform: rotate(-90deg);
 }
 
 .editUserImg {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 200px;
-  height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 300px;
+}
+
+.editUserImg:hover {
+    cursor: url(/public/imgs/d2sM.png), auto;
 }
 
 .editDeco {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 200px;
-  height: 300px;
-  background: black;
-  border-radius: 15px;
-  opacity: 0;
-  transition: opacity 0.5s;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 300px;
+    background: black;
+    border-radius: 15px;
+    opacity: 0;
+    transition: opacity 0.5s;
 }
 
 .editDeco:hover {
-  opacity: 0.7;
+    opacity: 0.7;
+    cursor: url(/public/imgs/d2sM.png), auto;
 }
 
 .editDeco:hover + .editIcon {
-  opacity: 1;
+    opacity: 1;
 }
 
 .editIcon {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  opacity: 0;
-  transition: opacity 0.5s;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.editIcon:hover {
+    cursor: url(/public/imgs/d2sM.png), auto;
 }
 
 .userImg {
-  display:block;
-  width: 100%;
-  height: 100%;
-  background: black;
-  border-radius: 15px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: black;
+    border-radius: 15px;
+}
+
+.editButton {
+    font-size: 16px;
+    color: white;
+    width: 100px;
+    height: 30px;
+    background-color: #6f573f;
+    border-radius: 30px;
+    border: none;
+    margin: 24px auto 8px;
+}
+
+.submitButton {
+    font-size: 16px;
+    color: white;
+    width: 100px;
+    height: 30px;
+    background-color: #6f573f;
+    border-radius: 30px;
+    border: none;
+    margin: 8px auto;
+}
+
+.modalCloseButton {
+    background: none;
+    border: none;
+    position: absolute;
+    top: -50px;
+    right: -50px;
+}
+
+.modalCloseButtonSvg {
+    width: 20px;
 }
