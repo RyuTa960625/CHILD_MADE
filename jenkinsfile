@@ -47,9 +47,10 @@ pipeline {
         stage("Deploy") {
             steps {
                 // 도커 컴포즈 실행을 위한 환경 변수 설정
-                    def dockerComposeCmd = "docker-compose up -d"
-                    // def dockerComposeCmd = "DB_URL=${env.DB_URL} DB_USERNAME=${env.DB_USERNAME} DB_PASSWORD=${env.DB_PASSWORD} S3_ACCESSKEY=${env.S3_ACCESSKEY} S3_SECRETKEY=${env.S3_SECRETKEY} S3_NAME=${env.S3_NAME} GOOGLE_CLIENT_ID=${env.GOOGLE_CLIENT_ID} GOOGLE_CLIENT_SECRET=${env.GOOGLE_CLIENT_SECRET} KAKAO_CLIENT_ID=${env.KAKAO_CLIENT_ID} KAKAO_CLIENT_SECRET=${env.KAKAO_CLIENT_SECRET} JWT_SECRET=${env.JWT_SECRET} EC2_PUBLIC_IP=${env.EC2_PUBLIC_IP} REDIS_PW=${env.REDIS_PW} OPENVIDU_URL=${env.OPENVIDU_URL} OPENVIDU_SECRET=${env.OPENVIDU_SECRET} docker-compose up -d"
-                    sh dockerComposeCmd
+                    // def dockerComposeCmd = "docker-compose up -d"
+                    // // def dockerComposeCmd = "DB_URL=${env.DB_URL} DB_USERNAME=${env.DB_USERNAME} DB_PASSWORD=${env.DB_PASSWORD} S3_ACCESSKEY=${env.S3_ACCESSKEY} S3_SECRETKEY=${env.S3_SECRETKEY} S3_NAME=${env.S3_NAME} GOOGLE_CLIENT_ID=${env.GOOGLE_CLIENT_ID} GOOGLE_CLIENT_SECRET=${env.GOOGLE_CLIENT_SECRET} KAKAO_CLIENT_ID=${env.KAKAO_CLIENT_ID} KAKAO_CLIENT_SECRET=${env.KAKAO_CLIENT_SECRET} JWT_SECRET=${env.JWT_SECRET} EC2_PUBLIC_IP=${env.EC2_PUBLIC_IP} REDIS_PW=${env.REDIS_PW} OPENVIDU_URL=${env.OPENVIDU_URL} OPENVIDU_SECRET=${env.OPENVIDU_SECRET} docker-compose up -d"
+                    // sh dockerComposeCmd
+                sh "docker-compose up -d"
                 // script {
                 //     // 도커 컴포즈 실행을 위한 환경 변수 설정
                 //     def dockerComposeCmd = "docker-compose up -d"
