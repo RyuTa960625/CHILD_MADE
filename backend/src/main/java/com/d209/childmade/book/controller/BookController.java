@@ -34,10 +34,10 @@ public class BookController {
         return SuccessResponse.of(SuccessType.BOOK_LIST_SUCCESSFULLY,page.map(BookListResponseDto::of));
     }
 
-    @GetMapping("/{book-id}")
-    public SuccessResponse<List<ScriptListResponseDto>> scriptList(@PathVariable("book-id") int bookId, @RequestBody
-            ScriptListRequestDto scriptListRequestDto) {
-        List<Script> scripts = scriptService.findScriptList(bookId,scriptListRequestDto);
+    @GetMapping("/{book-id}/{branch-num}")
+    public SuccessResponse<List<ScriptListResponseDto>> scriptList(@PathVariable("book-id") int bookId, @PathVariable("branch-num")
+    int branchNum) {
+        List<Script> scripts = scriptService.findScriptList(bookId, branchNum);
         return SuccessResponse.of(SuccessType.SCRIPT_LIST_SUCCESSFULLY,scripts.stream().map(ScriptListResponseDto::of).toList());
     }
 

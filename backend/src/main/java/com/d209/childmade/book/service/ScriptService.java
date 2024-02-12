@@ -17,9 +17,9 @@ public class ScriptService {
 
     private final ScriptRepository scriptRepository;
 
-    public List<Script> findScriptList(int bookId, ScriptListRequestDto scriptListRequestDto) {
+    public List<Script> findScriptList(int bookId, int branchNum) {
         List<Script> scriptList = scriptRepository.findAllByBookIdAndBranchNum(bookId,
-                scriptListRequestDto.getBranchNum());
+                branchNum);
         if(scriptList.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_SCRIPT_LIST);
         }
