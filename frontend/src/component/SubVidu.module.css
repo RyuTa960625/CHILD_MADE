@@ -18,22 +18,22 @@
     position: absolute;
     top: 10px;
     left: 10px;
-    
+
     width: 100px;
     height: 40px;
-  
+
     font-size: 13px;
     font-weight: bold;
-    font-family: 'Maplestory';
-  
+    font-family: "Maplestory";
+
     border: 5px solid black;
     border-radius: 35px;
     background-color: yellow;
 
     z-index: 1;
-  }
+}
 
-  .sub_video {
+.sub_video {
     width: 251px;
     height: 160px;
 
@@ -41,4 +41,4 @@
 
     border: 5px solid tomato;
     border-radius: 30px;
-  }
+}

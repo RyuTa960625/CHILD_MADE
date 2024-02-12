@@ -16,20 +16,20 @@
     position: absolute;
     top: 20px;
     left: 20px;
-    
+
     width: 200px;
     height: 70px;
-  
+
     font-size: 25px;
     font-weight: bold;
-    font-family: 'Maplestory';
-  
+    font-family: "Maplestory";
+
     border: 5px solid black;
     border-radius: 35px;
     background-color: yellow;
 
     z-index: 1;
-  }
+}
 
 .main_video {
     width: 1040px;

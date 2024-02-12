@@ -3,25 +3,29 @@ import { useSearchParams } from "react-router-dom";
 import styles from "./Login.module.css";
 import axios from "axios";
 
-function Login() {
+function Login({ setShowHeader }) {
+    useEffect(() => {
+        setShowHeader(false);
+    });
+
     return (
         <div className={styles.LoginComponent}>
             <div className={styles.LoginBookComponent}>
-                <img src="Images/LoginBookComponent.png"></img>
+                <img src="imgs/LoginBookComponent.png"></img>
                 <div className={styles.LoginForm}>
                     <div className={styles.BearS}>
-                        <img src="Images/bear_s.png"></img>
+                        <img src="imgs/bear_s.png"></img>
                     </div>
                     <div className={styles.LoginInputForm}>
                         <h1>로그인</h1>
                         <div className={styles.SocialLoginButtons}>
                             <img
-                                src="Images/kakaotalk_login_button.svg"
+                                src="imgs/kakaotalk_login_button.svg"
                                 className={styles.KakaoLoginButton}
                                 onClick={kakaoLogin}
                             ></img>
                             <img
-                                src="Images/google_login_button.svg"
+                                src="imgs/google_login_button.svg"
                                 className={styles.GoogleLoginButton}
                                 onClick={googleLogin}
                             ></img>
@@ -31,7 +35,7 @@ function Login() {
                 </div>
             </div>
             <img
-                src="Images/LoginBackgroundImg.png"
+                src="imgs/LoginBackgroundImg.png"
                 className={styles.LoginBackgroundImg}
             ></img>
         </div>
