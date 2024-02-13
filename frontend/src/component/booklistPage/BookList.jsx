@@ -10,7 +10,14 @@ const BookList = function(){
     const playMode = location.state ? location.state.playMode : null;
     const [bookId, setBookId] = useState(1);
     const [roleId, setRoleId] = useState(1);
+    
+    const [bookList, setBookList] = useState([]);
     const roleStyles = [styles.character_btn1, styles.character_btn2, styles.character_btn3, styles.character_btn4]
+    const [searchValue, setSearchValue] = useState('');
+    
+    const handleChange = (event) => {
+        setSearchValue(event.target.value);
+    };
 
     useEffect(() => {
         loadBookList();
@@ -33,13 +40,27 @@ const BookList = function(){
 
     //http://localhost:8080/api/books/?page=1&size=6
     const [isOpen, setIsOpen] = useState(false);
-    const [bookList, setBookList] = useState([]);
     const [pageNum, setPageNum] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [bookInfo, setBookInfo] = useState([]);
 
     const openModal = function(){
         setIsOpen(!isOpen);
+    };
+
+    const handleSearch = () => {
+        axios.get(`https://i10d209.p.ssafy.io/api/books/${searchValue}?page=${pageNum}&size=6&sort=title`)
+            .then(response => {
+                // 검색 결과 처리
+                console.log(response.data);
+                console.log(searchValue);
+                setBookList(response.data.data.content);
+                console.log(bookList)
+            })
+            .catch(error => {
+                // 오류 처리
+                console.error('Error fetching search results:', error);
+            });
     };
 
     const apiTest = function(){
@@ -162,8 +183,8 @@ const BookList = function(){
 
                 <div className={styles.books_container} style={{marginTop : '4%'}}>
                     <div className={styles.search_container} style={{display : 'flex'}}>
-                        <input className={styles.search}></input>
-                        <div className={styles.find_container}>
+                        <input className={styles.search} value={searchValue} onChange={handleChange} placeholder="도서명을 입력하세요"></input>
+                        <div className={styles.find_container} onClick={handleSearch}>
                             <img src='/imgs/findM.png' alt='돋보기' className={styles.find}></img>
                         </div>
                     </div>
@@ -178,7 +199,7 @@ const BookList = function(){
                                 bookList.map((data, index)=>{
                                     return(
                                         <>
-                                        <div className={styles.book_container} onClick={()=>{openModal(); apiTest(); apiTest2(); setBookId(data.id); printBookId();}}>
+                                        <div key={index} className={styles.book_container} onClick={()=>{openModal(); apiTest(); apiTest2(); setBookId(data.id); printBookId();}}>
                                             <img className={styles.book_img}  src={bookList[index].imageUrl} alt='책 표지'/>      
                                             <div className={styles.book_text_box}>
                                                 <h1 className={styles.book_text}>{data.title.length > 8 ? `${data.title.slice(0,7)}...`: data.title}</h1>

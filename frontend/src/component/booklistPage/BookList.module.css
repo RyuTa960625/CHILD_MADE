@@ -411,7 +411,7 @@
     border-radius: 20px;
     font-family: 'Maplestory_b';
     text-align: left;
-    font-size: 32px;
+    font-size: 28px;
     border: 8px solid #DC7C00 ;
 }
 
@@ -446,13 +446,19 @@ input:focus{
     transform: translate(-50%, -50%);
 }
 
+.search_container input::placeholder {
+    color: #7a4703;
+    font-size: 1.0em;
+    font-style: 'Maplestory_b';
+}
+
 .find_container:hover{
     cursor: url(/public/imgs/d2sM.png), auto;
 }
 
 .find{
-    width: 38px;
-    margin-top: 22px;
+    width: 35px;
+    margin-top: 21.5px;
     margin-left: 21px;
     z-index: 3;
     transform: translate(-50%, -50%);
