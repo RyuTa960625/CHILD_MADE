@@ -75,7 +75,7 @@ const Home = function ({ setShowHeader }) {
                             >
                                 <h1 className={styles.btn_text}>혼자</h1>
                                 <img
-                                    src="/imgs/ch1-5.PNG"
+                                    src="/imgs/ch1-5.png"
                                     alt="대표캐릭터1기본"
                                     className={styles.character1}
                                 />
