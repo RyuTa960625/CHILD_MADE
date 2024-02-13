@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    overflow: hidden;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+}
+
+@font-face {
+    font-family: "Maplestory_b";
+    src: url("../public/fonts/Maplestory\ Bold.ttf");
+    font-family: "Maplestory_l";
+    src: url("../public/fonts/Maplestory\ Light.ttf");
+}
+
+/* @font-face {
+  font-family: "MapleStory Light";
+  font-weight: 700;
+  src: url("./fonts/Maplestory\ Light.ttf") format("ttf");
+}
+
+@font-face {
+  font-family: "MapleStory Bold";
+  font-weight: 700;
+  src: url("./fonts/Maplestory\ Bold.ttf") format("ttf");
+} */
+
+.custom-cursor {
+    cursor: url(/public/imgs/d2M.png) 20 20, auto;
+    overflow: hidden;
+}
+
+/* html{
+  cursor: url(/public/imgs/d2M.png), auto;
+} */
+/* 
+.other-element{
+  cursor: url('../public/imgs/d1.png'), auto;
+} */
