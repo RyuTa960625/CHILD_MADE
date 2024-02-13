@@ -47,8 +47,9 @@ public class VideoController {
 
     @GetMapping("/{member-id}")
     public SuccessResponse<Page<Video>> videoList(@PathVariable(value = "member-id") Integer memberId,
+                                                 @RequestParam(value = "keyword") String keyword,
                                                  Pageable pageable){
-        return SuccessResponse.of(SuccessType.VIDEO_LIST_SUCCESSFULLY, service.videoList(memberId, pageable));
+        return SuccessResponse.of(SuccessType.VIDEO_LIST_SUCCESSFULLY, service.videoList(memberId, keyword, pageable));
     }
 
     @DeleteMapping("/{member-id}/{video-id}")

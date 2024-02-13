@@ -32,8 +32,8 @@ public class VideoService {
     private final MemberRepository memberRepository;
     private final RoomRepository roomRepository;
 
-    public Page<Video> videoList(Integer memberId, Pageable pageable){
-        return videoRepository.findAllByMemberId(memberId, pageable);
+    public Page<Video> videoList(Integer memberId, String keyword, Pageable pageable){
+        return videoRepository.findAllByMemberIdAndVideoTitleContaining(memberId, keyword, pageable);
     }
 
     /**
