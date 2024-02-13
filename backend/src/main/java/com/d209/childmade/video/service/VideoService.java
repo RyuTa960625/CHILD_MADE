@@ -76,7 +76,11 @@ public class VideoService {
     }
 
     public byte[] downloadVideo(Long videoId){
-        String videoUrl = videoRepository.findVideoUrlById(videoId);
+        Optional<Video> videos = videoRepository.findById(videoId);
+        if(videos.isEmpty()){
+            throw new CustomBadRequestException(ErrorType.CANNOT_FIND_VIDEO);
+        }
+        String videoUrl = videos.get().getVideoUrl();
         String[] tmp = videoUrl.split("/");
         String roomId = tmp[tmp.length - 1];
 

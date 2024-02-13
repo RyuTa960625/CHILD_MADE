@@ -22,7 +22,8 @@ public enum ErrorType {
     NOT_FOUND_MEMBER_BY_MEMBERID(HttpStatus.UNAUTHORIZED, "찾을 수 없는 사용자입니다."),
     CANNOT_SAVE_CUT_VIDEO_IN_LOCAL(HttpStatus.UNAUTHORIZED, "서버에 컷 동영상을 저장할 수 없습니다."),
     CANNOT_CONCAT_CUT_VIDEO(HttpStatus.UNAUTHORIZED, "컷 동영상을 합칠 수 없습니다."),
-    CANNOT_DELETE_LOCAL_FILES(HttpStatus.UNAUTHORIZED, "서버에 저장된 컷 동영상들을 삭제할 수 없습니다.")
+    CANNOT_DELETE_LOCAL_FILES(HttpStatus.UNAUTHORIZED, "서버에 저장된 컷 동영상들을 삭제할 수 없습니다."),
+    CANNOT_FIND_VIDEO(HttpStatus.UNAUTHORIZED, "동영상을 찾을 수 없습니다.")
     ;
 
     private final HttpStatus status; //http status

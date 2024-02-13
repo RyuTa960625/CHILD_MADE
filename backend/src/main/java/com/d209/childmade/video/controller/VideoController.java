@@ -12,8 +12,11 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
 
 @Slf4j
 @RestController
@@ -57,7 +60,13 @@ public class VideoController {
     }
 
     @GetMapping("/{video-id}/download")
-    public SuccessResponse<ByteArrayResource> downloadVideo(@PathVariable("video-id") Long videoId){
-        return SuccessResponse.of(SuccessType.DOWNLOAD_VIDEO_SUCCESSFULLY, new ByteArrayResource(service.downloadVideo(videoId)));
+    public ResponseEntity<ByteArrayResource> downloadVideo(@PathVariable("video-id") Long videoId){
+        byte[] data = service.downloadVideo(videoId);
+        ByteArrayResource resource = new ByteArrayResource(data);
+
+        return ResponseEntity.ok().contentLength(data.length)
+                .header("Content-type", "application/octet-stream")
+                .header("Content-disposition", "attachment; filename=\"" + LocalDateTime.now() + ".mp4\"")
+                .body(resource);
     }
 }
