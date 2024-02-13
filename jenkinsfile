@@ -25,7 +25,7 @@ pipeline {
         stage("Checkout") {
             steps {
                 script {
-                    git credentialsId: 'gitlab', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12D209.git', branch: "feature-cicd"
+                    git credentialsId: 'gitlab', url: 'https://lab.ssafy.com/s10-webmobile1-sub2/S10P12D209.git', branch: "feature-jenkins"
                 }
             }
         }
