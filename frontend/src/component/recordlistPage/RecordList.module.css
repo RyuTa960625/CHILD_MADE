@@ -306,10 +306,10 @@ input {
     transform: translate(-50%, -50%);
 }
 
-.search_container input::placeholder{
+.search_container input::placeholder {
     color: #8d291a;
     font-size: 0.8em;
-    font-style: 'Maplestory_b';
+    font-style: "Maplestory_b";
 }
 
 .search_box:hover {

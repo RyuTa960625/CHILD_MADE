@@ -2,7 +2,12 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "./EditProfile.module.css";
 import axios from "axios";
 
-function EditProfile({ setEditUserModalOpen, editField, name, nickname }) {
+function EditProfile({
+    setEditUserModalOpen,
+    editField,
+    setName,
+    setNickname,
+}) {
     const memberId = localStorage.getItem("memberId");
 
     const modalBackground = useRef();
@@ -29,7 +34,7 @@ function EditProfile({ setEditUserModalOpen, editField, name, nickname }) {
     const editUserName = () => {
         axios
             .put(
-                `http://localhost:8081/api/members/${memberId}/name`,
+                `https://i10d209.p.ssafy.io/api/members/${memberId}/name`,
                 {
                     name: editName, // 데이터에 닉네임 추가
                 },
@@ -48,13 +53,15 @@ function EditProfile({ setEditUserModalOpen, editField, name, nickname }) {
                 console.log(error);
             });
 
+        setName(editName);
+
         closeModal();
     };
 
     const editUserNickname = () => {
         axios
             .put(
-                `http://localhost:8081/api/members/${memberId}/nickname`,
+                `https://i10d209.p.ssafy.io/api/members/${memberId}/nickname`,
                 {
                     nickname: editNickname,
                 },
@@ -72,6 +79,8 @@ function EditProfile({ setEditUserModalOpen, editField, name, nickname }) {
             .catch((error) => {
                 console.log(error);
             });
+
+        setNickname(editNickname);
 
         closeModal();
     };

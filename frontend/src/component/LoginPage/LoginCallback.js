@@ -29,7 +29,7 @@ function LoginCallback() {
                     return navigate("/get-user-nickname");
                 }
             } else {
-                return navigate("/intro");
+                return navigate("/");
             }
         }
 

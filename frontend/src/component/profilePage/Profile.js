@@ -12,7 +12,7 @@ function Profile({ setModalOpen }) {
     const [name, setName] = useState("undefined");
     const [nickname, setNickname] = useState("undefined");
     const [email, setEmail] = useState("undefined");
-    const [profile, setProfile] = useState("");
+    const [profile, setProfile] = useState(null);
     const [editUserModalOpen, setEditUserModalOpen] = useState(false);
     const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
 
@@ -27,7 +27,7 @@ function Profile({ setModalOpen }) {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8081/api/members/${memberId}`, {
+            .get(`https://i10d209.p.ssafy.io/api/members/${memberId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem(
                         "accessToken"
@@ -50,6 +50,10 @@ function Profile({ setModalOpen }) {
             .catch((error) => {
                 console.log(error);
             });
+        return () => {
+            // 캐시 삭제 작업 수행
+            window.location.reload(true);
+        };
     }, []);
 
     return (
@@ -150,13 +154,14 @@ function Profile({ setModalOpen }) {
                 <EditProfile
                     setEditUserModalOpen={setEditUserModalOpen}
                     editField={editField}
-                    name={name}
-                    nickname={nickname}
+                    setName={setName}
+                    setNickname={setNickname}
                 />
             )}
             {editProfileModalOpen && (
                 <EditProfileImg
                     setEditProfileModalOpen={setEditProfileModalOpen}
+                    setProfile={setProfile}
                     profile={profile}
                 />
             )}

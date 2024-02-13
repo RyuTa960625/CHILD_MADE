@@ -7,16 +7,14 @@ import Single from "./component/Single";
 import React, { useState } from "react";
 
 import Intro from "./component/IntroPage/Intro";
-import Signup from "./SignupPage/Signup";
 import Login from "./component/LoginPage/Login";
 // import Vidu from "./ViduTestT/ViduTest";
 import LoginCallback from "./component/LoginPage/LoginCallback";
 import GetUserNickname from "./component/LoginPage/GetUserNickname";
-import Main from "./MainT/MainT";
 import "./App.css";
 import ViewPage from "./component/viewPage/ViewPage";
 import Home from "./component/mainPage/Home";
-import ErrorPage from './component/errorPage/ErrorPage'
+import ErrorPage from "./component/errorPage/ErrorPage";
 
 import LoginErrorPage from "./component/loginerrorPage/LoginErrorPage";
 import PrivateRoute from "./component/PrivateRoute";
@@ -29,7 +27,10 @@ function App() {
             <BrowserRouter>
                 {showHeader && <Header />}
                 <Routes>
-                    <Route path="/loginerrorpage" element={<LoginErrorPage />}></Route>
+                    <Route
+                        path="/loginerrorpage"
+                        element={<LoginErrorPage />}
+                    ></Route>
                     <Route
                         path="/intro"
                         element={<Intro setShowHeader={setShowHeader} />}
@@ -57,9 +58,15 @@ function App() {
                             element={<RecordList />}
                         ></Route>
                         <Route path="/viewpage" element={<ViewPage />}></Route>
-                        <Route path="/makevideopage" element={<Single />}></Route>
-                        <Route path="/errorpage" element={<ErrorPage />}></Route>
-                    {/* <Route path="*" element={<Error />} /> */}
+                        <Route
+                            path="/makevideopage"
+                            element={<Single />}
+                        ></Route>
+                        <Route
+                            path="/errorpage"
+                            element={<ErrorPage />}
+                        ></Route>
+                        {/* <Route path="*" element={<Error />} /> */}
                     </Route>
                 </Routes>
             </BrowserRouter>

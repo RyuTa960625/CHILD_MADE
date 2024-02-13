@@ -5,14 +5,13 @@ import { useNavigate } from "react-router-dom";
 import BookList from "../booklistPage/BookList";
 
 export default function RecordList() {
-
     const [isOpen, setIsOpen] = useState(false);
     const [videoList, setVideoList] = useState([]);
     const [videoId, setVideoId] = useState(1);
     const [pageNum, setPageNum] = useState(0);
-    const [searchValue, setSearchValue] = useState('');
+    const [searchValue, setSearchValue] = useState("");
     const [videoIndex, setVideoIndex] = useState(0);
-    
+
     const handleChange = (event) => {
         setSearchValue(event.target.value);
     };
@@ -20,9 +19,8 @@ export default function RecordList() {
     useEffect(() => {
         loadVideoList();
         apiTest();
-        console.log(videoIndex)
-
-    }, [videoId, videoIndex])
+        console.log(videoIndex);
+    }, [videoId, videoIndex]);
 
     const [totalPage, setTotalPage] = useState(0);
 
@@ -33,85 +31,108 @@ export default function RecordList() {
     };
 
     const moveToViewPage = function () {
-        navigate("/viewpage", { state: { videoIndex : videoIndex, pageNum : pageNum } });
+        navigate("/viewpage", {
+            state: { videoIndex: videoIndex, pageNum: pageNum },
+        });
     };
 
-    const apiTest = function(){
-        axios.get(`https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum}&size=4&sort=id`)
-        .then(response=>{
-            console.log(response.data)
-            console.log(response.data.data.totalPages)
-            console.log(videoIndex)
-            console.log(videoId)
-        })
-    }
+    const apiTest = function () {
+        axios
+            .get(
+                `https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum}&size=4&sort=id`
+            )
+            .then((response) => {
+                console.log(response.data);
+                console.log(response.data.data.totalPages);
+                console.log(videoIndex);
+                console.log(videoId);
+            });
+    };
 
-    const loadVideoList = function(){
-        axios.get(`https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum}&size=4&sort=id`)
-        .then(response=>{
-            setVideoList(response.data.data.content)
-            console.log(videoList)
-            setTotalPage(response.data.data.totalPages);
-        })
-    }
+    const loadVideoList = function () {
+        axios
+            .get(
+                `https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum}&size=4&sort=id`
+            )
+            .then((response) => {
+                setVideoList(response.data.data.content);
+                console.log(videoList);
+                setTotalPage(response.data.data.totalPages);
+            });
+    };
 
     const handleSearch = () => {
-        axios.get(`https://i10d209.p.ssafy.io/api/videos/2?&keyword=${searchValue}&page=${pageNum}&size=4&sort=id`)
-            .then(response => {
+        axios
+            .get(
+                `https://i10d209.p.ssafy.io/api/videos/2?&keyword=${searchValue}&page=${pageNum}&size=4&sort=id`
+            )
+            .then((response) => {
                 // 검색 결과 처리
                 console.log(response.data);
                 console.log(searchValue);
                 setVideoList(response.data.data.content);
-                console.log(videoList)
+                console.log(videoList);
             })
-            .catch(error => {
+            .catch((error) => {
                 // 오류 처리
-                console.error('Error fetching search results:', error);
+                console.error("Error fetching search results:", error);
             });
     };
 
-    const moveNextPage = function(){
+    const moveNextPage = function () {
         // totalPage - 1을 한 이유: 페이지가 0부터 시작함(db의 인덱스 값을 그대로 넘기기 때문)
-        if(pageNum < totalPage-1){
-            console.log(pageNum)
+        if (pageNum < totalPage - 1) {
+            console.log(pageNum);
             // 원하는 페이지 번호로 변경하고
             setPageNum(pageNum + 1);
-            axios.get(`https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum + 1}&size=4&sort=id`)
-            .then(res => {
-                setVideoList(res.data.data.content);
-                console.log(res.data.data.content);
-            });
+            axios
+                .get(
+                    `https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${
+                        pageNum + 1
+                    }&size=4&sort=id`
+                )
+                .then((res) => {
+                    setVideoList(res.data.data.content);
+                    console.log(res.data.data.content);
+                });
         }
-    }
+    };
 
-    const movePrevPage = function(){
-        if(pageNum > 0){
-            console.log(pageNum)
+    const movePrevPage = function () {
+        if (pageNum > 0) {
+            console.log(pageNum);
             setPageNum(pageNum - 1);
-            axios.get(`https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum - 1}&size=4&sort=id`)
-            .then(res => {
-                setVideoList(res.data.data.content);
-                console.log(res.data.data.content);
-            });
+            axios
+                .get(
+                    `https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${
+                        pageNum - 1
+                    }&size=4&sort=id`
+                )
+                .then((res) => {
+                    setVideoList(res.data.data.content);
+                    console.log(res.data.data.content);
+                });
         }
-    }
+    };
 
-    const saveVideo = function(){
-        console.log(videoId)
-        axios.get(`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`)
-        .then(() => {
-            console.log(videoId);
-        })
-    }
+    const saveVideo = function () {
+        console.log(videoId);
+        axios
+            .get(`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`)
+            .then(() => {
+                console.log(videoId);
+            });
+    };
 
-    const deleteVideo = function(){
-        axios.delete(`https://i10d209.p.ssafy.io/api/videos/2/${videoId}`)
-        .then(() => {
-            loadVideoList();
-            openModal();
-        })
-    }
-    
+    const deleteVideo = function () {
+        axios
+            .delete(`https://i10d209.p.ssafy.io/api/videos/2/${videoId}`)
+            .then(() => {
+                loadVideoList();
+                openModal();
+            });
+    };
+
     return (
         // 전체  배경
         <div className={styles.main_container}>
@@ -171,7 +192,8 @@ export default function RecordList() {
                                 동화제목 : {videoList[videoIndex].videoTitle}
                             </h1>
                             <h1 className={styles.info_text}>
-                                저장날짜 : {videoList[videoIndex].createdAt.slice(0, 10)}
+                                저장날짜 :{" "}
+                                {videoList[videoIndex].createdAt.slice(0, 10)}
                             </h1>
                             <h1 className={styles.info_text}>
                                 나의 역할 : {videoList[videoIndex].roleName}
@@ -187,13 +209,28 @@ export default function RecordList() {
                                     동화책 보러가기
                                 </h1>
                             </div>
-                            <div className={styles.video_btn} onClick={()=>{ saveVideo(); }}>
-                                <a href={`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`} className={styles.btn_text}>동화책 저장하기</a>
+                            <div
+                                className={styles.video_btn}
+                                onClick={() => {
+                                    saveVideo();
+                                }}
+                            >
+                                <a
+                                    href={`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`}
+                                    className={styles.btn_text}
+                                >
+                                    동화책 저장하기
+                                </a>
                                 {/* <h1 className={styles.btn_text}>
                                     동화책 저장하기
                                 </h1> */}
                             </div>
-                            <div className={styles.video_btn} onClick={()=>{ deleteVideo(); }}>
+                            <div
+                                className={styles.video_btn}
+                                onClick={() => {
+                                    deleteVideo();
+                                }}
+                            >
                                 <h1 className={styles.btn_text}>
                                     동화책 삭제하기
                                 </h1>
@@ -211,10 +248,12 @@ export default function RecordList() {
                 </div>
 
                 <div className={styles.search_container}>
-                    <input className={styles.search_box} 
-                        value={searchValue} 
+                    <input
+                        className={styles.search_box}
+                        value={searchValue}
                         onChange={handleChange}
-                        placeholder="도서명을 입력하세요"></input>
+                        placeholder="도서명을 입력하세요"
+                    ></input>
                     <img
                         className={styles.find}
                         src="../imgs/find2M.png"
@@ -259,10 +298,7 @@ export default function RecordList() {
                                         >
                                             <img
                                                 className={styles.book_img}
-                                                src={
-                                                    videoList[index]
-                                                        .imageUrl
-                                                }
+                                                src={videoList[index].imageUrl}
                                                 alt="책 표지"
                                             />
                                         </div>

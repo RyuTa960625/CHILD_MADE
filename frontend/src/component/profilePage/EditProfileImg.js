@@ -2,11 +2,12 @@ import React, { useRef, useState } from "react";
 import styles from "./EditProfileImg.module.css";
 import axios from "axios";
 
-function EditProfileImg({ setEditProfileModalOpen, profile }) {
+function EditProfileImg({ setEditProfileModalOpen, setProfile, profile }) {
     const memberId = localStorage.getItem("memberId");
     const modalBackground = useRef();
     const fileInputRef = useRef();
     const [newProfile, setNewProfile] = useState(profile);
+    const [editProfile, setEditProfile] = useState();
 
     // const handleFileChange = (e) => {
     //     const file = e.target.files[0];
@@ -18,24 +19,41 @@ function EditProfileImg({ setEditProfileModalOpen, profile }) {
     //     }
     // };
 
+    // const handleFileChange = (e) => {
+    //     const file = e.target.files[0];
+    //     // setNewProfile(file);
+
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onload = (event) => {
+    //             setNewProfile(file);
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    //     // console.log(newProfile);
+    // };
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        // setNewProfile(file);
+        setEditProfile(file);
 
         if (file) {
             const reader = new FileReader();
             reader.onload = (event) => {
-                setNewProfile(file);
+                setNewProfile(event.target.result);
+                setProfile(event.target.result);
             };
             reader.readAsDataURL(file);
         }
-        console.log(newProfile);
+
+        // setProfile(file);
     };
 
     const handleEditProfile = () => {
         console.log(localStorage.getItem("accessToken"));
         const formData = new FormData();
-        formData.append("file", newProfile);
+        formData.append("file", editProfile);
+        console.log(formData);
         axios
             .put(
                 `https://i10d209.p.ssafy.io/api/members/${memberId}/profile`,
