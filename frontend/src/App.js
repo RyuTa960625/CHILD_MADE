@@ -57,7 +57,7 @@ function App() {
                             element={<RecordList />}
                         ></Route>
                         <Route path="/viewpage" element={<ViewPage />}></Route>
-                        <Route path="/single" element={<Single />}></Route>
+                        <Route path="/makevideopage" element={<Single />}></Route>
                         <Route path="/errorpage" element={<ErrorPage />}></Route>
                     {/* <Route path="*" element={<Error />} /> */}
                     </Route>
