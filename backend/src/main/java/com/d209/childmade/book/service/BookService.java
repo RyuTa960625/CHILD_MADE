@@ -22,8 +22,14 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
-    public Page<Book> findBookList(Pageable pageable) {
-        Page<Book> page = bookRepository.findAll(pageable);
+    public Page<Book> findBookList(Pageable pageable, String title) {
+        Page<Book> page = null;
+        if(title.isEmpty()){
+            page = bookRepository.findAll(pageable);
+        }
+        else{
+            page = bookRepository.findAllByTitle(pageable,title);
+        }
         if(page.isEmpty()){
             throw new CustomBadRequestException(ErrorType.NOT_FOUND_BOOK_LIST);
         }

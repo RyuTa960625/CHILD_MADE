@@ -2,7 +2,6 @@ package com.d209.childmade.book.controller;
 
 import com.d209.childmade._common.response.SuccessResponse;
 import com.d209.childmade._common.response.SuccessType;
-import com.d209.childmade.book.dto.request.ScriptListRequestDto;
 import com.d209.childmade.book.dto.response.BookListResponseDto;
 import com.d209.childmade.book.dto.response.RoleListResponseDto;
 import com.d209.childmade.book.dto.response.ScriptListResponseDto;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +28,13 @@ public class BookController {
 
     @GetMapping("/")
     public SuccessResponse<Page<BookListResponseDto>> bookList(Pageable pageable) {
-        Page<Book> page = bookService.findBookList(pageable);
+        Page<Book> page = bookService.findBookList(pageable,"");
+        return SuccessResponse.of(SuccessType.BOOK_LIST_SUCCESSFULLY,page.map(BookListResponseDto::of));
+    }
+
+    @GetMapping("/{book-title}")
+    public SuccessResponse<Page<BookListResponseDto>> bookListByTitle(@PathVariable("book-title")String title,Pageable pageable) {
+        Page<Book> page = bookService.findBookList(pageable,title);
         return SuccessResponse.of(SuccessType.BOOK_LIST_SUCCESSFULLY,page.map(BookListResponseDto::of));
     }
 
