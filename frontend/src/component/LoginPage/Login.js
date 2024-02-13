@@ -50,7 +50,7 @@ function Login({ setShowHeader }) {
 
 const kakaoLogin = () => {
     window.location.replace(
-        "http://localhost:8081/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/social-login-callback&mode=login"
+        "https://i10d209.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=https://i10d209.p.ssafy.io/social-login-callback&mode=login"
     );
     // axios.get("http://localhost:8080/oauth2/authorization/kakao?redirect_uri=http://localhost:3000&mode=login")
     //   .then((response)=>{
@@ -63,7 +63,7 @@ const kakaoLogin = () => {
 
 const googleLogin = () => {
     window.location.replace(
-        "http://localhost:8081/oauth2/authorization/google?redirect_uri=http://localhost:3000/social-login-callback&mode=login"
+        "https://i10d209.p.ssafy.io/oauth2/authorization/google?redirect_uri=https://i10d209.p.ssafy.io/social-login-callback&mode=login"
     );
     //   axios.get("http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000&mode=login")
     //   .then((response)=>{
