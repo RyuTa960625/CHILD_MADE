@@ -81,7 +81,7 @@ public class RoomService {
         Room room = null;
         String token = null;
         Session session = null;
-
+        String sessionId = null;
         Pageable pageable = PageRequest.of(0, 1);
         List<Room> findRoom = roomRepository.findByBookIdAndRoomStatusAndNotRoleIdOrderByCreatedAtAsc(roomJoinRequestDto.getBookId(),roomJoinRequestDto.getRoleId(),pageable);
 
@@ -96,18 +96,19 @@ public class RoomService {
         }
         role = findRole.get();
         member = findMember.get();
+        System.out.println(role.getId()+"///////"+member.getId());
         if(findRoom.isEmpty()){
 
             //동화와 역할에 맞는 Room이 존재하지 않는 경우
-            String uuid = UUID.randomUUID().toString();
+            sessionId = UUID.randomUUID().toString();
             Map<String, Object> sessionParams = new HashMap<>();
 
-            sessionParams.put("customSessionId",uuid);
+            sessionParams.put("customSessionId",sessionId);
             SessionProperties sessionProperties = SessionProperties.fromJson(sessionParams).build();
             session = openvidu.createSession(sessionProperties);
 
             Optional<Book> findBook = bookRepository.findById(roomJoinRequestDto.getBookId());
-            
+
             if(findBook.isEmpty()){
                 throw new CustomBadRequestException(ErrorType.NOT_FOUND_BOOK);
             }
@@ -120,7 +121,7 @@ public class RoomService {
         else{
             //동화와 역할에 맞는 Room이 존재하는 경우
             room = findRoom.get(0);
-            String sessionId = room.getRoomSessionName();
+            sessionId = room.getRoomSessionName();
             session = openvidu.getActiveSession(sessionId);
             //찾은 세션이 현재 사용되는 세션이아닐 경우 오류 처리
 
@@ -131,6 +132,8 @@ public class RoomService {
 
         //찾은 방 세션에 접근할 수 있는 토큰 발급
         Map<String, Object> params = new HashMap<>();
+        params.put("sessionName", sessionId);
+        params.put("useToken", true);
         ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
         Connection connection = session.createConnection(properties);
         token = connection.getToken();
