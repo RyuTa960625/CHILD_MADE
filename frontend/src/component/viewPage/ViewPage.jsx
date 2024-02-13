@@ -6,21 +6,22 @@ import axios from "axios";
 export default function ViewPage() {
     
     const location = useLocation();
-    const videoId = location.state.videoId ? location.state.videoId : null;
-    const pageNum = location.state.pageNum ? location.state.pageNum : null;
+    const videoIndex = location.state ? location.state.videoIndex : null;
+    const pageNum = location.state ? location.state.pageNum : null;
     const [videoUrl, setVideoUrl] = useState('https://pj1.s3.ap-northeast-2.amazonaws.com/test.mp4');
 
     const loadVideoUrl = function(){
-        axios.get(`https://i10d209.p.ssafy.io/api/videos/2?page=${pageNum}&size=4&sort=id`)
+        axios.get(`https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum}&size=4&sort=id`)
         .then(response=>{
-            console.log(response.data.data.content[videoId - 2].videoUrl)
-            setVideoUrl(response.data.data.content[videoId - 2].videoUrl)
+            console.log(response.data.data.content[videoIndex].videoUrl)
+            setVideoUrl(response.data.data.content[videoIndex].videoUrl)
         })
     }
 
     useEffect(() => {
+        console.log('\n\n\n\n'+ pageNum + '\n\n\n\n' + videoIndex)
         loadVideoUrl();
-    }, [loadVideoUrl]);
+    }, []);
 
     useEffect(() => {
         console.log(videoUrl)
