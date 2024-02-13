@@ -9,17 +9,23 @@ const BookList = function(){
     const navigate = useNavigate();
     const playMode = location.state ? location.state.playMode : null;
     const [bookId, setBookId] = useState(1);
+    const [roleId, setRoleId] = useState(1);
     const roleStyles = [styles.character_btn1, styles.character_btn2, styles.character_btn3, styles.character_btn4]
 
     useEffect(() => {
         loadBookList();
         loadBookInfo();
         apiTest();
-        console.log(playMode)
-        if(!playMode){
-            navigate('/errorpage')
+        console.log(playMode);
+        console.log(roleId)
+        if (!playMode) {
+            navigate('/errorpage');
         }
-    }, [bookId])
+    }, [bookId, roleId]);
+
+    const moveToSinglePage = function(){
+        navigate('/makevideopage', { state: { playMode : playMode, bookId : bookId, roleId : roleId} });
+    }
     // step1. "npm install axios" 를 터미널에 입력한다. v
     // step2. import axios from 'axios' 를 통해 임포트한다. v
     // step3. 요청하고자 하는 api 메서드에 따라 get, post, put, delete
@@ -134,7 +140,7 @@ const BookList = function(){
                                         return(
                                             <>
                                                 <div className={styles.role_container}>
-                                                    <div className={roleStyles[index]}>
+                                                    <div className={roleStyles[index]} onClick={()=>{ setRoleId(data.roleId); }}>
                                                         <img className={styles.character_btn_img} src={data.imageUrl} alt='역할1'></img>
                                                     </div>
                                                     <h2 className={styles.role} style={{marginTop : 15}}>{data.roleName}</h2>
@@ -145,7 +151,7 @@ const BookList = function(){
                                 }
                                 </div>
                             </div>
-                            <div className={styles.start_btn}>
+                            <div className={styles.start_btn} onClick={moveToSinglePage}>
                                 <h1 className={styles.start_text}>시작하기</h1>
                             </div>
                         </div>

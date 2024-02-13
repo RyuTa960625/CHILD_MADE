@@ -6,8 +6,8 @@ import axios from "axios";
 export default function ViewPage() {
     
     const location = useLocation();
-    const videoId = location.state ? location.state.videoId : null;
-    const pageNum = location.state ? location.state.pageNum : null;
+    const videoId = location.state.videoId ? location.state.videoId : null;
+    const pageNum = location.state.pageNum ? location.state.pageNum : null;
     const [videoUrl, setVideoUrl] = useState('https://pj1.s3.ap-northeast-2.amazonaws.com/test.mp4');
 
     const loadVideoUrl = function(){
