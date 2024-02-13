@@ -54,7 +54,10 @@ export default function RecordList() {
             // 원하는 페이지 번호로 변경하고
             setPageNum(pageNum + 1);
             axios.get(`https://i10d209.p.ssafy.io/api/videos/2?page=${pageNum + 1}&size=4&sort=id`)
-            .then(res => setVideoList(res.data.data.content));
+            .then(res => {
+                setVideoList(res.data.data.content);
+                console.log(res.data.data.content);
+            });
         }
     }
 
@@ -63,7 +66,10 @@ export default function RecordList() {
             console.log(pageNum)
             setPageNum(pageNum - 1);
             axios.get(`https://i10d209.p.ssafy.io/api/videos/2?page=${pageNum - 1}&size=4&sort=id`)
-            .then(res => setVideoList(res.data.data.content));
+            .then(res => {
+                setVideoList(res.data.data.content);
+                console.log(res.data.data.content);
+            });
         }
     }
 
@@ -126,18 +132,18 @@ export default function RecordList() {
 
                         <img
                             className={styles.video_img}
-                            src={videoList[videoId - 1].imageUrl}
+                            src={videoList[videoId - 2].imageUrl}
                             alt="동영상 썸네일"
                         ></img>
                         <div className={styles.video_info}>
                             <h1 className={styles.info_text}>
-                                동화제목 : {videoList[videoId - 1].videoTitle}
+                                동화제목 : {videoList[videoId - 2].videoTitle}
                             </h1>
                             <h1 className={styles.info_text}>
-                                저장날짜 : {videoList[videoId - 1].createdAt.slice(0, 10)}
+                                저장날짜 : {videoList[videoId - 2].createdAt.slice(0, 10)}
                             </h1>
                             <h1 className={styles.info_text}>
-                                나의 역할 : {videoList[videoId - 1].roleName}
+                                나의 역할 : {videoList[videoId - 2].roleName}
                             </h1>
                         </div>
 

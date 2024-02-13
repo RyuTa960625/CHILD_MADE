@@ -14,6 +14,7 @@ const BookList = function(){
     useEffect(() => {
         loadBookList();
         loadBookInfo();
+        apiTest();
         console.log(playMode)
         if(!playMode){
             navigate('/errorpage')
