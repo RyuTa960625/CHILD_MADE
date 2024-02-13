@@ -7,5 +7,5 @@ COPY . .
 RUN npm run build
 RUN npm install -g serve
 EXPOSE 3000
-ENTRYPOINT ["serve", "-l","3000","-s", "dist"]
-# ENTRYPOINT ["npm", "start"]
+# ENTRYPOINT ["serve", "-l","3000","-s", "dist"]
+ENTRYPOINT ["npm", "start"]
