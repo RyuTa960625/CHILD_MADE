@@ -17,7 +17,7 @@ function GetUserNickname() {
     const handleSubmit = () => {
         axios
             .put(
-                `http://localhost:8080/api/members/${memberId}/nickname`,
+                `https://i10d209.p.ssafy.io/api/members/${memberId}/nickname`,
                 {
                     nickname: nickname,
                 },

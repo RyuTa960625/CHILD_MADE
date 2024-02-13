@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import styles from "./Hearder.module.css";
-import Profile from "../Profile";
+import Profile from "../profilePage/Profile";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -22,7 +22,7 @@ const Header = function () {
         //     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         // });
         axios
-            .post(`http://localhost:8080/api/auth/logout`, null, {
+            .post(`https://i10d209.p.ssafy.io/api/auth/logout`, null, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem(
                         "accessToken"
@@ -39,7 +39,7 @@ const Header = function () {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("memberId");
 
-        navigate("/intro");
+        navigate("/");
     };
 
     return (

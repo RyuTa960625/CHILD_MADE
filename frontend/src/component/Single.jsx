@@ -3,15 +3,12 @@ import styles from "./Single.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { OpenVidu } from "openvidu-browser";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-
-import MainVideo from "./MainVideo"; // 방장 화면
-import SubVideo from "./SubVideo"; // 참가자 화면
 
 // 환경 변수에 따라 애플리케이션 서버 URL을 설정합니다.
 const APPLICATION_SERVER_URL =
-    process.env.NODE_ENV === "production" ? "" : "http://localhost:8080/";
+    process.env.NODE_ENV === "production" ? "" : "https://i10d209.p.ssafy.io/";
 
 export default function Single() {
     // 상태 변수들을 선언합니다.
@@ -26,8 +23,72 @@ export default function Single() {
 
     // 역할 id와 책 id 변수로 설정했는데, 아래측에서 먹히지가 않는다.
     // 손 봐야함
+    // 규리한테 물어보기
     const roleId = 1;
     const bookId = 1;
+
+    // 화면 출력 관련
+    const videoRef = useRef(null); // 비디오 요소를 참조하기 위한 useRef 훅
+
+    // 녹화 관련
+    const [recorder, setRecorder] = useState(null); // 녹화기
+    const [recordedChunks, setRecordedChunks] = useState([]);
+
+    // 녹화 시작 함수
+    const startRecording = () => {
+        if (
+            mainStreamManager &&
+            mainStreamManager.stream &&
+            mainStreamManager.stream.getMediaStream()
+        ) {
+            const mediaStream = mainStreamManager.stream.getMediaStream(); // 웹캠 스트림
+            // const canvasStream = canvasRef.current.captureStream(); // 얼굴인식을 그린 스트림
+
+            // 녹화 옵션
+            const options = {
+                mimeType: "video/webm", // 녹화를 위한 코덱
+                mirror: true, // 거울모드
+            };
+
+            const recorder = new MediaRecorder(mediaStream, options); // 녹화할 스트림과 옵션을 설정
+
+            recorder.ondataavailable = (event) => {
+                recordedChunks.push(event.data);
+            };
+
+            recorder.onstop = () => {
+                setRecordedChunks(recordedChunks);
+            };
+
+            recorder.start();
+            console.log("녹화 시작해라");
+            setRecorder(recorder);
+        }
+    };
+
+    // 녹화 중지 함수
+    const stopRecording = () => {
+        if (recorder) {
+            recorder.stop(); // 녹화 중지
+            console.log("녹화 그만해라");
+            recorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    const recordedBlob = new Blob([event.data], {
+                        type: "video/webm",
+                    });
+                    const url = URL.createObjectURL(recordedBlob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "테스트가보자.webm";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }
+            };
+        }
+    };
+
+    // --------------------------------------------------------------
 
     useEffect(() => {
         // 컴포넌트가 마운트되었을 때 이벤트 리스너를 추가합니다.
@@ -93,8 +154,7 @@ export default function Single() {
                 publishVideo: true,
                 resolution: "1920x1080", // 해상도
                 frameRate: 30, // 주사율, 싸트북에서 30이상 안됌
-                // insertMode: "APPEND",
-                mirror: true, // 좌우반전
+                mirror: true, // 거울모드
             });
 
             newSession.publish(publisher); // 발행
@@ -143,10 +203,29 @@ export default function Single() {
         return response.data.data.token; // 세션 ID 반환
     };
 
+    useEffect(() => {
+        const resizeCanvas = () => {
+            const videoEl = videoRef.current;
+            // const canvasEl = chromakeyRef.current;
+
+            // if (videoEl && canvasEl) {
+            //   canvasEl.width = videoEl.videoWidth;
+            //   canvasEl.height = videoEl.videoHeight;
+            // }
+        };
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas(); // 초기에도 크기를 조정해줍니다.
+
+        return () => {
+            window.removeEventListener("resize", resizeCanvas);
+        };
+    }, []);
+
     return (
         // 전체 배경
         <div className={styles.bg}>
-            {/* 별, CSS 관련 클래스 2개 이상일 때 */}
+            {/* 별, CSS 관련 클래스가 2개 이상일 때 아래와 같은 방법으로 사용 가능 */}
             <div
                 className={`${styles.star} ${styles.star1} ${styles.blinking}`}
             ></div>
@@ -156,45 +235,73 @@ export default function Single() {
 
             <Container>
                 <Row>
+                    {/* 메인 화면 COLUMN */}
                     <Col className={styles.container_1} md="9">
-                        {/* 메인 화면 */}
-                        <div className={styles.main}>
+                        <button onClick={startRecording}>녹화 시작</button>
+                        <button onClick={stopRecording}>녹화 중지</button>
+                        <div
+                            className={styles.main_container}
+                            id="main_container"
+                        >
                             {/* 메인 비디오 화면 */}
                             {mainStreamManager ? (
-                                <MainVideo
-                                    streamManager={mainStreamManager}
-                                    UserName={memberId}
+                                <video
+                                    className={styles.main_video}
+                                    streammanager={publisher}
+                                    autoPlay={true}
+                                    ref={videoRef}
                                 />
                             ) : (
                                 "화면 로딩중..."
                             )}
+
+                            {/* 역할 태그 */}
+                            <div
+                                className={styles.main_roleTag}
+                            >{`역할 - ${roleId}`}</div>
                         </div>
 
-                        {/* 대사 나오는 박스 */}
+                        {/* 대사 관련 div */}
                         <div className={styles.scriptBox}>대사 나올거임</div>
 
                         {/* 다른 참가자 화면 */}
                         <div className={styles.container_2}>
-                            {/* 참가자가 있으면 화면이 출력, 참가자가 없을 시 대기중이라는 문구 출력 */}
+                            {/* 참가자 배열의 길이에 따라 참가자 화면을 출력 */}
+
                             <div className={styles.player}>
+                                {/* 참가자 비디오 1 */}
                                 {subscribers.length > 0 ? (
-                                    <SubVideo streamManager={subscribers[0]} />
+                                    <video
+                                        streamManager={subscribers[0]}
+                                        autoPlay={true}
+                                        ref={videoRef}
+                                    />
                                 ) : (
                                     "참가자 대기중"
                                 )}
                             </div>
 
                             <div className={styles.player}>
+                                {/* 참가자 비디오 2 */}
                                 {subscribers.length > 1 ? (
-                                    <SubVideo streamManager={subscribers[1]} />
+                                    <video
+                                        streamManager={subscribers[1]}
+                                        autoPlay={true}
+                                        ref={videoRef}
+                                    />
                                 ) : (
                                     "참가자 대기중"
                                 )}
                             </div>
 
                             <div className={styles.player}>
+                                {/* 참가자 비디오 3 */}
                                 {subscribers.length > 2 ? (
-                                    <SubVideo streamManager={subscribers[2]} />
+                                    <video
+                                        streamManager={subscribers[2]}
+                                        autoPlay={true}
+                                        ref={videoRef}
+                                    />
                                 ) : (
                                     "참가자 대기중"
                                 )}
@@ -206,10 +313,11 @@ export default function Single() {
                         </div>
                     </Col>
 
+                    {/* 도우미 관련 컨테이너 */}
                     <Col className={styles.container_3} md="3">
-                        {/* 도우미 캐릭터 말풍선 */}
+                        {/* 도우미 말풍선 */}
                         <div className={styles.bubble}>
-                            {/* 도우미 캐릭터 대사 */}
+                            {/* 도우미 대사 */}
                             <div className={styles.helper_script}>
                                 대사 테스트
                             </div>

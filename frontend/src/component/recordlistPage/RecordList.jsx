@@ -2,12 +2,24 @@ import { useEffect, useState } from "react";
 import styles from "./RecordList.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import BookList from "../booklistPage/BookList";
 
 export default function RecordList() {
-    useEffect(() => {}, []);
 
     const [isOpen, setIsOpen] = useState(false);
-    const [bookList, setBookList] = useState([]);
+    const [videoList, setVideoList] = useState([]);
+    const [videoId, setVideoId] = useState(1);
+    const [pageNum, setPageNum] = useState(0);
+
+    useEffect(() => {
+        loadVideoList();
+        apiTest();
+        // loadVideoInfo();
+
+    }, [videoId])
+
+    const [totalPage, setTotalPage] = useState(0);
+
     const navigate = useNavigate();
 
     const openModal = function () {
@@ -15,58 +27,60 @@ export default function RecordList() {
     };
 
     const moveToViewPage = function () {
-        navigate("/viewpage");
+        navigate("/viewpage", { state: { videoId : videoId, pageNum : pageNum } });
     };
 
-    // const apiTest = function(){
-    //     axios.get('http://localhost:8080/api/books/')
-    //     .then(response=>{
-    //         console.log(response.data)
+    const apiTest = function(){
+        axios.get(`https://i10d209.p.ssafy.io/api/videos/2?page=${pageNum}&size=4&sort=id`)
+        .then(response=>{
+            console.log(response.data.data.content)
+            console.log(response.data.data.totalPages)
+            console.log(videoId)
+        })
+    }
 
-    //     })
-    // }
+    const loadVideoList = function(){
+        axios.get(`https://i10d209.p.ssafy.io/api/videos/2?page=${pageNum}&size=4&sort=id`)
+        .then(response=>{
+            setVideoList(response.data.data.content)
+            setTotalPage(response.data.data.totalPages);
+        })
+    }
 
-    // const loadBookList = function(){
-    //     axios.get('http://localhost:8080/api/books/')
-    //     .then(response=>{
-    //         console.log(response)
-    //         setBookList(response.data.data.content)
-    //     })
-    // }
+    const moveNextPage = function(){
+        // totalPage - 1을 한 이유: 페이지가 0부터 시작함(db의 인덱스 값을 그대로 넘기기 때문)
+        if(pageNum < totalPage-1){
+            console.log(pageNum)
+            // 원하는 페이지 번호로 변경하고
+            setPageNum(pageNum + 1);
+            axios.get(`https://i10d209.p.ssafy.io/api/videos/2?page=${pageNum + 1}&size=4&sort=id`)
+            .then(res => {
+                setVideoList(res.data.data.content);
+                console.log(res.data.data.content);
+            });
+        }
+    }
 
-    const 서버에서온데이터 = [
-        {
-            imageUrl:
-                "https://pj1.s3.ap-northeast-2.amazonaws.com/img/cover/1.png",
-            title: "해님과 달님",
-            story: "해님과 달님, 그 두 개의 존재는 어둠과 빛, 미지의 영역과 밝히기 어려운 비밀을 지닌다. 해님은 뜨거운 불길과 함께 땅을 불태우며, 끝없이 번뜩이는 불빛으로 모든 것을 드러내는 존재다. 그러나 그 불꽃 속에는 타오르는 고통과 끝없는 욕망이 감춰져 있다. 한편 달님은 어둠 속에서 나타나는 정적이고 차가운 빛이다. 그 눈에 비치는 빛은 불안과 심연의 신비로움을 안고 있다. 달님은 끊임없이 변하는 얼굴을 갖고 있어서 때로는 숨겨진 고요와 휴식, 때로는 어둠의 깊은 비밀을 드러내는 존재이다. 해님과 달님, 양립하는 두 세계의 존재는 우리에게 숨겨진 현실의 양면을 상징한다. 그들의 존재는 무서움과 경외, 놀라움과 감동을 동시에 안겨준다. 이 두 날개를 가진 존재들은 우리가 알지 못하는 세계의 문을 열어주며, 우리에게 새로운 이야기를 간직하고 있다.",
-            savedDate: "2024-02-14",
-            time: "12분 30초",
-            myRole: "우주",
-        },
+    const movePrevPage = function(){
+        if(pageNum > 0){
+            console.log(pageNum)
+            setPageNum(pageNum - 1);
+            axios.get(`https://i10d209.p.ssafy.io/api/videos/2?page=${pageNum - 1}&size=4&sort=id`)
+            .then(res => {
+                setVideoList(res.data.data.content);
+                console.log(res.data.data.content);
+            });
+        }
+    }
 
-        {
-            imageUrl:
-                "https://pj1.s3.ap-northeast-2.amazonaws.com/img/cover/1.png",
-            title: "해님과 달님",
-            story: "해님과 달님, 그 두 개의 존재는 어둠과 빛, 미지의 영역과 밝히기 어려운 비밀을 지닌다. 해님은 뜨거운 불길과 함께 땅을 불태우며, 끝없이 번뜩이는 불빛으로 모든 것을 드러내는 존재다. 그러나 그 불꽃 속에는 타오르는 고통과 끝없는 욕망이 감춰져 있다. 한편 달님은 어둠 속에서 나타나는 정적이고 차가운 빛이다. 그 눈에 비치는 빛은 불안과 심연의 신비로움을 안고 있다. 달님은 끊임없이 변하는 얼굴을 갖고 있어서 때로는 숨겨진 고요와 휴식, 때로는 어둠의 깊은 비밀을 드러내는 존재이다. 해님과 달님, 양립하는 두 세계의 존재는 우리에게 숨겨진 현실의 양면을 상징한다. 그들의 존재는 무서움과 경외, 놀라움과 감동을 동시에 안겨준다. 이 두 날개를 가진 존재들은 우리가 알지 못하는 세계의 문을 열어주며, 우리에게 새로운 이야기를 간직하고 있다.",
-        },
+    const saveVideo = function(){
+        axios.get(`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`)
+    }
 
-        {
-            imageUrl:
-                "https://pj1.s3.ap-northeast-2.amazonaws.com/img/cover/1.png",
-            title: "해님과 달님",
-            story: "해님과 달님, 그 두 개의 존재는 어둠과 빛, 미지의 영역과 밝히기 어려운 비밀을 지닌다. 해님은 뜨거운 불길과 함께 땅을 불태우며, 끝없이 번뜩이는 불빛으로 모든 것을 드러내는 존재다. 그러나 그 불꽃 속에는 타오르는 고통과 끝없는 욕망이 감춰져 있다. 한편 달님은 어둠 속에서 나타나는 정적이고 차가운 빛이다. 그 눈에 비치는 빛은 불안과 심연의 신비로움을 안고 있다. 달님은 끊임없이 변하는 얼굴을 갖고 있어서 때로는 숨겨진 고요와 휴식, 때로는 어둠의 깊은 비밀을 드러내는 존재이다. 해님과 달님, 양립하는 두 세계의 존재는 우리에게 숨겨진 현실의 양면을 상징한다. 그들의 존재는 무서움과 경외, 놀라움과 감동을 동시에 안겨준다. 이 두 날개를 가진 존재들은 우리가 알지 못하는 세계의 문을 열어주며, 우리에게 새로운 이야기를 간직하고 있다.",
-        },
-
-        {
-            imageUrl:
-                "https://pj1.s3.ap-northeast-2.amazonaws.com/img/cover/1.png",
-            title: "해님과 달님",
-            story: "해님과 달님, 그 두 개의 존재는 어둠과 빛, 미지의 영역과 밝히기 어려운 비밀을 지닌다. 해님은 뜨거운 불길과 함께 땅을 불태우며, 끝없이 번뜩이는 불빛으로 모든 것을 드러내는 존재다. 그러나 그 불꽃 속에는 타오르는 고통과 끝없는 욕망이 감춰져 있다. 한편 달님은 어둠 속에서 나타나는 정적이고 차가운 빛이다. 그 눈에 비치는 빛은 불안과 심연의 신비로움을 안고 있다. 달님은 끊임없이 변하는 얼굴을 갖고 있어서 때로는 숨겨진 고요와 휴식, 때로는 어둠의 깊은 비밀을 드러내는 존재이다. 해님과 달님, 양립하는 두 세계의 존재는 우리에게 숨겨진 현실의 양면을 상징한다. 그들의 존재는 무서움과 경외, 놀라움과 감동을 동시에 안겨준다. 이 두 날개를 가진 존재들은 우리가 알지 못하는 세계의 문을 열어주며, 우리에게 새로운 이야기를 간직하고 있다.",
-        },
-    ];
-
+    const deleteVideo = function(){
+        axios.delete(`https://i10d209.p.ssafy.io/api/videos/2${videoId}`) 
+    }
+    
     return (
         // 전체  배경
         <div className={styles.main_container}>
@@ -118,18 +132,18 @@ export default function RecordList() {
 
                         <img
                             className={styles.video_img}
-                            src={서버에서온데이터[0].imageUrl}
+                            src={videoList[videoId - 2].imageUrl}
                             alt="동영상 썸네일"
                         ></img>
                         <div className={styles.video_info}>
                             <h1 className={styles.info_text}>
-                                동화제목 : {서버에서온데이터[0].title}
+                                동화제목 : {videoList[videoId - 2].videoTitle}
                             </h1>
                             <h1 className={styles.info_text}>
-                                저장날짜 : {서버에서온데이터[0].savedDate}
+                                저장날짜 : {videoList[videoId - 2].createdAt.slice(0, 10)}
                             </h1>
                             <h1 className={styles.info_text}>
-                                나의 역할 : {서버에서온데이터[0].myRole}
+                                나의 역할 : {videoList[videoId - 2].roleName}
                             </h1>
                         </div>
 
@@ -142,12 +156,12 @@ export default function RecordList() {
                                     동화책 보러가기
                                 </h1>
                             </div>
-                            <div className={styles.video_btn}>
+                            <div className={styles.video_btn} onClick={saveVideo}>
                                 <h1 className={styles.btn_text}>
                                     동화책 저장하기
                                 </h1>
                             </div>
-                            <div className={styles.video_btn}>
+                            <div className={styles.video_btn} onClick={deleteVideo}>
                                 <h1 className={styles.btn_text}>
                                     동화책 삭제하기
                                 </h1>
@@ -183,29 +197,33 @@ export default function RecordList() {
                                 src="/imgs/pmbtnM.png"
                                 alt="왼쪽 페이지 이동"
                                 className={styles.left_btn}
+                                onClick={movePrevPage}
                             ></img>
                             <img
                                 src="/imgs/pmbtn2M.png"
                                 alt="오른쪽 페이지 이동"
                                 className={styles.right_btn}
+                                onClick={moveNextPage}
                             ></img>
                         </div>
 
                         <div className={styles.bookShelf_container}>
                             {/* 동화책 목록 */}
-                            {서버에서온데이터.map((data, index) => {
+                            {videoList.map((data, index) => {
                                 return (
                                     <>
                                         <div
                                             className={styles.book_container}
                                             onClick={() => {
                                                 openModal();
+                                                apiTest();
+                                                setVideoId(data.id);
                                             }}
                                         >
                                             <img
                                                 className={styles.book_img}
                                                 src={
-                                                    서버에서온데이터[index]
+                                                    videoList[index]
                                                         .imageUrl
                                                 }
                                                 alt="책 표지"
