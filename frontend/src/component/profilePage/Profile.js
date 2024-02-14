@@ -13,6 +13,7 @@ function Profile({ setModalOpen }) {
     const [nickname, setNickname] = useState("undefined");
     const [email, setEmail] = useState("undefined");
     const [profile, setProfile] = useState(null);
+    const [providerType, setProviderType] = useState("undifined")
     const [editUserModalOpen, setEditUserModalOpen] = useState(false);
     const [editProfileModalOpen, setEditProfileModalOpen] = useState(false);
 
@@ -25,65 +26,92 @@ function Profile({ setModalOpen }) {
         setEditProfileModalOpen(true);
     };
 
-    const unregister = () => {
-        axios
-            .delete(`https://i10d209.p.ssafy.io/api/members`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem(
-                        "accessToken"
-                    )}`,
-                },
-            })
-            .then((response) => {
-                // console.log(response.data.msg, response.data.statusCode);
-                console.log(
-                    response.data.data.name,
-                    response.data.data.nickname,
-                    response.data.data.email,
-                    response.data.data.profile
-                );
-                setName(response.data.data.name);
-                setNickname(response.data.data.nickname);
-                setEmail(response.data.data.email);
-                setProfile(response.data.data.profile);
-            })
-            .catch((error) => {
-                console.log(error);
+    const clearCacheAndReload = () => {
+        if ('caches' in window) {
+            caches.keys().then(function(keyList) {
+                return Promise.all(keyList.map(function(key) {
+                    return caches.delete(key);
+                }));
+            }).then(function() {
+                window.location.reload(true);
             });
+        }
+    };
+    
+
+    const unregister = () => {
+        // axios
+        //     .delete(`https://i10d209.p.ssafy.io/api/members`, {
+        //         headers: {
+        //             Authorization: `Bearer ${localStorage.getItem(
+        //                 "accessToken"
+        //             )}`,
+        //         },
+        //     })
+        //     .then((response) => {
+        //         // console.log(response.data.msg, response.data.statusCode);
+        //         console.log(
+        //             response.data.data.name,
+        //             response.data.data.nickname,
+        //             response.data.data.email,
+        //             response.data.data.profile
+        //         );
+        //         setName(response.data.data.name);
+        //         setNickname(response.data.data.nickname);
+        //         setEmail(response.data.data.email);
+        //         setProfile(response.data.data.profile);
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
+
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("memberId");
+        if (providerType === "GOOGLE") {
+            window.location.replace(
+                "https://i10d209.p.ssafy.io/oauth2/authorization/google?redirect_uri=http://localhost:3000&mode=unlink" // 로컬
+                // "https://i10d209.p.ssafy.io/oauth2/authorization/google?redirect_uri=https://i10d209.p.ssafy.io&mode=unlink" // 서버
+            );
+        } else if (providerType === "KAKAO") {
+            window.location.replace(
+                "https://i10d209.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=http://localhost:3000&mode=unlink" // 로컬
+                // "https://i10d209.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=https://i10d209.p.ssafy.io&mode=unlink" // 서버
+            );
+        }
     }
 
     useEffect(() => {
         axios
             .get(`https://i10d209.p.ssafy.io/api/members/${memberId}`, {
                 headers: {
+                    'Cache-Control': 'no-cache',
                     Authorization: `Bearer ${localStorage.getItem(
                         "accessToken"
                     )}`,
                 },
             })
             .then((response) => {
-                // console.log(response.data.msg, response.data.statusCode);
-                console.log(
-                    response.data.data.name,
-                    response.data.data.nickname,
-                    response.data.data.email,
-                    response.data.data.profile
-                );
+                console.log(response.data.msg, response.data.statusCode);
+                console.log(response.data.data.name)
+                console.log(response.data.data.nickname)
+                console.log(response.data.data.email)
+                // console.log(response.data.data.provideType)
+                console.log(response.data.data.profile)
+
+                // console.log(response.data.data)
                 setName(response.data.data.name);
                 setNickname(response.data.data.nickname);
                 setEmail(response.data.data.email);
                 setProfile(response.data.data.profile);
+                setProviderType(response.data.data.providerType)
             })
             .catch((error) => {
                 console.log(error);
             });
         return () => {
-            caches.keys().then(function(keyList) {
-                return Promise.all(keyList.map(function(key) {
-                    return caches.delete(key);
-                }));
-            });
-            window.location.reload(true);
+            clearCacheAndReload();
+
+            console.log(1)
         };
     }, []);
 
@@ -163,7 +191,7 @@ function Profile({ setModalOpen }) {
                                 </div>
                             </tr>
                             <div className={styles.bottonButton}>
-                                <button onClick={unregister()} className={styles.unregisterButton}>
+                                <button onClick={unregister} className={styles.unregisterButton}>
                                     회원 탈퇴
                                 </button>
                                 <button
