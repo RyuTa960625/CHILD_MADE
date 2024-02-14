@@ -47,7 +47,7 @@ const Header = function () {
             <div className={styles.nav}>
                 <div>
                     <img
-                        src="../imgs/homeIcon.PNG"
+                        src="../imgs/homeIcon.png"
                         alt="홈"
                         className={styles.icon}
                         onClick={moveToMain}
@@ -63,7 +63,7 @@ const Header = function () {
                 >
                     <div onClick={openModal}>
                         <img
-                            src="../imgs/myPageIcon.PNG"
+                            src="../imgs/myPageIcon.png"
                             alt="마이페이지"
                             className={styles.icon}
                         ></img>
@@ -71,7 +71,7 @@ const Header = function () {
                     </div>
                     <div style={{ marginLeft: "40px" }} onClick={logoutEvent}>
                         <img
-                            src="../imgs/logoutIcon.PNG"
+                            src="../imgs/logoutIcon.png"
                             alt="홈"
                             className={styles.icon2}
                         ></img>
