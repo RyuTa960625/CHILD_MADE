@@ -1,14 +1,14 @@
 @font-face {
-    font-family: 'Maplestory_b';
+    font-family: "Maplestory_b";
     src: url(/public/fonts/Maplestory\ Bold.ttf);
 }
 
 @font-face {
-    font-family: 'Maplestory_l';
+    font-family: "Maplestory_l";
     src: url(/public/fonts/Maplestory\ Light.ttf);
 }
 
-.main_container{
+.main_container {
     position: relative;
     height: 100vh;
     width: 100vw;
@@ -17,7 +17,7 @@
     background-size: cover;
 }
 
-.text_container{
+.text_container {
     width: 1200px;
     height: 500px;
     top: 50%;
@@ -27,13 +27,13 @@
     transform: translate(-50%, -50%);
 }
 
-.text{
-    font-family: 'Maplestory_b';
+.text {
+    font-family: "Maplestory_b";
     font-size: 88px;
     color: white;
 }
 
-.change_text_container{
+.change_text_container {
     width: 1000px;
     height: 100px;
     top: 43%;
@@ -43,8 +43,8 @@
     transform: translate(-50%, -50%);
 }
 
-.text2{
-    font-family: 'Maplestory_b';
+.text2 {
+    font-family: "Maplestory_b";
     font-size: 40px;
     color: red;
     top: 50%;
@@ -53,9 +53,9 @@
     transform: translate(-50%, -50%);
 }
 
-.text3{
+.text3 {
     width: 800px;
-    font-family: 'Maplestory_b';
+    font-family: "Maplestory_b";
     font-size: 40px;
     color: white;
     top: 50%;
@@ -63,4 +63,3 @@
     position: absolute;
     transform: translate(-50%, -50%);
 }
-

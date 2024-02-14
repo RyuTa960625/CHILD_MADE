@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { OpenVidu } from "openvidu-browser";
 import { useState, useEffect, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // 환경 변수에 따라 애플리케이션 서버 URL을 설정합니다.
@@ -21,11 +22,28 @@ export default function Single() {
     const [publisher, setPublisher] = useState(undefined); // 방장
     const [subscribers, setSubscribers] = useState([]); // 참가자들
 
+    // 값 넘겨 받는 곳
+    // 순서대로 싱글/멀티모드, 책 id, 역할 id
+    const location = useLocation();
+    const playMode = location.state.playMode ? location.state.playMode : null;
+    const bookId = location.state.bookId ? location.state.bookId : null;
+    const roleId = location.state.roleId ? location.state.roleId : null;
+
+    const apiTest = function () {
+        console.log(playMode);
+        console.log(bookId);
+        console.log(roleId);
+    };
+
+    useEffect(() => {
+        apiTest();
+    }, []);
+
     // 역할 id와 책 id 변수로 설정했는데, 아래측에서 먹히지가 않는다.
     // 손 봐야함
     // 규리한테 물어보기
-    const roleId = 1;
-    const bookId = 1;
+    // const roleId = 1;
+    // const bookId = 1;
 
     // 화면 출력 관련
     const videoRef = useRef(null); // 비디오 요소를 참조하기 위한 useRef 훅
@@ -202,25 +220,6 @@ export default function Single() {
         console.log(response.data.data.token + " 토큰 생성");
         return response.data.data.token; // 세션 ID 반환
     };
-
-    useEffect(() => {
-        const resizeCanvas = () => {
-            const videoEl = videoRef.current;
-            // const canvasEl = chromakeyRef.current;
-
-            // if (videoEl && canvasEl) {
-            //   canvasEl.width = videoEl.videoWidth;
-            //   canvasEl.height = videoEl.videoHeight;
-            // }
-        };
-
-        window.addEventListener("resize", resizeCanvas);
-        resizeCanvas(); // 초기에도 크기를 조정해줍니다.
-
-        return () => {
-            window.removeEventListener("resize", resizeCanvas);
-        };
-    }, []);
 
     return (
         // 전체 배경

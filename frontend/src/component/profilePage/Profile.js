@@ -25,6 +25,33 @@ function Profile({ setModalOpen }) {
         setEditProfileModalOpen(true);
     };
 
+    const unregister = () => {
+        axios
+            .delete(`https://i10d209.p.ssafy.io/api/members`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                },
+            })
+            .then((response) => {
+                // console.log(response.data.msg, response.data.statusCode);
+                console.log(
+                    response.data.data.name,
+                    response.data.data.nickname,
+                    response.data.data.email,
+                    response.data.data.profile
+                );
+                setName(response.data.data.name);
+                setNickname(response.data.data.nickname);
+                setEmail(response.data.data.email);
+                setProfile(response.data.data.profile);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     useEffect(() => {
         axios
             .get(`https://i10d209.p.ssafy.io/api/members/${memberId}`, {
@@ -51,7 +78,6 @@ function Profile({ setModalOpen }) {
                 console.log(error);
             });
         return () => {
-            // 캐시 삭제 작업 수행
             window.location.reload(true);
         };
     }, []);
@@ -128,15 +154,20 @@ function Profile({ setModalOpen }) {
                                     <td className={styles.tableValue}>
                                         {email}
                                     </td>
-                                    <hr></hr>
+                                    <hr className={styles.hrTag}></hr>
                                 </div>
                             </tr>
-                            <button
-                                onClick={() => setModalOpen(false)}
-                                className={styles.confirmProfile}
-                            >
-                                확인
-                            </button>
+                            <div className={styles.bottonButton}>
+                                <button onClick={unregister()} className={styles.unregisterButton}>
+                                    회원 탈퇴
+                                </button>
+                                <button
+                                    onClick={() => setModalOpen(false)}
+                                    className={styles.confirmProfile}
+                                >
+                                    확인
+                                </button>
+                            </div>
                         </tbody>
                     </table>
                     <button
@@ -148,6 +179,7 @@ function Profile({ setModalOpen }) {
                             className={styles.cancelButton}
                         ></img>
                     </button>
+
                 </div>
             </div>
             {editUserModalOpen && (
