@@ -117,7 +117,17 @@ td {
 
 .confirmProfile {
     font-size: 24px;
-    width: 150px;
+    width: 125px;
+    height: 35px;
+    background-color: #6f573f;
+    color: white;
+    border: none;
+    border-radius: 30px;
+}
+
+.unregisterButton {
+    font-size: 24px;
+    width: 125px;
     height: 35px;
     background-color: #6f573f;
     color: white;
@@ -127,6 +137,18 @@ td {
 
 hr {
     border: 2px solid;
+    border-radius: 2px;
+    margin: 0px 12px auto;
+}
+
+.hrTagNickname {
+    border: 2px solid #6f573f;
+    border-radius: 2px;
+    margin: 0px 12px auto;
+}
+
+.hrTagName {
+    border: 2px solid #6f573f;
     border-radius: 2px;
     margin: 0px 12px auto;
 }
@@ -158,3 +180,10 @@ hr {
     border: none;
     border-radius: 30px;
 }
+
+.bottonButton {
+    display: flex;
+    direction: row;
+
+}
+
