@@ -13,6 +13,7 @@ const BookList = function () {
     const [bookList, setBookList] = useState([]);
     const [selectedRole, setSelectedRole] = useState();
     const [pageNum, setPageNum] = useState(0);
+    const [roleName, setRoleName] = useState("");
 
     const roleStyles = [
         styles.character_btn1,
@@ -39,16 +40,17 @@ const BookList = function () {
         loadBookList();
         loadBookInfo();
         apiTest();
+        apiTest2();
         console.log(playMode);
         console.log(roleId);
         if (!playMode) {
             navigate("/errorpage");
         }
-    }, [bookId, roleId, selectedRole]);
+    }, [bookId, roleId, selectedRole, roleName]);
 
     const moveToSinglePage = function () {
         navigate("/makevideopage", {
-            state: { playMode: playMode, bookId: bookId, roleId: roleId },
+            state: { playMode: playMode, bookId: bookId, roleId: roleId, roleName: roleName },
         });
     };
     // step1. "npm install axios" 를 터미널에 입력한다. v
@@ -121,10 +123,6 @@ const BookList = function () {
             .then((response) => {
                 setBookInfo(response.data.data);
             });
-    };
-
-    const printBookId = function () {
-        console.log(bookId);
     };
 
     const moveNextPage = function () {
@@ -312,6 +310,7 @@ const BookList = function () {
                                                                         setRoleId(
                                                                             data.roleId
                                                                         );
+                                                                        setRoleName(data.roleName);
 
                                                                         setSelectedRole(index);
                                                                     }}

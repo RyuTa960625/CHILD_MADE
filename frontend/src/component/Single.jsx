@@ -25,14 +25,16 @@ export default function Single() {
     // 값 넘겨 받는 곳
     // 순서대로 싱글/멀티모드, 책 id, 역할 id
     const location = useLocation();
-    const playMode = location.state.playMode ? location.state.playMode : null;
-    const bookId = location.state.bookId ? location.state.bookId : null;
-    const roleId = location.state.roleId ? location.state.roleId : null;
+    const playMode = location.state ? location.state.playMode : null;
+    const bookId = location.state ? location.state.bookId : null;
+    const roleId = location.state ? location.state.roleId : null;
+    const roleName = location.state ? location.state.roleName : null;
 
     const apiTest = function () {
         console.log(playMode);
         console.log(bookId);
         console.log(roleId);
+        console.log(roleName);
     };
 
     useEffect(() => {
