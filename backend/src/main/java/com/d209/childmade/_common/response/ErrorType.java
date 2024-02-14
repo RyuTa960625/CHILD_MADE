@@ -23,7 +23,8 @@ public enum ErrorType {
     CANNOT_SAVE_CUT_VIDEO_IN_LOCAL(HttpStatus.UNAUTHORIZED, "서버에 컷 동영상을 저장할 수 없습니다."),
     CANNOT_CONCAT_CUT_VIDEO(HttpStatus.UNAUTHORIZED, "컷 동영상을 합칠 수 없습니다."),
     CANNOT_DELETE_LOCAL_FILES(HttpStatus.UNAUTHORIZED, "서버에 저장된 컷 동영상들을 삭제할 수 없습니다."),
-    CANNOT_FIND_VIDEO(HttpStatus.UNAUTHORIZED, "동영상을 찾을 수 없습니다.")
+    CANNOT_FIND_VIDEO(HttpStatus.UNAUTHORIZED, "동영상을 찾을 수 없습니다."),
+    NOT_FOUND_HELPER_BY_ROLEID(HttpStatus.UNAUTHORIZED,"조회된 도우미 데이터가 없습니다"),
     ;
 
     private final HttpStatus status; //http status
