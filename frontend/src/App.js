@@ -3,7 +3,7 @@ import Header from "./component/header/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import BookList from "./component/booklistPage/BookList";
 import RecordList from "./component/recordlistPage/RecordList";
-import Single from "./component/Single";
+import MakePage from "./component/makePage/MakePage";
 import React, { useState } from "react";
 
 import Intro from "./component/IntroPage/Intro";
@@ -60,7 +60,7 @@ function App() {
                         <Route path="/viewpage" element={<ViewPage />}></Route>
                         <Route
                             path="/makevideopage"
-                            element={<Single />}
+                            element={<MakePage />}
                         ></Route>
                         <Route
                             path="/errorpage"
