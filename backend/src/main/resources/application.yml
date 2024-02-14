@@ -31,6 +31,7 @@ spring:
             scope:
               - profile
               - email
+            redirect-uri: "https://i10d209.p.ssafy.io/{action}/oauth2/code/{registrationId}"
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
             client-secret: ${KAKAO_CLIENT_SECRET}
@@ -40,8 +41,7 @@ spring:
               - profile_image
               - account_email
               - name
-            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
-
+            redirect-uri: "https://i10d209.p.ssafy.io/{action}/oauth2/code/{registrationId}"
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -81,4 +81,3 @@ redis:
 openvidu:
   url: ${OPENVIDU_URL}
   secret: ${OPENVIDU_SECRET}
-
