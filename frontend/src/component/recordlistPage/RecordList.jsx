@@ -58,10 +58,12 @@ export default function RecordList() {
                 setVideoList(response.data.data.content);
                 console.log(videoList);
                 setTotalPage(response.data.data.totalPages);
+                setPageNum(0); 
             });
     };
 
     const handleSearch = () => {
+        setPageNum(0); 
         axios
             .get(
                 `https://i10d209.p.ssafy.io/api/videos/2?&keyword=${searchValue}&page=${pageNum}&size=4&sort=id`
@@ -256,10 +258,11 @@ export default function RecordList() {
                         placeholder="도서명을 입력하세요"
                     ></input>
                     <img
+                        key={pageNum}
                         className={styles.find}
                         src="../imgs/find2M.png"
                         alt="돋보기"
-                        onClick={()=>{ handleSearch(); }}
+                        onClick={()=>{ handleSearch();}}
                     ></img>
                 </div>
 

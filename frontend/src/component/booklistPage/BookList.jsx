@@ -12,6 +12,7 @@ const BookList = function () {
 
     const [bookList, setBookList] = useState([]);
     const [selectedRole, setSelectedRole] = useState();
+    const [pageNum, setPageNum] = useState(0);
 
     const roleStyles = [
         styles.character_btn1,
@@ -57,7 +58,6 @@ const BookList = function () {
 
     //http://localhost:8080/api/books/?page=1&size=6
     const [isOpen, setIsOpen] = useState(false);
-    const [pageNum, setPageNum] = useState(0);
     const [totalPage, setTotalPage] = useState(0);
     const [bookInfo, setBookInfo] = useState([]);
 
@@ -66,6 +66,7 @@ const BookList = function () {
     };
 
     const handleSearch = () => {
+        setPageNum(0);
         axios
             .get(
                 `https://i10d209.p.ssafy.io/api/books/${searchValue}?page=${pageNum}&size=6&sort=id`
@@ -110,6 +111,7 @@ const BookList = function () {
             .then((response) => {
                 setBookList(response.data.data.content);
                 setTotalPage(response.data.data.totalPages);
+                setPageNum(0);
             });
     };
 
@@ -371,8 +373,9 @@ const BookList = function () {
                                 placeholder="도서명을 입력하세요"
                             ></input>
                             <div
+                                key={pageNum}
                                 className={styles.find_container}
-                                onClick={handleSearch}
+                                onClick={()=>{handleSearch();}}
                             >
                                 <img
                                     src="/imgs/findM.png"
@@ -415,7 +418,6 @@ const BookList = function () {
                                                     apiTest();
                                                     apiTest2();
                                                     setBookId(data.id);
-                                                    printBookId();
                                                 }}
                                             >
                                                 <img
