@@ -32,7 +32,7 @@ function App() {
                         element={<LoginErrorPage />}
                     ></Route>
                     <Route
-                        path="/intro"
+                        path="/"
                         element={<Intro setShowHeader={setShowHeader} />}
                     ></Route>
                     <Route

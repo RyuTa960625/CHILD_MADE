@@ -75,7 +75,7 @@ const Home = function ({ setShowHeader }) {
                             >
                                 <h1 className={styles.btn_text}>혼자</h1>
                                 <img
-                                    src="/imgs/ch1-5.PNG"
+                                    src="/imgs/ch1-5.png"
                                     alt="대표캐릭터1기본"
                                     className={styles.character1}
                                 />
@@ -102,7 +102,7 @@ const Home = function ({ setShowHeader }) {
                                 >
                                     <div>
                                         <img
-                                            src="/imgs/ch1-5.PNG"
+                                            src="/imgs/ch1-5.png"
                                             alt="대표캐릭터1기본"
                                             width={100}
                                             className={styles.character2}
@@ -110,7 +110,7 @@ const Home = function ({ setShowHeader }) {
                                     </div>
                                     <div>
                                         <img
-                                            src="/imgs/ch2-1.PNG"
+                                            src="/imgs/ch2-1.png"
                                             alt="대표캐릭터2기본"
                                             width={100}
                                             className={styles.character3}
@@ -136,7 +136,7 @@ const Home = function ({ setShowHeader }) {
                             >
                                 <div>
                                     <img
-                                        src="/imgs/g3.PNG"
+                                        src="/imgs/g3.png"
                                         alt="대표캐릭터2얼굴기본"
                                         width={100}
                                         className={styles.character4}
@@ -144,7 +144,7 @@ const Home = function ({ setShowHeader }) {
                                 </div>
                                 <div>
                                     <img
-                                        src="/imgs/b5.PNG"
+                                        src="/imgs/b5.png"
                                         alt="대표캐릭터1얼굴기본"
                                         width={100}
                                         className={styles.character5}

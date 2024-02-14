@@ -11,6 +11,7 @@ export default function RecordList() {
     const [pageNum, setPageNum] = useState(0);
     const [searchValue, setSearchValue] = useState("");
     const [videoIndex, setVideoIndex] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
 
     const handleChange = (event) => {
         setSearchValue(event.target.value);
@@ -22,8 +23,7 @@ export default function RecordList() {
         console.log(videoIndex);
     }, [videoId, videoIndex]);
 
-    const [totalPage, setTotalPage] = useState(0);
-
+  
     const navigate = useNavigate();
 
     const openModal = function () {
@@ -71,6 +71,7 @@ export default function RecordList() {
                 console.log(response.data);
                 console.log(searchValue);
                 setVideoList(response.data.data.content);
+                setTotalPage(response.data.data.totalPages);
                 console.log(videoList);
             })
             .catch((error) => {
@@ -87,7 +88,7 @@ export default function RecordList() {
             setPageNum(pageNum + 1);
             axios
                 .get(
-                    `https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${
+                    `https://i10d209.p.ssafy.io/api/videos/2?&keyword=${searchValue}&page=${
                         pageNum + 1
                     }&size=4&sort=id`
                 )
@@ -104,7 +105,7 @@ export default function RecordList() {
             setPageNum(pageNum - 1);
             axios
                 .get(
-                    `https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${
+                    `https://i10d209.p.ssafy.io/api/videos/2?&keyword=${searchValue}&page=${
                         pageNum - 1
                     }&size=4&sort=id`
                 )
@@ -258,7 +259,7 @@ export default function RecordList() {
                         className={styles.find}
                         src="../imgs/find2M.png"
                         alt="돋보기"
-                        onClick={handleSearch}
+                        onClick={()=>{ handleSearch(); }}
                     ></img>
                 </div>
 

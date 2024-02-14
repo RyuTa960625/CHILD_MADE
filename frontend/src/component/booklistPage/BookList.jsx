@@ -57,7 +57,7 @@ const BookList = function () {
     const handleSearch = () => {
         axios
             .get(
-                `https://i10d209.p.ssafy.io/api/books/${searchValue}?page=${pageNum}&size=6&sort=title`
+                `https://i10d209.p.ssafy.io/api/books/${searchValue}?page=${pageNum}&size=6&sort=id`
             )
             .then((response) => {
                 // 검색 결과 처리
@@ -65,6 +65,7 @@ const BookList = function () {
                 console.log(searchValue);
                 setBookList(response.data.data.content);
                 console.log(bookList);
+                setTotalPage(response.data.data.totalPages);
             })
             .catch((error) => {
                 // 오류 처리
@@ -75,7 +76,7 @@ const BookList = function () {
     const apiTest = function () {
         axios
             .get(
-                `https://i10d209.p.ssafy.io/api/books/?page=${pageNum}&size=6&sort=title`
+                `https://i10d209.p.ssafy.io/api/books/?page=${pageNum}&size=6&sort=id`
             )
             .then((response) => {
                 console.log(response.data);
@@ -93,7 +94,7 @@ const BookList = function () {
     const loadBookList = function () {
         axios
             .get(
-                `https://i10d209.p.ssafy.io/api/books/?page=${pageNum}&size=6&sort=title`
+                `https://i10d209.p.ssafy.io/api/books/?page=${pageNum}&size=6&sort=id`
             )
             .then((response) => {
                 setBookList(response.data.data.content);
@@ -121,9 +122,9 @@ const BookList = function () {
             setPageNum(pageNum + 1);
             axios
                 .get(
-                    `https://i10d209.p.ssafy.io/api/books/?page=${
+                    `https://i10d209.p.ssafy.io/api/books/${searchValue}?page=${
                         pageNum + 1
-                    }&size=6&sort=title`
+                    }&size=6&sort=id`
                 )
                 .then((res) => setBookList(res.data.data.content));
         }
@@ -135,9 +136,9 @@ const BookList = function () {
             setPageNum(pageNum - 1);
             axios
                 .get(
-                    `https://i10d209.p.ssafy.io/api/books/?page=${
+                    `https://i10d209.p.ssafy.io/api/books/${searchValue}?page=${
                         pageNum - 1
-                    }&size=6&sort=title`
+                    }&size=6&sort=id`
                 )
                 .then((res) => setBookList(res.data.data.content));
         }
