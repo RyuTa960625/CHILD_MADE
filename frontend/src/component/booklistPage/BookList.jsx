@@ -11,12 +11,23 @@ const BookList = function () {
     const [roleId, setRoleId] = useState(1);
 
     const [bookList, setBookList] = useState([]);
+    const [selectedRole, setSelectedRole] = useState();
+
     const roleStyles = [
         styles.character_btn1,
         styles.character_btn2,
         styles.character_btn3,
         styles.character_btn4,
     ];
+
+    const selectedRoleStyles = [
+        styles.selected_character_btn1,
+        styles.selected_character_btn2,
+        styles.selected_character_btn3,
+        styles.selected_character_btn4,
+    ];
+
+
     const [searchValue, setSearchValue] = useState("");
 
     const handleChange = (event) => {
@@ -32,7 +43,7 @@ const BookList = function () {
         if (!playMode) {
             navigate("/errorpage");
         }
-    }, [bookId, roleId]);
+    }, [bookId, roleId, selectedRole]);
 
     const moveToSinglePage = function () {
         navigate("/makevideopage", {
@@ -229,7 +240,7 @@ const BookList = function () {
                                         src="/imgs/exitIcon.png"
                                         alt="탈출"
                                         className={styles.close_icon}
-                                        onClick={openModal}
+                                        onClick={()=>{openModal(); setSelectedRole('');}}
                                     ></img>
                                 </div>
                                 <div className={styles.book_info_img_container}>
@@ -289,15 +300,18 @@ const BookList = function () {
                                                                 }
                                                             >
                                                                 <div
+                                                                    key={index}
                                                                     className={
-                                                                        roleStyles[
+                                                                        `${roleStyles[
                                                                             index
-                                                                        ]
+                                                                        ]} ${index === selectedRole ? selectedRoleStyles[index] : ''} `
                                                                     }
                                                                     onClick={() => {
                                                                         setRoleId(
                                                                             data.roleId
                                                                         );
+
+                                                                        setSelectedRole(index);
                                                                     }}
                                                                 >
                                                                     <img

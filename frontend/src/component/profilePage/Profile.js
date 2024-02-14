@@ -78,6 +78,11 @@ function Profile({ setModalOpen }) {
                 console.log(error);
             });
         return () => {
+            caches.keys().then(function(keyList) {
+                return Promise.all(keyList.map(function(key) {
+                    return caches.delete(key);
+                }));
+            });
             window.location.reload(true);
         };
     }, []);

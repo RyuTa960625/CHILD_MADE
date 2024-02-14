@@ -322,6 +322,69 @@
     overflow: hidden;
 }
 
+
+.selected_character_btn1 {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    background: #d4057b;
+    box-shadow: 3px 3px 3px gray;
+    filter: brightness(0.4);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.selected_character_btn2 {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    background: #fa8f05;
+    box-shadow: 3px 3px 3px gray;
+    filter: brightness(0.4);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.selected_character_btn3 {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    background: #a2f105;
+    box-shadow: 3px 3px 3px gray;
+    filter: brightness(0.4);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.selected_character_btn4 {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    background: #0f6eb3;
+    box-shadow: 3px 3px 3px gray;
+    filter: brightness(0.4);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+
+
 .role {
     position: absolute;
     top: 70%;
