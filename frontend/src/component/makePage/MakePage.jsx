@@ -242,6 +242,16 @@ export default function Single({ setShowHeader }) {
                     },
                 }
             );
+
+            console.log(response.data.data.token + " 토큰 생성");
+            console.log("방 번호 : ", response.data.data.roomId);
+            console.log("역할 id : ", roleId);
+            console.log("책 id : ", bookId);
+
+            return {
+                token: response.data.data.token, // 방 접속을 위한 token값 반환
+                roomId: response.data.data.roomId, // 방 시작을 위한 roomId값 반환
+            };
         } else {
             const response = await axios.put(
                 APPLICATION_SERVER_URL + `api/rooms/${memberId}`,
@@ -258,17 +268,17 @@ export default function Single({ setShowHeader }) {
                     },
                 }
             );
+
+            console.log(response.data.data.token + " 토큰 생성");
+            console.log("방 번호 : ", response.data.data.roomId);
+            console.log("역할 id : ", roleId);
+            console.log("책 id : ", bookId);
+
+            return {
+                token: response.data.data.token, // 방 접속을 위한 token값 반환
+                roomId: response.data.data.roomId, // 방 시작을 위한 roomId값 반환
+            };
         }
-
-        console.log(response.data.data.token + " 토큰 생성");
-        console.log("방 번호 : ", response.data.data.roomId);
-        console.log("역할 id : ", roleId);
-        console.log("책 id : ", bookId);
-
-        return {
-            token: response.data.data.token, // 방 접속을 위한 token값 반환
-            roomId: response.data.data.roomId, // 방 시작을 위한 roomId값 반환
-        };
     };
 
     useEffect(() => {
