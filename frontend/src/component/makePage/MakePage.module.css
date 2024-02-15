@@ -12,6 +12,7 @@
 .p {
   margin: 0px;
 }
+
 .bg {
   background-color: #323232;
   background-size: cover;
@@ -23,7 +24,7 @@
 /* 별 */
 .star {
   position: absolute;
-  background-image: url("../../../public/imgs/star.png");
+  background-image: url('../../../public/imgs/star.png');
   width: 57px;
   height: 52px;
 
@@ -37,6 +38,13 @@
   animation: blink 2s ease-in-out infinite alternate;
 }
 
+.blinking2 {
+  -webkit-animation: blink 1.5s ease-in-out infinite alternate;
+  -moz-animation: blink 1.5s ease-in-out infinite alternate;
+  animation: blink 1.5s ease-in-out infinite alternate;
+}
+
+/* 나가기 아이콘 관련 */
 .exitIcon {
   width: 57px;
   margin-top: 5px;
@@ -48,49 +56,102 @@
   color: white;
 }
 
+.exitzz {
+  width: 100%;
+  top: 10px;
+  right: 20px;
+
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+
+  justify-content: right;
+}
+
 @-webkit-keyframes blink {
   0% {
-      opacity: 0;
+    opacity: 0;
   }
+
   100% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 @-moz-keyframes blink {
   0% {
-      opacity: 0;
+    opacity: 0;
   }
+
   100% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 @keyframes blink {
   0% {
-      opacity: 0;
+    opacity: 0;
   }
+
   100% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 /* 별 위치 관련 */
 .star1 {
-  top: 200px;
-  right: 500px;
+  top: 30px;
+  right: 100px;
 }
+
 .star2 {
-  top: 70px;
-  right: 300px;
+  top: 150px;
+  right: 350px;
 }
+
 .star3 {
   top: 300px;
   right: 600px;
 }
+
 .star4 {
   top: 500px;
   right: 900px;
+}
+
+.star5 {
+  top: 100px;
+  right: 780px;
+}
+
+.star6 {
+  top: 300px;
+  right: 1050px;
+}
+
+.star7 {
+  top: 40px;
+  right: 1200px;
+}
+
+.star8 {
+  top: 500px;
+  right: 1500px;
+}
+
+.star9 {
+  top: 200px;
+  right: 1400px;
+}
+
+.star10 {
+  top: 500px;
+  right: -20px;
+}
+
+.star11 {
+  top: 670px;
+  right: 330px;
 }
 
 /* ------------------------------------ */
@@ -98,10 +159,11 @@
 /* 화면 관련 */
 .container_1 {
   /* display: flex;
-  flex-direction: column; */
+    flex-direction: column; */
 
   position: relative;
   left: -60px;
+  padding-top: 5px;
 }
 
 /* 본인 차례 화면 */
@@ -122,7 +184,7 @@
   border: 5px solid tomato;
   border-radius: 30px;
 
-  font-family: "Maplestory";
+  font-family: 'Maplestory';
   font-size: 50px;
   font-weight: bold;
 
@@ -145,7 +207,7 @@
 
   font-size: 25px;
   font-weight: bold;
-  font-family: "Maplestory";
+  font-family: 'Maplestory';
 
   border: 5px solid black;
   border-radius: 35px;
@@ -153,6 +215,7 @@
 
   z-index: 1;
 }
+
 
 /* 대사 박스 */
 .scriptBox {
@@ -169,7 +232,10 @@
 
   font-size: 45px;
   font-weight: bold;
-  font-family: "Maplestory";
+  font-family: 'Maplestory';
+
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 /* 다른 인원들 관련 컨테이너 */
@@ -182,7 +248,9 @@
 .player {
   position: relative;
   display: flex;
-  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   background-color: white;
   border: 5px solid tomato;
@@ -190,7 +258,7 @@
   width: 251px;
   height: 160px;
 
-  font-family: "Maplestory";
+  font-family: 'Maplestory';
   font-size: 30px;
   font-weight: bold;
   text-align: center;
@@ -213,7 +281,7 @@
 
   font-size: 13px;
   font-weight: bold;
-  font-family: "Maplestory";
+  font-family: 'Maplestory';
 
   border: 5px solid black;
   border-radius: 35px;
@@ -279,7 +347,7 @@
 
 /* 도우미 캐릭터 */
 .helper {
-  background: url("../../../public/imgs/ch1-3.png") no-repeat center;
+  background: url('../../../public/imgs/ch1-3.png') no-repeat center;
   background-size: contain;
 
   width: 500px;
