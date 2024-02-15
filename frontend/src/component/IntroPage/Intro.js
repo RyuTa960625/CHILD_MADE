@@ -27,15 +27,17 @@ function Intro({ setShowHeader }) {
 
     const [isPlaying, setIsPlaying] = useState(false);
 
-    const togglePlay = () => {
-        const audio = document.getElementById('bgm');
-        if (audio.paused) {
-        audio.play();
-        setIsPlaying(true);
+    useEffect(() => {
+        const audio = document.getElementById("bgm");
+        if (isPlaying) {
+            audio.play();
         } else {
-        audio.pause();
-        setIsPlaying(false);
+            audio.pause();
         }
+    }, [isPlaying]);
+
+    const handleLogin = () => {
+        setIsPlaying(true); 
     };
 
     return (
@@ -70,7 +72,7 @@ function Intro({ setShowHeader }) {
                                     to={"/login"}
                                     className={styles.buttonLoginLink}
                                 >
-                                    <div className={styles.buttonLogin}>
+                                    <div className={styles.buttonLogin} onClick={handleLogin}>
                                         <p className={styles.buttonLoginText}>
                                             로그인
                                         </p>
@@ -106,7 +108,7 @@ function Intro({ setShowHeader }) {
                                     to={"/login"}
                                     className={styles.buttonLoginLink}
                                 >
-                                    <div className={styles.buttonLogin}>
+                                    <div className={styles.buttonLogin} onClick={handleLogin}>
                                         <p className={styles.buttonLoginText}>
                                             로그인
                                         </p>
@@ -139,7 +141,7 @@ function Intro({ setShowHeader }) {
                                     to={"/login"}
                                     className={styles.buttonLoginLink}
                                 >
-                                    <div className={styles.buttonLogin}>
+                                    <div className={styles.buttonLogin} onClick={handleLogin}>
                                         <p className={styles.buttonLoginText}>
                                             로그인
                                         </p>
@@ -159,6 +161,7 @@ function Intro({ setShowHeader }) {
                     </div>
                 </SwiperSlide>
             </Swiper>
+            <audio id="bgm" src="../../assets/backMusic01.mp3"></audio> 
         </div>
     );
 }
