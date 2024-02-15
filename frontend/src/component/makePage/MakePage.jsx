@@ -360,7 +360,10 @@ export default function Single({ setShowHeader }) {
     useEffect(() => {
         if (subscribers.length === 2) {
             axios
-                .put(APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`, {
+                .put(APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`,{
+
+                },
+                {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem(
                             "accessToken"
