@@ -7,19 +7,19 @@ import lombok.Getter;
 @Getter
 public class ScriptListResponseDto {
 
+    private final int roleId;
     private final int scriptNum;
     private final String scriptLine;
     private final String videoUrl;
-    private final String backgroundUrl;
     private final int branchNum;
 
     @Builder
     private ScriptListResponseDto(Script script) {
+        this.roleId = script.getRole().getId();
         this.scriptNum = script.getScriptNum();
         this.scriptLine = script.getScriptLine();
         this.videoUrl = script.getVideoUrl();
         this.branchNum = script.getBranchNum();
-        this.backgroundUrl = script.getBackgroundUrl();
     }
 
     public static ScriptListResponseDto of(Script script){
