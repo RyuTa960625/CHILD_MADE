@@ -20,6 +20,9 @@ const Home = function ({ setShowHeader }) {
     return (
         <>
             <div>
+                <audio autoPlay loop>
+                    <source src={"/back_music1"} type="audio/mpeg" />
+                </audio>
                 <div className={styles.main_container}>
                     <img
                         src="/imgs/cloud.png"
