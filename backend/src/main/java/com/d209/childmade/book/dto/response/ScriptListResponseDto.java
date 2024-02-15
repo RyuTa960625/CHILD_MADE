@@ -12,6 +12,7 @@ public class ScriptListResponseDto {
     private final String scriptLine;
     private final String videoUrl;
     private final int branchNum;
+    private final String backgroundUrl;
 
     @Builder
     private ScriptListResponseDto(Script script) {
@@ -20,6 +21,7 @@ public class ScriptListResponseDto {
         this.scriptLine = script.getScriptLine();
         this.videoUrl = script.getVideoUrl();
         this.branchNum = script.getBranchNum();
+        this.backgroundUrl = script.getBackgroundUrl();
     }
 
     public static ScriptListResponseDto of(Script script){
