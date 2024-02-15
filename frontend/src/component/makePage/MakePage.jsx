@@ -152,67 +152,59 @@ export default function Single({ setShowHeader }) {
     };
 
     // 방 나가기 함수
-    const leaveSession = () => {
-        if (session) {
-            // 동화 시작전에 나간다면?
-            if (!roomStart) {
-                axios
-                    .delete(
-                        APPLICATION_SERVER_URL + `api/rooms/leave`,
-                        {
-                            data: {
-                                memberId: memberId,
-                                roomId: roomId,
-                            },
-                        },
-                        {
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem(
-                                    "accessToken"
-                                )}`,
-                            },
-                        }
-                    )
-                    .then((res) => {
-                        // session.disconnect();
-                        console.log(`기다리다 지쳐서 나간다 ${res}`);
-                    })
-                    .catch((err) => {
-                        console.error(`지쳐서 나가는데 에러남 ${err}`);
-                    });
-            }
-
-            // 동화책 다 읽고나서 나가려고 한다면?
-            else if (scriptIndex === scriptLine.length - 1) {
-                axios
-                    .put(
-                        APPLICATION_SERVER_URL + `api/rooms/${roomId}/finish`,
-                        {},
-                        {
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem(
-                                    "accessToken"
-                                )}`,
-                            },
-                        }
-                    )
-                    .then((res) => {
-                        session.disconnect();
-                        console.log(`책 다 읽었으니까 갈게~ ${res}`);
-                    })
-                    .catch((err) => {
-                        console.error(`다 읽었는데 왜 못나가 ㅠㅠ ${err}`);
-                    });
-            }
-            session.disconnect();
+  const leaveSession = () => {
+    if (session) {
+      // 동화 시작전에 나간다면?
+      if (!roomStart) {
+        axios.delete(
+          APPLICATION_SERVER_URL + `api/rooms/leave`,
+          {
+            data: {
+              memberId: memberId,
+              roomId: roomId
+            },
+          }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              "accessToken"
+            )}`,
+          },
         }
+        ).then(res => {
+          // session.disconnect();
+          console.log(`기다리다 지쳐서 나간다 ${res}`)
+        }).catch(err => {
+          console.error(`지쳐서 나가는데 에러남 ${err}`)
+        })
+      }
 
-        // 상태 변수 초기화
-        setSession(undefined);
-        setSubscribers([]);
-        setMainStreamManager(undefined);
-        setPublisher(undefined);
-    };
+      // 동화책 다 읽고나서 나가려고 한다면?
+      else if (scriptIndex === scriptLine.length - 1) {
+        axios.put(
+          APPLICATION_SERVER_URL + `api/rooms/${roomId}/finish`,{},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem(
+                "accessToken"
+              )}`,
+            },
+          }
+        ).then(res => {
+          session.disconnect();
+          console.log(`책 다 읽었으니까 갈게~ ${res}`)
+        }).catch(err => {
+          console.error(`다 읽었는데 왜 못나가 ㅠㅠ ${err}`)
+        })
+      }
+      session.disconnect();
+    }
+
+    // 상태 변수 초기화
+    setSession(undefined);
+    setSubscribers([]);
+    setMainStreamManager(undefined);
+    setPublisher(undefined);
+  };
 
     // 토큰 가져오기 함수
     // roomId도 같이 설정한다.
@@ -226,59 +218,30 @@ export default function Single({ setShowHeader }) {
 
     // 세션 생성 함수
     const createSession = async () => {
-        if (playMode === "SINGLE") {
-            const response = await axios.put(
-                APPLICATION_SERVER_URL + `api/rooms/single/${memberId}`,
-                {
-                    roleId: roleId,
-                    bookId: bookId,
+        const response = await axios.put(
+            APPLICATION_SERVER_URL + `api/rooms/${memberId}`,
+            {
+                roleId: roleId,
+                bookId: bookId,
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
                 },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "accessToken"
-                        )}`,
-                    },
-                }
-            );
+            }
+        );
+        console.log(response.data.data.token + " 토큰 생성");
+        console.log("방 번호 : ", response.data.data.roomId);
+        console.log("역할 id : ", roleId);
+        console.log("책 id : ", bookId);
 
-            console.log(response.data.data.token + " 토큰 생성");
-            console.log("방 번호 : ", response.data.data.roomId);
-            console.log("역할 id : ", roleId);
-            console.log("책 id : ", bookId);
-
-            return {
-                token: response.data.data.token, // 방 접속을 위한 token값 반환
-                roomId: response.data.data.roomId, // 방 시작을 위한 roomId값 반환
-            };
-        } else {
-            const response = await axios.put(
-                APPLICATION_SERVER_URL + `api/rooms/${memberId}`,
-                {
-                    roleId: roleId,
-                    bookId: bookId,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "accessToken"
-                        )}`,
-                    },
-                }
-            );
-
-            console.log(response.data.data.token + " 토큰 생성");
-            console.log("방 번호 : ", response.data.data.roomId);
-            console.log("역할 id : ", roleId);
-            console.log("책 id : ", bookId);
-
-            return {
-                token: response.data.data.token, // 방 접속을 위한 token값 반환
-                roomId: response.data.data.roomId, // 방 시작을 위한 roomId값 반환
-            };
-        }
+        return {
+            token: response.data.data.token, // 방 접속을 위한 token값 반환
+            roomId: response.data.data.roomId, // 방 시작을 위한 roomId값 반환
+        };
     };
 
     useEffect(() => {
@@ -320,33 +283,30 @@ export default function Single({ setShowHeader }) {
         if (playMode === "SINGLE" && countDown > 0) {
             console.log(`시작까지 ${countDown}초 남았습니다.`);
         } else if (countDown === 0) {
-            axios
-                .put(
-                    APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`,
-                    {},
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                                "accessToken"
-                            )}`,
-                        },
-                    }
-                )
-                .then((res) => {
-                    console.log("잘 시작됌", res);
-                    console.log("시작~~~~~~~~~~~~~하겠습니다~~~~~~~~~~");
-                    console.log(scriptLine[0]);
-                })
-                .catch((err) => {
-                    console.error("혼자 시작 에러", err);
-                });
+          axios.put(
+            APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`,{},
+            {
+              headers: {
+                  Authorization: `Bearer ${localStorage.getItem(
+                      "accessToken"
+                  )}`,
+              },
+          }
+          ).then(res => {
+            console.log("잘 시작됌", res)
+            console.log("시작~~~~~~~~~~~~~하겠습니다~~~~~~~~~~");
+            console.log(scriptLine[0]);
+          }).catch(err => {
+            console.error("혼자 시작 에러", err)
+          })
         }
     }, [scriptLine, countDown]);
 
     // 대사 데이터 요청
     useEffect(() => {
         axios
-            .get(APPLICATION_SERVER_URL + `api/books/${bookId}/${branchNum}`, {
+            .get(APPLICATION_SERVER_URL + `api/books/${bookId}/${branchNum}`,
+            {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem(
                         "accessToken"
@@ -401,17 +361,16 @@ export default function Single({ setShowHeader }) {
     useEffect(() => {
         if (subscribers.length === 2) {
             axios
-                .put(
-                    APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`,
-                    {},
-                    {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                                "accessToken"
-                            )}`,
-                        },
-                    }
-                )
+                .put(APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`,{
+
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                        )}`,
+                    },
+                })
                 .then((res) => {
                     console.log("동화책 읽어보자~", res);
                     console.log(scriptLine[0]);
@@ -431,7 +390,8 @@ export default function Single({ setShowHeader }) {
 
     useEffect(() => {
         axios
-            .get(APPLICATION_SERVER_URL + `api/roles/1/helpers`, {
+            .get(APPLICATION_SERVER_URL + `api/roles/1/helpers`,
+            {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem(
                         "accessToken"
