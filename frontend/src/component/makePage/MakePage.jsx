@@ -504,8 +504,8 @@ export default function Single() {
       </Container>
       <div>
         {/* 녹화 중인지 여부에 따라 UI 변경 */}
-        <button onClick={startRecording}>녹화 시작</button>
-        <button onClick={stopRecording}>녹화 중지</button>
+        {/* <button onClick={startRecording}>녹화 시작</button>
+        <button onClick={stopRecording}>녹화 중지</button> */}
       </div>
     </div>
   );
