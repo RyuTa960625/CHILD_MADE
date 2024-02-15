@@ -11,12 +11,11 @@ import axios from "axios";
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production" ? "" : "https://i10d209.p.ssafy.io/";
 
-export default function Single() {
+export default function Single({ setShowHeader }) {
   // 상태 변수들을 선언합니다.
 
   // 멤버 ID, 방 만드는데 사용된다.
   // 1로 고정값 설정했는데, 백에서 api로 받아와야 한다.
-  const [memberId] = useState(1);
   const [session, setSession] = useState(undefined); // OpenVidu 세션
   const [roomId, setRoomId] = useState(null); // 방 시작을 위한 방 번호
   const [mainStreamManager, setMainStreamManager] = useState(undefined); // 주 비디오 스트림
@@ -31,18 +30,30 @@ export default function Single() {
   const bookId = location.state ? location.state.bookId : null;
   const roleId = location.state ? location.state.roleId : null;
   const roleName = location.state ? location.state.roleName : null;
+  const memberId = localStorage.getItem("memberId")
 
   const branchNum = 1; // 분기점 사용할 경우 값 새롭게 할당. 이전까진 1로 고정값
+
+  // 나가기 버튼을 위함
+  const navigate = useNavigate()
 
   const apiTest = function () {
     console.log("게임 모드 : ", playMode);
     console.log("책 번호 : ", bookId);
     console.log("역할 번호 : ", roleId);
     console.log("나의 역할 : ", roleName);
+    console.log("멤버 id : ", memberId);
   };
 
   useEffect(() => {
     apiTest();
+  }, []);
+
+  useEffect(() => {
+    setShowHeader(false);
+    return () => {
+      setShowHeader(true);
+    };
   }, []);
 
   // 화면 출력 관련
@@ -52,15 +63,12 @@ export default function Single() {
   const [scriptLine, setScriptLine] = useState([]); // 대사를 담을 list
   const [scriptIndex, setScriptIndex] = useState(0); // 대사 순서 관리
 
-  // 동화책 시작 관련
-  // const [timeOver, setTimeOver] = useState(false);
-  const [countDown, setCountDown] = useState(30);
+  // 도우미 대사 관련
+  const [helperScriptLine, setHelperScriptLine] = useState([]); // 도우미 대사를 담을 list
+  const [helperScriptIndex, setHelperScriptIndex] = useState(0); // 도우미 대사 순서 관리
 
-  // 전체 화면 녹화 관련
-  const [mediaRecorder, setMediaRecorder] = useState(null); // MediaRecorder 객체
-  const [chunks, setChunks] = useState([]); // 녹화 영역
-  const [isRecording, setIsRecording] = useState(false); // 녹화 중인지 여부
-  const mediaRef = useRef(null); // 녹화할 스트림 참조
+  // 동화책 시작 관련
+  const [countDown, setCountDown] = useState(3);
 
   // --------------------------------------------------------------
 
@@ -143,6 +151,34 @@ export default function Single() {
   // 방 나가기 함수
   const leaveSession = () => {
     if (session) {
+      // 동화 시작전에 나간다면?
+      if (!roomStart) {
+        axios.delete(
+          APPLICATION_SERVER_URL + `api/rooms/leave`, {
+          data: {
+            memberId: memberId,
+            roomId: roomId
+          }
+        }
+        ).then(res => {
+          // session.disconnect();
+          console.log(`기다리다 지쳐서 나간다 ${res}`)
+        }).catch(err => {
+          console.error(`지쳐서 나가는데 에러남 ${err}`)
+        })
+      }
+
+      // 동화책 다 읽고나서 나가려고 한다면?
+      else if (scriptIndex === scriptLine.length - 1) {
+        axios.put(
+          APPLICATION_SERVER_URL + `api/rooms/${roomId}/finish`
+        ).then(res => {
+          session.disconnect();
+          console.log(`책 다 읽었으니까 갈게~ ${res}`)
+        }).catch(err => {
+          console.error(`다 읽었는데 왜 못나가 ㅠㅠ ${err}`)
+        })
+      }
       session.disconnect();
     }
 
@@ -197,36 +233,36 @@ export default function Single() {
     };
   }, [mainStreamManager]);
 
-//   // 방 생성되면 타이머 시작
-//   useEffect(() => {
-//     if (session && publisher) {
-//       // 설정한 시간이 지나면 타이머와 동화시작 관련 상태변수의 값을 true로 설정
-//       const timeout = setTimeout(() => {
-//         setRoomStart(true);
-//       }, 30 * 1000);
+  // 혼자하기 할 때 3초 뒤에 시작하도록 설정
+  useEffect(() => {
+    if (playMode === "SINGLE" && session && publisher) {
+      // 설정한 시간이 지나면 타이머와 동화시작 관련 상태변수의 값을 true로 설정
+      const timeout = setTimeout(() => {
+        setRoomStart(true);
+      }, 3 * 1000);
 
-//       // 시간이 얼마나 흘렀는지 확인하기 위한 타이머
-//       const timer = setInterval(() => {
-//         setCountDown((prev) => prev - 1); // 1초씩 감소
-//       }, 1000);
+      // 시간이 얼마나 흘렀는지 확인하기 위한 타이머
+      const timer = setInterval(() => {
+        setCountDown((prev) => prev - 1); // 1초씩 감소
+      }, 1000);
 
-//       // clena up 함수
-//       return () => {
-//         clearInterval(timer);
-//         clearTimeout(timeout);
-//       };
-//     }
-//   }, [session, publisher]);
+      // clena up 함수
+      return () => {
+        clearInterval(timer);
+        clearTimeout(timeout);
+      };
+    }
+  }, [session, publisher]);
 
-//   // console 창에 찍을 timer
-//   useEffect(() => {
-//     if (countDown > 0) {
-//       console.log(`시작까지 ${countDown}초 남았습니다.`);
-//     } else if (countDown === 0) {
-//       console.log("시작~~~~~~~~~~~~~하겠습니다~~~~~~~~~~");
-//       console.log(scriptLine[0]);
-//     }
-//   }, [scriptLine, countDown]);
+  // console 창에 찍을 timer
+  useEffect(() => {
+    if (playMode === "SINGLE" && countDown > 0) {
+      console.log(`시작까지 ${countDown}초 남았습니다.`);
+    } else if (countDown === 0) {
+      console.log("시작~~~~~~~~~~~~~하겠습니다~~~~~~~~~~");
+      console.log(scriptLine[0]);
+    }
+  }, [scriptLine, countDown]);
 
   // 대사 데이터 요청
   useEffect(() => {
@@ -276,88 +312,79 @@ export default function Single() {
     }
   };
 
-  // 사람이 다 왔거나 타이머 종료되면 자동 시작
+  // 사람이 다 모이면 자동시작
   useEffect(() => {
-    if (subscribers.length === 2) {
+    // 같이하기 시작 조건
+    if (playMode === "MULTI" && subscribers.length === 3) {
       axios
         .put(APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`)
         .then((res) => {
           console.log("동화책 읽어보자~", res);
-          console.log(scriptLine[0])
           setRoomStart(true); // 방 시작했을 경우에만 대사가 출력
         })
         .catch((err) => {
           console.error("아직 사람이 없어", err);
         });
     }
-  }, [roomId, subscribers.length]);
 
-//   useEffect(() => {
-//     // 방 시작했고 녹화중 아니면 녹화 시작 호출
-//     if (roomStart && !isRecording) {
-//       startRecording();
-//     }
+    // 혼자하기 시작 조건
+    else if (playMode === "SINGLE" && countDown === 0) {
+      axios
+        .put(APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`)
+        .then((res) => {
+          console.log("혼자하기 시작", res);
+          setRoomStart(true); // 방 시작했을 경우에만 대사가 출력
+        })
+        .catch((err) => {
+          console.error("혼자하기 에러", err);
+        });
+    }
+  }, [roomId, playMode, countDown, subscribers.length]);
 
-//     // 대사 다 불러냈고 녹화중이라면 녹화 중지 호출
-//     if (scriptIndex === scriptLine.length - 1 && isRecording) {
-//       stopRecording();
-//     }
-//   }, [roomStart, scriptIndex, scriptLine, isRecording]);
+  // 나가기 버튼 온클릭 함수
+  const exitToMain = () => {
+    navigate("/main");
+    leaveSession();
+  };
 
-//   // 녹화 시작 함수
-//   const startRecording = () => {
-//     navigator.mediaDevices
-//       .getDisplayMedia({ video: {mediaSource: "screen"}, audio: true })
-//       .then((stream) => {
-//         mediaRef.current = stream;
+  // 도우미 대사 데이터 호출
+  useEffect(() => {
+    axios
+      .get(APPLICATION_SERVER_URL + `api/roles/1/helpers`)
+      .then((res) => {
+        setHelperScriptLine(res.data.data);
+      })
+      .catch((err) => {
+        console.error("에러 떳지롱 ㅋㅋ", err);
+      });
+  }, []);
 
-//         const recordOption = {
-//           mimeType: "video/webm",
-//           mirror: true,
-//         };
-//         const recorder = new MediaRecorder(stream, recordOption);
+  // 도우미 대사 출력
+  useEffect(() => {
+    const helperintervalScript = setInterval(() => {
+      setHelperScriptIndex((prevIndex) => {
+        if (roomStart && prevIndex < helperScriptLine.length - 1) {
+          // 보여줄 대사가 남았다면?
+          console.log("현재 대사 : ", helperScriptLine[prevIndex + 1]);
+          return prevIndex + 1;
+        }
+        // 방 시작 안했거나 대사 데이터 아직 안 받아왔을 경우
+        else if (!roomStart || helperScriptLine.length === 0) {
+          console.log("도우미 대사 받아오는 중...");
+          return prevIndex;
+        } else {
+          // 모든 대사를 보여줬다
+          clearInterval(helperintervalScript); // interval을 정리한다.
+          console.log("대사 다 보여줬어 ㅎㅎ");
+          return helperScriptLine.length;
+        }
+      });
+    }, 7 * 1000); // 7초 타이머 설정
 
-//         recorder.ondataavailable = (event) => {
-//           chunks.push(event.data);
-//         };
-
-//         recorder.onstop = () => {
-//           setChunks(chunks);
-//         };
-
-//         recorder.start();
-//         console.log("책 읽으니까 녹화 시작할게~");
-//         setIsRecording(true);
-//         setMediaRecorder(mediaRecorder);
-//       });
-//   };
-
-//   // 녹화 종료 함수
-//   const stopRecording = () => {
-//     if (mediaRecorder) {
-//       mediaRecorder.stop(); // 녹화 중지
-//       console.log("녹화 그만할게~")
-
-//       // 녹화가 멈출 때 실행되는 부분
-//       mediaRecorder.onstop = () => {
-//         // 녹화된 데이터를 하나의 Blob으로 만듦
-//         const blob = new Blob(chunks, { type: "video/webm" });
-
-//         // Blob을 다운로드할 수 있는 URL 생성
-//         const url = URL.createObjectURL(blob);
-
-//         // 다운로드 링크 생성 및 클릭
-//         const a = document.createElement("a");
-//         a.href = url;
-//         a.download = "recorded.webm";
-//         document.body.appendChild(a);
-//         a.click();
-
-//         // 사용한 URL 해제
-//         URL.revokeObjectURL(url);
-//       };
-//     }
-//   };
+    return () => {
+      clearInterval(helperintervalScript);
+    };
+  }, [roomStart, helperScriptLine]);
 
   return (
     // 전체 배경
@@ -366,9 +393,26 @@ export default function Single() {
       <div
         className={`${styles.star} ${styles.star1} ${styles.blinking}`}
       ></div>
-      <div className={`${styles.star} ${styles.star2}`}></div>
-      <div className={`${styles.star} ${styles.star3}`}></div>
-      <div className={`${styles.star} ${styles.star4}`}></div>
+      <div className={`${styles.star} ${styles.star2} ${styles.blinking2}`}></div>
+      <div className={`${styles.star} ${styles.star3} ${styles.blinking}`}></div>
+      <div className={`${styles.star} ${styles.star4} ${styles.blinking}`}></div>
+      <div className={`${styles.star} ${styles.star5} ${styles.blinking2}`}></div>
+      <div className={`${styles.star} ${styles.star6} ${styles.blinking}`}></div>
+      <div className={`${styles.star} ${styles.star7} ${styles.blinking2}`}></div>
+      <div className={`${styles.star} ${styles.star8} ${styles.blinking}`}></div>
+      <div className={`${styles.star} ${styles.star9} ${styles.blinking2}`}></div>
+      <div className={`${styles.star} ${styles.star10} ${styles.blinking}`}></div>
+      <div className={`${styles.star} ${styles.star11} ${styles.blinking2}`}></div>
+
+      <div className={styles.exitzz}>
+        <div className={styles.exit} onClick={exitToMain}>
+          <img
+            src="../imgs/logoutIcon.png"
+            className={styles.exitIcon}
+          ></img>
+          <p className={styles.exitText}>나가기</p>
+        </div>
+      </div>
 
       {/* 디자인 이 위에서 건드리면 됩니다~ */}
       <Container>
@@ -389,7 +433,7 @@ export default function Single() {
             ></div>
 
             {/* 대사 관련 div */}
-            <div className={styles.scriptBox}>
+            <div className={`${styles.scriptBox}`}>
               {roomStart && scriptLine.length > 0 ? (
                 scriptIndex < scriptLine.length ? (
                   <p className={styles.p}>
@@ -438,10 +482,10 @@ export default function Single() {
                         }
                       }}
                     />
-                    {/* <div className={styles.sub_roleTag}>{`흐음 - ${subscribers[0]}`}</div> */}
+                    {/* <div className={styles.sub_roleTag}>{`흐음 - ${subInfo[0]?.roleName}`}</div> */}
                   </>
                 ) : (
-                  "참가자 대기중"
+                  "참가자 대기중😴"
                 )}
               </div>
 
@@ -459,10 +503,10 @@ export default function Single() {
                         }
                       }}
                     />
-                    {/* <div className={styles.sub_roleTag}>{`흐음 - ${subscribers[1]}`}</div> */}
+                    {/* <div className={styles.sub_roleTag}>{`흐음 - ${roleName}`}</div> */}
                   </>
                 ) : (
-                  "참가자 대기중"
+                  "참가자 대기중😴"
                 )}
               </div>
 
@@ -480,10 +524,10 @@ export default function Single() {
                         }
                       }}
                     />
-                    {/* <div className={styles.sub_roleTag}>{`흐음 - ${subscribers[2]}`}</div> */}
+                    {/* <div className={styles.sub_roleTag}>{`흐음 - ${roleName}`}</div> */}
                   </>
                 ) : (
-                  "참가자 대기중"
+                  "참가자 대기중😴"
                 )}
               </div>
             </div>
@@ -494,7 +538,19 @@ export default function Single() {
             {/* 도우미 말풍선 */}
             <div className={styles.bubble}>
               {/* 도우미 대사 */}
-              <div className={styles.helper_script}>대사 테스트</div>
+              <div className={styles.helperScript}>
+                {roomStart && helperScriptLine.length > 0 ? (
+                  helperScriptIndex < helperScriptLine.length ? (
+                    <p className={styles.p}>
+                      {helperScriptLine[helperScriptIndex]?.helperLine}
+                    </p>
+                  ) : (
+                    " 고생염 "
+                  )
+                ) : (
+                  "잠깐만 기다려줘 친구들이 들어오면 시작할꺼야!!😁"
+                )}
+              </div>
             </div>
 
             {/* 도우미 캐릭터 */}
@@ -502,11 +558,6 @@ export default function Single() {
           </Col>
         </Row>
       </Container>
-      <div>
-        {/* 녹화 중인지 여부에 따라 UI 변경 */}
-        {/* <button onClick={startRecording}>녹화 시작</button>
-        <button onClick={stopRecording}>녹화 중지</button> */}
-      </div>
     </div>
   );
 }
