@@ -384,7 +384,7 @@ export default function Single({ setShowHeader }) {
 
     useEffect(() => {
         axios
-            .get(APPLICATION_SERVER_URL + `api/roles/${roleId}/helpers`)
+            .get(APPLICATION_SERVER_URL + `api/roles/1/helpers`)
             .then((res) => {
                 setHelperScriptLine(res.data.data);
             })
@@ -581,10 +581,19 @@ export default function Single({ setShowHeader }) {
                         <div className={styles.bubble}>
                             {/* 도우미 대사 */}
                             <div className={styles.helperScript}>
-                                {
+                                {/* {
                                     helperScriptLine[helperScriptIndex]
                                         ?.helperLine
-                                }
+                                } */}
+                                {roomStart &&
+                                    helperScriptLine.length > 0 &&
+                                    helperScriptIndex < helperScriptLine.length ? (
+                                        <p className={styles.p}>
+                                            {helperScriptLine[helperScriptIndex]?.helperLine}
+                                        </p>
+                                    ) : (
+                                        "잠깐만 기다려줘 친구들이 들어오면 시작할꺼야!!"
+                                )}
                             </div>
                         </div>
 
