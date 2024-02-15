@@ -157,7 +157,7 @@ export default function Single({ setShowHeader }) {
       // 동화 시작전에 나간다면?
       if (!roomStart) {
         axios.delete(
-          APPLICATION_SERVER_URL + `api/rooms/leave`,{},
+          APPLICATION_SERVER_URL + `api/rooms/leave`,
           {
             data: {
               memberId: memberId,
@@ -305,7 +305,7 @@ export default function Single({ setShowHeader }) {
     // 대사 데이터 요청
     useEffect(() => {
         axios
-            .get(APPLICATION_SERVER_URL + `api/books/${bookId}/${branchNum}`,{},
+            .get(APPLICATION_SERVER_URL + `api/books/${bookId}/${branchNum}`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem(
@@ -390,7 +390,7 @@ export default function Single({ setShowHeader }) {
 
     useEffect(() => {
         axios
-            .get(APPLICATION_SERVER_URL + `api/roles/1/helpers`, {},
+            .get(APPLICATION_SERVER_URL + `api/roles/1/helpers`,
             {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem(
