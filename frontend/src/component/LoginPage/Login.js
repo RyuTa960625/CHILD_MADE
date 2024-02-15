@@ -52,15 +52,15 @@ function Login({ setShowHeader }) {
 
 const kakaoLogin = () => {
     window.location.replace(
-        "https://i10d209.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/social-login-callback&mode=login" // 로컬
-        // "https://i10d209.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=https://i10d209.p.ssafy.io/social-login-callback&mode=login" // 서버
+        // "https://i10d209.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/social-login-callback&mode=login" // 로컬
+        "https://i10d209.p.ssafy.io/oauth2/authorization/kakao?redirect_uri=https://i10d209.p.ssafy.io/social-login-callback&mode=login" // 서버
     );
 };
 
 const googleLogin = () => {
     window.location.replace(
-        "https://i10d209.p.ssafy.io/oauth2/authorization/google?redirect_uri=http://localhost:3000/social-login-callback&mode=login" // 로컬
-        // "https://i10d209.p.ssafy.io/oauth2/authorization/google?redirect_uri=https://i10d209.p.ssafy.io/social-login-callback&mode=login" // 서버
+        // "https://i10d209.p.ssafy.io/oauth2/authorization/google?redirect_uri=http://localhost:3000/social-login-callback&mode=login" // 로컬
+        "https://i10d209.p.ssafy.io/oauth2/authorization/google?redirect_uri=https://i10d209.p.ssafy.io/social-login-callback&mode=login" // 서버
     );
 };
 
