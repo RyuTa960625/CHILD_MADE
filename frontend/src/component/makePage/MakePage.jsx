@@ -22,6 +22,7 @@ export default function Single({ setShowHeader }) {
     const [publisher, setPublisher] = useState(undefined); // 방장
     const [subscribers, setSubscribers] = useState([]); // 참가자들
     const [roomStart, setRoomStart] = useState(false); // 방 시작을 위한 상태
+    const [roomFinish, setRoomFinish] = useState(false) // 방 종료를 위한 상태
 
     // 값 넘겨 받는 곳
     // 순서대로 싱글/멀티모드, 책 id, 역할 id
@@ -163,13 +164,12 @@ export default function Single({ setShowHeader }) {
               memberId: memberId,
               roomId: roomId
             },
-          }, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "accessToken"
-            )}`,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem(
+                  "accessToken"
+                )}`,
+              },
           },
-        }
         ).then(res => {
           // session.disconnect();
           console.log(`기다리다 지쳐서 나간다 ${res}`)
@@ -179,9 +179,12 @@ export default function Single({ setShowHeader }) {
       }
 
       // 동화책 다 읽고나서 나가려고 한다면?
-      else if (scriptIndex === scriptLine.length - 1) {
+      else if (roomFinish) {
         axios.put(
-          APPLICATION_SERVER_URL + `api/rooms/${roomId}/finish`,{},
+          APPLICATION_SERVER_URL + `api/rooms/${roomId}/finish`,
+          {
+
+          },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem(
@@ -218,30 +221,61 @@ export default function Single({ setShowHeader }) {
 
     // 세션 생성 함수
     const createSession = async () => {
-        const response = await axios.put(
-            APPLICATION_SERVER_URL + `api/rooms/${memberId}`,
-            {
-                roleId: roleId,
-                bookId: bookId,
-            },
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem(
-                        "accessToken"
-                    )}`,
+        if (playMode === "SINGLE") {
+            const response = await axios.put(
+                APPLICATION_SERVER_URL + `api/rooms/single/${memberId}`,
+                {
+                    roleId: roleId,
+                    bookId: bookId,
                 },
-            }
-        );
-        console.log(response.data.data.token + " 토큰 생성");
-        console.log("방 번호 : ", response.data.data.roomId);
-        console.log("역할 id : ", roleId);
-        console.log("책 id : ", bookId);
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                        )}`,
+                    },
+                }
+            );
 
-        return {
-            token: response.data.data.token, // 방 접속을 위한 token값 반환
-            roomId: response.data.data.roomId, // 방 시작을 위한 roomId값 반환
-        };
+            console.log(response.data.data.token + " 토큰 생성");
+            console.log("방 번호 : ", response.data.data.roomId);
+            console.log("역할 id : ", roleId);
+            console.log("책 id : ", bookId);
+
+            return {
+                token: response.data.data.token, // 방 접속을 위한 token값 반환
+                roomId: response.data.data.roomId, // 방 시작을 위한 roomId값 반환
+            };
+        } 
+
+        else {
+            const response = await axios.put(
+                APPLICATION_SERVER_URL + `api/rooms/${memberId}`,
+                {
+                    roleId: roleId,
+                    bookId: bookId,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                        )}`,
+                    },
+                }
+            );
+
+            console.log(response.data.data.token + " 토큰 생성");
+            console.log("방 번호 : ", response.data.data.roomId);
+            console.log("역할 id : ", roleId);
+            console.log("책 id : ", bookId);
+
+            return {
+                token: response.data.data.token, // 방 접속을 위한 token값 반환
+                roomId: response.data.data.roomId, // 방 시작을 위한 roomId값 반환
+            };
+        }
     };
 
     useEffect(() => {
@@ -284,7 +318,10 @@ export default function Single({ setShowHeader }) {
             console.log(`시작까지 ${countDown}초 남았습니다.`);
         } else if (countDown === 0) {
           axios.put(
-            APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`,{},
+            APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`,
+            {
+
+            },
             {
               headers: {
                   Authorization: `Bearer ${localStorage.getItem(
@@ -294,7 +331,7 @@ export default function Single({ setShowHeader }) {
           }
           ).then(res => {
             console.log("잘 시작됌", res)
-            console.log("시작~~~~~~~~~~~~~하겠습니다~~~~~~~~~~");
+            console.log("이제 책을 읽어보자~");
             console.log(scriptLine[0]);
           }).catch(err => {
             console.error("혼자 시작 에러", err)
@@ -338,6 +375,7 @@ export default function Single({ setShowHeader }) {
                     // 모든 대사를 보여줬다
                     clearInterval(intervalScript); // interval을 정리한다.
                     console.log("대사 다 보여줬어 ㅎㅎ");
+                    setRoomFinish(true)
                     return scriptLine.length;
                 }
             });
@@ -388,6 +426,7 @@ export default function Single({ setShowHeader }) {
         leaveSession();
     };
 
+    // 도우미 대사 데이터 받아오기
     useEffect(() => {
         axios
             .get(APPLICATION_SERVER_URL + `api/roles/1/helpers`,
@@ -400,6 +439,7 @@ export default function Single({ setShowHeader }) {
             })
             .then((res) => {
                 setHelperScriptLine(res.data.data);
+                console.log("도우미 대사 잘 받아왔음")
             })
             .catch((err) => {
                 console.error("에러 떳지롱 ㅋㅋ", err);
@@ -510,7 +550,7 @@ export default function Single({ setShowHeader }) {
                                         {scriptLine[scriptIndex].scriptLine}
                                     </p>
                                 ) : (
-                                    "- 끝 -"
+                                    "이야기가 끝이났어요😊"
                                 )
                             ) : (
                                 "잠깐만 기다려봐😅 곧 친구들이 올거야"
@@ -534,7 +574,7 @@ export default function Single({ setShowHeader }) {
                                         >{`역할 - ${roleName}`}</div>
                                     </>
                                 ) : (
-                                    "참가자 대기중"
+                                    "참가자 대기중😴"
                                 )}
                             </div>
 
@@ -558,7 +598,6 @@ export default function Single({ setShowHeader }) {
                                                 }
                                             }}
                                         />
-                                        {/* <div className={styles.sub_roleTag}>{`흐음 - ${subInfo[0]?.roleName}`}</div> */}
                                     </>
                                 ) : (
                                     "참가자 대기중😴"
@@ -585,7 +624,6 @@ export default function Single({ setShowHeader }) {
                                                 }
                                             }}
                                         />
-                                        {/* <div className={styles.sub_roleTag}>{`흐음 - ${roleName}`}</div> */}
                                     </>
                                 ) : (
                                     "참가자 대기중😴"
@@ -612,7 +650,6 @@ export default function Single({ setShowHeader }) {
                                                 }
                                             }}
                                         />
-                                        {/* <div className={styles.sub_roleTag}>{`흐음 - ${roleName}`}</div> */}
                                     </>
                                 ) : (
                                     "참가자 대기중😴"
