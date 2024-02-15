@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // import Swiper core and required modules
 import "./Intro.css";
@@ -24,6 +24,19 @@ function Intro({ setShowHeader }) {
     useEffect(() => {
         setShowHeader(false);
     });
+
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    const togglePlay = () => {
+        const audio = document.getElementById('bgm');
+        if (audio.paused) {
+        audio.play();
+        setIsPlaying(true);
+        } else {
+        audio.pause();
+        setIsPlaying(false);
+        }
+    };
 
     return (
         <div className="Intro">

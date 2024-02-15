@@ -18,9 +18,20 @@ import ErrorPage from "./component/errorPage/ErrorPage";
 
 import LoginErrorPage from "./component/loginerrorPage/LoginErrorPage";
 import PrivateRoute from "./component/PrivateRoute";
+// import BGM from "./assets/backMusic01.mp3";
 
 function App() {
     const [showHeader, setShowHeader] = useState(true);
+
+    // React.useEffect(() => {
+    //     const audio = new Audio(BGM); // 배경 음악 생성
+    //     audio.loop = true; // 반복 재생 설정
+    //     audio.volume = 0.3; // 볼륨 설정
+    //     audio.play(); // 배경 음악 재생
+    //     return () => {
+    //       audio.pause(); // 컴포넌트 언마운트 시 음악 일시 중지
+    //     };
+    // }, []);
 
     return (
         <div className="App custom-cursor">
