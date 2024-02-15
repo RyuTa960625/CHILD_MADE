@@ -553,8 +553,8 @@ export default function Single({ setShowHeader }) {
             </div>
 
             {/* 디자인 이 위에서 건드리면 됩니다~ */}
-            <Container>
-                <Row>
+            <Container style={{height: "100%"}}>
+                <Row style={{height: "100%"}}>
                     {/* 메인 화면 COLUMN */}
                     <Col className={styles.container_1} md="9">
                         {/* <button onClick={startRecording}>녹화 시작</button> */}

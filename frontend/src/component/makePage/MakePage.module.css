@@ -158,8 +158,9 @@
 
 /* 화면 관련 */
 .container_1 {
-  /* display: flex;
-    flex-direction: column; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   position: relative;
   left: -60px;
@@ -314,9 +315,12 @@
 
 /* 도우미 캐릭터 관련 컨테이너 */
 .container_3 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
   left: -20px;
-  top: 70px;
+  /* top: 70px; */
 }
 
 /* 도우미 말풍선 */
