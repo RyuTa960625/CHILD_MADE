@@ -141,6 +141,61 @@ public class RoomService {
         return RoomJoinResponseDto.of(room.getId(),room.getCurNum(),token);
     }
 
+    @Transactional
+    public RoomJoinResponseDto roomJoinSingle(int memberId, RoomJoinRequestDto roomJoinRequestDto)
+            throws OpenViduJavaClientException, OpenViduHttpException {
+
+        Role role = null;
+        Member member = null;
+        Book book = null;
+        Room room = null;
+        String token = null;
+        Session session = null;
+        String sessionId = null;
+
+        Optional<Role> findRole = roleRepository.findById(roomJoinRequestDto.getRoleId());
+        Optional<Member> findMember = memberRepository.findById(memberId);
+
+        if (findMember.isEmpty()) {
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_MEMBER);
+        }
+        if(findRole.isEmpty()) {
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_ROLE);
+        }
+        role = findRole.get();
+        member = findMember.get();
+        System.out.println(role.getId()+"///////"+member.getId());
+
+        //동화와 역할에 맞는 Room이 존재하지 않는 경우
+        sessionId = UUID.randomUUID().toString();
+        Map<String, Object> sessionParams = new HashMap<>();
+
+        sessionParams.put("customSessionId",sessionId);
+        SessionProperties sessionProperties = SessionProperties.fromJson(sessionParams).build();
+        session = openvidu.createSession(sessionProperties);
+
+        Optional<Book> findBook = bookRepository.findById(roomJoinRequestDto.getBookId());
+
+        if(findBook.isEmpty()){
+            throw new CustomBadRequestException(ErrorType.NOT_FOUND_BOOK);
+        }
+
+        book = findBook.get();
+        // Room을 DB에 저장
+        room = roomRepository.save(Room.of(1, RoomStatus.PROCEEDING, session.getSessionId(),book));
+        memberRoomRepository.save(MemberRoom.of(true, member, room, role));
+
+        //찾은 방 세션에 접근할 수 있는 토큰 발급
+        Map<String, Object> params = new HashMap<>();
+        params.put("sessionName", sessionId);
+        params.put("useToken", true);
+        ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
+        Connection connection = session.createConnection(properties);
+        token = connection.getToken();
+
+        return RoomJoinResponseDto.of(room.getId(),room.getCurNum(),token);
+    }
+
     /**
      *  방 상태 변경 메서드
      *
