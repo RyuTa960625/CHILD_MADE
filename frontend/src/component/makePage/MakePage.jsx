@@ -157,7 +157,7 @@ export default function Single({ setShowHeader }) {
       // 동화 시작전에 나간다면?
       if (!roomStart) {
         axios.delete(
-          APPLICATION_SERVER_URL + `api/rooms/leave`,
+          APPLICATION_SERVER_URL + `api/rooms/leave`,{},
           {
             data: {
               memberId: memberId,
@@ -181,7 +181,7 @@ export default function Single({ setShowHeader }) {
       // 동화책 다 읽고나서 나가려고 한다면?
       else if (scriptIndex === scriptLine.length - 1) {
         axios.put(
-          APPLICATION_SERVER_URL + `api/rooms/${roomId}/finish`,
+          APPLICATION_SERVER_URL + `api/rooms/${roomId}/finish`,{},
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem(
@@ -284,7 +284,7 @@ export default function Single({ setShowHeader }) {
             console.log(`시작까지 ${countDown}초 남았습니다.`);
         } else if (countDown === 0) {
           axios.put(
-            APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`,
+            APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`,{},
             {
               headers: {
                   Authorization: `Bearer ${localStorage.getItem(
@@ -305,7 +305,8 @@ export default function Single({ setShowHeader }) {
     // 대사 데이터 요청
     useEffect(() => {
         axios
-            .get(APPLICATION_SERVER_URL + `api/books/${bookId}/${branchNum}`, {
+            .get(APPLICATION_SERVER_URL + `api/books/${bookId}/${branchNum}`,{},
+            {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem(
                         "accessToken"
@@ -389,7 +390,8 @@ export default function Single({ setShowHeader }) {
 
     useEffect(() => {
         axios
-            .get(APPLICATION_SERVER_URL + `api/roles/1/helpers`, {
+            .get(APPLICATION_SERVER_URL + `api/roles/1/helpers`, {},
+            {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem(
                         "accessToken"
