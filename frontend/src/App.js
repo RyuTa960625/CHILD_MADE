@@ -60,7 +60,7 @@ function App() {
                         <Route path="/viewpage" element={<ViewPage />}></Route>
                         <Route
                             path="/makevideopage"
-                            element={<MakePage />}
+                            element={<MakePage setShowHeader={setShowHeader} />}
                         ></Route>
                         <Route
                             path="/errorpage"
