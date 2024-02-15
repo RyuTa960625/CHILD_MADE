@@ -29,7 +29,6 @@ const BookList = function () {
         styles.selected_character_btn4,
     ];
 
-
     const [searchValue, setSearchValue] = useState("");
 
     const handleChange = (event) => {
@@ -50,7 +49,12 @@ const BookList = function () {
 
     const moveToSinglePage = function () {
         navigate("/makevideopage", {
-            state: { playMode: playMode, bookId: bookId, roleId: roleId, roleName: roleName },
+            state: {
+                playMode: playMode,
+                bookId: bookId,
+                roleId: roleId,
+                roleName: roleName,
+            },
         });
     };
     // step1. "npm install axios" 를 터미널에 입력한다. v
@@ -71,7 +75,14 @@ const BookList = function () {
         setPageNum(0);
         axios
             .get(
-                `https://i10d209.p.ssafy.io/api/books/${searchValue}?page=${pageNum}&size=6&sort=id`
+                `https://i10d209.p.ssafy.io/api/books/${searchValue}?page=${pageNum}&size=6&sort=id`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                        )}`,
+                    },
+                }
             )
             .then((response) => {
                 // 검색 결과 처리
@@ -90,7 +101,14 @@ const BookList = function () {
     const apiTest = function () {
         axios
             .get(
-                `https://i10d209.p.ssafy.io/api/books/?page=${pageNum}&size=6&sort=id`
+                `https://i10d209.p.ssafy.io/api/books/?page=${pageNum}&size=6&sort=id`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                        )}`,
+                    },
+                }
             )
             .then((response) => {
                 console.log(response.data);
@@ -99,7 +117,13 @@ const BookList = function () {
 
     const apiTest2 = function () {
         axios
-            .get(`https://i10d209.p.ssafy.io/api/books/${bookId}/roles`)
+            .get(`https://i10d209.p.ssafy.io/api/books/${bookId}/roles`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                },
+            })
             .then((response) => {
                 console.log(response.data);
             });
@@ -108,7 +132,14 @@ const BookList = function () {
     const loadBookList = function () {
         axios
             .get(
-                `https://i10d209.p.ssafy.io/api/books/?page=${pageNum}&size=6&sort=id`
+                `https://i10d209.p.ssafy.io/api/books/?page=${pageNum}&size=6&sort=id`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                        )}`,
+                    },
+                }
             )
             .then((response) => {
                 setBookList(response.data.data.content);
@@ -119,7 +150,13 @@ const BookList = function () {
 
     const loadBookInfo = function () {
         axios
-            .get(`https://i10d209.p.ssafy.io/api/books/${bookId}/roles`)
+            .get(`https://i10d209.p.ssafy.io/api/books/${bookId}/roles`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                },
+            })
             .then((response) => {
                 setBookInfo(response.data.data);
             });
@@ -135,7 +172,14 @@ const BookList = function () {
                 .get(
                     `https://i10d209.p.ssafy.io/api/books/${searchValue}?page=${
                         pageNum + 1
-                    }&size=6&sort=id`
+                    }&size=6&sort=id`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "accessToken"
+                            )}`,
+                        },
+                    }
                 )
                 .then((res) => setBookList(res.data.data.content));
         }
@@ -149,7 +193,14 @@ const BookList = function () {
                 .get(
                     `https://i10d209.p.ssafy.io/api/books/${searchValue}?page=${
                         pageNum - 1
-                    }&size=6&sort=id`
+                    }&size=6&sort=id`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "accessToken"
+                            )}`,
+                        },
+                    }
                 )
                 .then((res) => setBookList(res.data.data.content));
         }
@@ -240,7 +291,10 @@ const BookList = function () {
                                         src="/imgs/exitIcon.png"
                                         alt="탈출"
                                         className={styles.close_icon}
-                                        onClick={()=>{openModal(); setSelectedRole('');}}
+                                        onClick={() => {
+                                            openModal();
+                                            setSelectedRole("");
+                                        }}
                                     ></img>
                                 </div>
                                 <div className={styles.book_info_img_container}>
@@ -301,18 +355,29 @@ const BookList = function () {
                                                             >
                                                                 <div
                                                                     key={index}
-                                                                    className={
-                                                                        `${roleStyles[
+                                                                    className={`${
+                                                                        roleStyles[
                                                                             index
-                                                                        ]} ${index === selectedRole ? selectedRoleStyles[index] : ''} `
-                                                                    }
+                                                                        ]
+                                                                    } ${
+                                                                        index ===
+                                                                        selectedRole
+                                                                            ? selectedRoleStyles[
+                                                                                  index
+                                                                              ]
+                                                                            : ""
+                                                                    } `}
                                                                     onClick={() => {
                                                                         setRoleId(
                                                                             data.roleId
                                                                         );
-                                                                        setRoleName(data.roleName);
+                                                                        setRoleName(
+                                                                            data.roleName
+                                                                        );
 
-                                                                        setSelectedRole(index);
+                                                                        setSelectedRole(
+                                                                            index
+                                                                        );
                                                                     }}
                                                                 >
                                                                     <img
@@ -374,7 +439,9 @@ const BookList = function () {
                             <div
                                 key={pageNum}
                                 className={styles.find_container}
-                                onClick={()=>{handleSearch();}}
+                                onClick={() => {
+                                    handleSearch();
+                                }}
                             >
                                 <img
                                     src="/imgs/findM.png"

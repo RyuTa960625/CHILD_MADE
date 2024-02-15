@@ -14,7 +14,14 @@ export default function ViewPage() {
     const loadVideoUrl = function () {
         axios
             .get(
-                `https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum}&size=4&sort=id`
+                `https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum}&size=4&sort=id`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                        )}`,
+                    },
+                }
             )
             .then((response) => {
                 console.log(response.data.data.content[videoIndex].videoUrl);

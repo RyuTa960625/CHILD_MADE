@@ -148,39 +148,11 @@ export default function Single({ setShowHeader }) {
     }
   };
 
-  // 방 나가기 함수
-  const leaveSession = () => {
-    if (session) {
-      // 동화 시작전에 나간다면?
-      if (!roomStart) {
-        axios.delete(
-          APPLICATION_SERVER_URL + `api/rooms/leave`, {
-          data: {
-            memberId: memberId,
-            roomId: roomId
-          }
+    // 방 나가기 함수
+    const leaveSession = () => {
+        if (session) {
+            session.disconnect();
         }
-        ).then(res => {
-          // session.disconnect();
-          console.log(`기다리다 지쳐서 나간다 ${res}`)
-        }).catch(err => {
-          console.error(`지쳐서 나가는데 에러남 ${err}`)
-        })
-      }
-
-      // 동화책 다 읽고나서 나가려고 한다면?
-      else if (scriptIndex === scriptLine.length - 1) {
-        axios.put(
-          APPLICATION_SERVER_URL + `api/rooms/${roomId}/finish`
-        ).then(res => {
-          session.disconnect();
-          console.log(`책 다 읽었으니까 갈게~ ${res}`)
-        }).catch(err => {
-          console.error(`다 읽었는데 왜 못나가 ㅠㅠ ${err}`)
-        })
-      }
-      session.disconnect();
-    }
 
     // 상태 변수 초기화
     setSession(undefined);
@@ -199,20 +171,20 @@ export default function Single({ setShowHeader }) {
     return token; // return 으로 token만 받음
   };
 
-  // 세션 생성 함수
-  const createSession = async () => {
-    const response = await axios.put(
-      APPLICATION_SERVER_URL + `api/rooms/${memberId}`,
-      {
-        roleId: roleId,
-        bookId: bookId,
-      },
-      { headers: { "Content-Type": "application/json" } }
-    );
-    console.log(response.data.data.token + " 토큰 생성");
-    console.log("방 번호 : ", response.data.data.roomId);
-    console.log("역할 id : ", roleId);
-    console.log("책 id : ", bookId);
+    // 세션 생성 함수
+    const createSession = async () => {
+        const response = await axios.put(
+            APPLICATION_SERVER_URL + `api/rooms/${memberId}`,
+            {
+                roleId: roleId,
+                bookId: bookId,
+            },
+            { headers: { "Content-Type": "application/json" } }
+        );
+        console.log(response.data.data.token + " 토큰 생성");
+        console.log("방 번호 : ", response.data.data.roomId);
+        console.log("역할 id : ", roleId);
+        console.log("책 id : ", bookId);
 
     return {
       token: response.data.data.token, // 방 접속을 위한 token값 반환
@@ -264,17 +236,17 @@ export default function Single({ setShowHeader }) {
     }
   }, [scriptLine, countDown]);
 
-  // 대사 데이터 요청
-  useEffect(() => {
-    axios
-      .get(APPLICATION_SERVER_URL + `api/books/${bookId}/${branchNum}`)
-      .then((res) => {
-        setScriptLine(res.data.data);
-      })
-      .catch((err) => {
-        console.error("에러 떳지롱 ㅋㅋ", err);
-      });
-  }, []);
+    // 대사 데이터 요청
+    useEffect(() => {
+        axios
+            .get(APPLICATION_SERVER_URL + `api/books/${bookId}/${branchNum}`)
+            .then((res) => {
+                setScriptLine(res.data.data);
+            })
+            .catch((err) => {
+                console.error("에러 떳지롱 ㅋㅋ", err);
+            });
+    }, []);
 
   // 일정 시간이 지나면 다음 대사가 나오도록 하는 useEffect
   useEffect(() => {
@@ -312,34 +284,88 @@ export default function Single({ setShowHeader }) {
     }
   };
 
-  // 사람이 다 모이면 자동시작
-  useEffect(() => {
-    // 같이하기 시작 조건
-    if (playMode === "MULTI" && subscribers.length === 3) {
-      axios
-        .put(APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`)
-        .then((res) => {
-          console.log("동화책 읽어보자~", res);
-          setRoomStart(true); // 방 시작했을 경우에만 대사가 출력
-        })
-        .catch((err) => {
-          console.error("아직 사람이 없어", err);
-        });
-    }
+    // 사람이 다 왔거나 타이머 종료되면 자동 시작
+    useEffect(() => {
+        if (subscribers.length === 2) {
+            axios
+                .put(APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`)
+                .then((res) => {
+                    console.log("동화책 읽어보자~", res);
+                    console.log(scriptLine[0]);
+                    setRoomStart(true); // 방 시작했을 경우에만 대사가 출력
+                })
+                .catch((err) => {
+                    console.error("아직 사람이 없어", err);
+                });
+        }
+    }, [roomId, subscribers.length]);
 
-    // 혼자하기 시작 조건
-    else if (playMode === "SINGLE" && countDown === 0) {
-      axios
-        .put(APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`)
-        .then((res) => {
-          console.log("혼자하기 시작", res);
-          setRoomStart(true); // 방 시작했을 경우에만 대사가 출력
-        })
-        .catch((err) => {
-          console.error("혼자하기 에러", err);
-        });
-    }
-  }, [roomId, playMode, countDown, subscribers.length]);
+    //   useEffect(() => {
+    //     // 방 시작했고 녹화중 아니면 녹화 시작 호출
+    //     if (roomStart && !isRecording) {
+    //       startRecording();
+    //     }
+
+    //     // 대사 다 불러냈고 녹화중이라면 녹화 중지 호출
+    //     if (scriptIndex === scriptLine.length - 1 && isRecording) {
+    //       stopRecording();
+    //     }
+    //   }, [roomStart, scriptIndex, scriptLine, isRecording]);
+
+    //   // 녹화 시작 함수
+    //   const startRecording = () => {
+    //     navigator.mediaDevices
+    //       .getDisplayMedia({ video: {mediaSource: "screen"}, audio: true })
+    //       .then((stream) => {
+    //         mediaRef.current = stream;
+
+    //         const recordOption = {
+    //           mimeType: "video/webm",
+    //           mirror: true,
+    //         };
+    //         const recorder = new MediaRecorder(stream, recordOption);
+
+    //         recorder.ondataavailable = (event) => {
+    //           chunks.push(event.data);
+    //         };
+
+    //         recorder.onstop = () => {
+    //           setChunks(chunks);
+    //         };
+
+    //         recorder.start();
+    //         console.log("책 읽으니까 녹화 시작할게~");
+    //         setIsRecording(true);
+    //         setMediaRecorder(mediaRecorder);
+    //       });
+    //   };
+
+    //   // 녹화 종료 함수
+    //   const stopRecording = () => {
+    //     if (mediaRecorder) {
+    //       mediaRecorder.stop(); // 녹화 중지
+    //       console.log("녹화 그만할게~")
+
+    //       // 녹화가 멈출 때 실행되는 부분
+    //       mediaRecorder.onstop = () => {
+    //         // 녹화된 데이터를 하나의 Blob으로 만듦
+    //         const blob = new Blob(chunks, { type: "video/webm" });
+
+    //         // Blob을 다운로드할 수 있는 URL 생성
+    //         const url = URL.createObjectURL(blob);
+
+    //         // 다운로드 링크 생성 및 클릭
+    //         const a = document.createElement("a");
+    //         a.href = url;
+    //         a.download = "recorded.webm";
+    //         document.body.appendChild(a);
+    //         a.click();
+
+    //         // 사용한 URL 해제
+    //         URL.revokeObjectURL(url);
+    //       };
+    //     }
+    //   };
 
   // 나가기 버튼 온클릭 함수
   const exitToMain = () => {
@@ -347,17 +373,16 @@ export default function Single({ setShowHeader }) {
     leaveSession();
   };
 
-  // 도우미 대사 데이터 호출
-  useEffect(() => {
-    axios
-      .get(APPLICATION_SERVER_URL + `api/roles/1/helpers`)
-      .then((res) => {
-        setHelperScriptLine(res.data.data);
-      })
-      .catch((err) => {
-        console.error("에러 떳지롱 ㅋㅋ", err);
-      });
-  }, []);
+    useEffect(() => {
+        axios
+            .get(APPLICATION_SERVER_URL + `api/roles/1/helpers`)
+            .then((res) => {
+                setHelperScriptLine(res.data.data);
+            })
+            .catch((err) => {
+                console.error("에러 떳지롱 ㅋㅋ", err);
+            });
+    }, []);
 
   // 도우미 대사 출력
   useEffect(() => {

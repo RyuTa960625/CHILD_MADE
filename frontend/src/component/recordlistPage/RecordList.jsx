@@ -23,7 +23,6 @@ export default function RecordList() {
         console.log(videoIndex);
     }, [videoId, videoIndex]);
 
-  
     const navigate = useNavigate();
 
     const openModal = function () {
@@ -39,7 +38,14 @@ export default function RecordList() {
     const apiTest = function () {
         axios
             .get(
-                `https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum}&size=4&sort=id`
+                `https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum}&size=4&sort=id`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                        )}`,
+                    },
+                }
             )
             .then((response) => {
                 console.log(response.data);
@@ -52,21 +58,35 @@ export default function RecordList() {
     const loadVideoList = function () {
         axios
             .get(
-                `https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum}&size=4&sort=id`
+                `https://i10d209.p.ssafy.io/api/videos/2?&keyword=&page=${pageNum}&size=4&sort=id`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                        )}`,
+                    },
+                }
             )
             .then((response) => {
                 setVideoList(response.data.data.content);
                 console.log(videoList);
                 setTotalPage(response.data.data.totalPages);
-                setPageNum(0); 
+                setPageNum(0);
             });
     };
 
     const handleSearch = () => {
-        setPageNum(0); 
+        setPageNum(0);
         axios
             .get(
-                `https://i10d209.p.ssafy.io/api/videos/2?&keyword=${searchValue}&page=${pageNum}&size=4&sort=id`
+                `https://i10d209.p.ssafy.io/api/videos/2?&keyword=${searchValue}&page=${pageNum}&size=4&sort=id`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                        )}`,
+                    },
+                }
             )
             .then((response) => {
                 // 검색 결과 처리
@@ -92,7 +112,14 @@ export default function RecordList() {
                 .get(
                     `https://i10d209.p.ssafy.io/api/videos/2?&keyword=${searchValue}&page=${
                         pageNum + 1
-                    }&size=4&sort=id`
+                    }&size=4&sort=id`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "accessToken"
+                            )}`,
+                        },
+                    }
                 )
                 .then((res) => {
                     setVideoList(res.data.data.content);
@@ -109,7 +136,14 @@ export default function RecordList() {
                 .get(
                     `https://i10d209.p.ssafy.io/api/videos/2?&keyword=${searchValue}&page=${
                         pageNum - 1
-                    }&size=4&sort=id`
+                    }&size=4&sort=id`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "accessToken"
+                            )}`,
+                        },
+                    }
                 )
                 .then((res) => {
                     setVideoList(res.data.data.content);
@@ -121,7 +155,13 @@ export default function RecordList() {
     const saveVideo = function () {
         console.log(videoId);
         axios
-            .get(`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`)
+            .get(`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                },
+            })
             .then(() => {
                 console.log(videoId);
             });
@@ -129,7 +169,13 @@ export default function RecordList() {
 
     const deleteVideo = function () {
         axios
-            .delete(`https://i10d209.p.ssafy.io/api/videos/2/${videoId}`)
+            .delete(`https://i10d209.p.ssafy.io/api/videos/2/${videoId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                },
+            })
             .then(() => {
                 loadVideoList();
                 openModal();
@@ -262,7 +308,9 @@ export default function RecordList() {
                         className={styles.find}
                         src="../imgs/find2M.png"
                         alt="돋보기"
-                        onClick={()=>{ handleSearch();}}
+                        onClick={() => {
+                            handleSearch();
+                        }}
                     ></img>
                 </div>
 
