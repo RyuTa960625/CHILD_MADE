@@ -152,17 +152,59 @@ export default function Single({ setShowHeader }) {
     };
 
     // 방 나가기 함수
-    const leaveSession = () => {
-        if (session) {
-            session.disconnect();
+  const leaveSession = () => {
+    if (session) {
+      // 동화 시작전에 나간다면?
+      if (!roomStart) {
+        axios.delete(
+          APPLICATION_SERVER_URL + `api/rooms/leave`,
+          {
+            data: {
+              memberId: memberId,
+              roomId: roomId
+            },
+          }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              "accessToken"
+            )}`,
+          },
         }
+        ).then(res => {
+          // session.disconnect();
+          console.log(`기다리다 지쳐서 나간다 ${res}`)
+        }).catch(err => {
+          console.error(`지쳐서 나가는데 에러남 ${err}`)
+        })
+      }
 
-        // 상태 변수 초기화
-        setSession(undefined);
-        setSubscribers([]);
-        setMainStreamManager(undefined);
-        setPublisher(undefined);
-    };
+      // 동화책 다 읽고나서 나가려고 한다면?
+      else if (scriptIndex === scriptLine.length - 1) {
+        axios.put(
+          APPLICATION_SERVER_URL + `api/rooms/${roomId}/finish`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem(
+                "accessToken"
+              )}`,
+            },
+          }
+        ).then(res => {
+          session.disconnect();
+          console.log(`책 다 읽었으니까 갈게~ ${res}`)
+        }).catch(err => {
+          console.error(`다 읽었는데 왜 못나가 ㅠㅠ ${err}`)
+        })
+      }
+      session.disconnect();
+    }
+
+    // 상태 변수 초기화
+    setSession(undefined);
+    setSubscribers([]);
+    setMainStreamManager(undefined);
+    setPublisher(undefined);
+  };
 
     // 토큰 가져오기 함수
     // roomId도 같이 설정한다.
@@ -236,13 +278,27 @@ export default function Single({ setShowHeader }) {
         }
     }, [session, publisher]);
 
-    // console 창에 찍을 timer
+    // 혼자하기 console 창에 찍을 timer
     useEffect(() => {
         if (playMode === "SINGLE" && countDown > 0) {
             console.log(`시작까지 ${countDown}초 남았습니다.`);
         } else if (countDown === 0) {
+          axios.put(
+            APPLICATION_SERVER_URL + `api/rooms/${roomId}/start`,
+            {
+              headers: {
+                  Authorization: `Bearer ${localStorage.getItem(
+                      "accessToken"
+                  )}`,
+              },
+          }
+          ).then(res => {
+            console.log("잘 시작됌", res)
             console.log("시작~~~~~~~~~~~~~하겠습니다~~~~~~~~~~");
             console.log(scriptLine[0]);
+          }).catch(err => {
+            console.error("혼자 시작 에러", err)
+          })
         }
     }, [scriptLine, countDown]);
 
@@ -321,73 +377,6 @@ export default function Single({ setShowHeader }) {
                 });
         }
     }, [roomId, subscribers.length]);
-
-    //   useEffect(() => {
-    //     // 방 시작했고 녹화중 아니면 녹화 시작 호출
-    //     if (roomStart && !isRecording) {
-    //       startRecording();
-    //     }
-
-    //     // 대사 다 불러냈고 녹화중이라면 녹화 중지 호출
-    //     if (scriptIndex === scriptLine.length - 1 && isRecording) {
-    //       stopRecording();
-    //     }
-    //   }, [roomStart, scriptIndex, scriptLine, isRecording]);
-
-    //   // 녹화 시작 함수
-    //   const startRecording = () => {
-    //     navigator.mediaDevices
-    //       .getDisplayMedia({ video: {mediaSource: "screen"}, audio: true })
-    //       .then((stream) => {
-    //         mediaRef.current = stream;
-
-    //         const recordOption = {
-    //           mimeType: "video/webm",
-    //           mirror: true,
-    //         };
-    //         const recorder = new MediaRecorder(stream, recordOption);
-
-    //         recorder.ondataavailable = (event) => {
-    //           chunks.push(event.data);
-    //         };
-
-    //         recorder.onstop = () => {
-    //           setChunks(chunks);
-    //         };
-
-    //         recorder.start();
-    //         console.log("책 읽으니까 녹화 시작할게~");
-    //         setIsRecording(true);
-    //         setMediaRecorder(mediaRecorder);
-    //       });
-    //   };
-
-    //   // 녹화 종료 함수
-    //   const stopRecording = () => {
-    //     if (mediaRecorder) {
-    //       mediaRecorder.stop(); // 녹화 중지
-    //       console.log("녹화 그만할게~")
-
-    //       // 녹화가 멈출 때 실행되는 부분
-    //       mediaRecorder.onstop = () => {
-    //         // 녹화된 데이터를 하나의 Blob으로 만듦
-    //         const blob = new Blob(chunks, { type: "video/webm" });
-
-    //         // Blob을 다운로드할 수 있는 URL 생성
-    //         const url = URL.createObjectURL(blob);
-
-    //         // 다운로드 링크 생성 및 클릭
-    //         const a = document.createElement("a");
-    //         a.href = url;
-    //         a.download = "recorded.webm";
-    //         document.body.appendChild(a);
-    //         a.click();
-
-    //         // 사용한 URL 해제
-    //         URL.revokeObjectURL(url);
-    //       };
-    //     }
-    //   };
 
     // 나가기 버튼 온클릭 함수
     const exitToMain = () => {
