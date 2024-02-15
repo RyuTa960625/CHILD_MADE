@@ -22,6 +22,8 @@ export default function Single({ setShowHeader }) {
     const [publisher, setPublisher] = useState(undefined); // 방장
     const [subscribers, setSubscribers] = useState([]); // 참가자들
     const [roomStart, setRoomStart] = useState(false); // 방 시작을 위한 상태
+    const [isMicrophoneOn, setIsMicrophoneOn] = useState(true); // 마이크 상태를 상태로 관리
+    const [isAudioMuted, setIsAudioMuted] = useState(false); // 음소거 상태
 
     // 값 넘겨 받는 곳
     // 순서대로 싱글/멀티모드, 책 id, 역할 id
@@ -366,6 +368,13 @@ export default function Single({ setShowHeader }) {
         const intervalScript = setInterval(() => {
             setScriptIndex((prevIndex) => {
                 if (roomStart && prevIndex < scriptLine.length - 1) {
+                    //내차례 이면 마이크 on / 아니면 off
+                    if (roleId === scriptLine[prevIndex + 1].roleId) {
+                        toggleMicrophone();
+                    } else {
+                        toggleAudioMute();
+                    }
+
                     // 보여줄 대사가 남았다면?
                     console.log("현재 대사 : ", scriptLine[prevIndex + 1]);
                     return prevIndex + 1;
@@ -475,6 +484,25 @@ export default function Single({ setShowHeader }) {
             clearInterval(helperintervalScript);
         };
     }, [roomStart, helperScriptLine]);
+
+    // 마이크 토글 함수
+    const toggleMicrophone = () => {
+        if (publisher) {
+            const audioTracks = publisher.stream
+                .getMediaStream()
+                .getAudioTracks();
+            audioTracks.forEach((track) => (track.enabled = !track.enabled));
+        }
+        setIsMicrophoneOn((prevState) => !prevState); // 마이크 상태를 토글
+    };
+
+    // 음소거 토글 함수
+    const toggleAudioMute = () => {
+        setIsAudioMuted(!isAudioMuted);
+        subscribers.forEach((subscriber) => {
+            subscriber.subscribeToAudio(!isAudioMuted);
+        });
+    };
 
     return (
         // 전체 배경
