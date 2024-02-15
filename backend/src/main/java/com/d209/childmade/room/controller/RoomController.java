@@ -19,9 +19,16 @@ public class RoomController {
 
     private final RoomService roomService;
 
+    //같이 하기
     @PutMapping("/{member-id}")
     public SuccessResponse<RoomJoinResponseDto> roomJoin(@PathVariable("member-id") int memberId, @RequestBody RoomJoinRequestDto roomJoinRequestDto) throws OpenViduJavaClientException, OpenViduHttpException {
         return SuccessResponse.of(SuccessType.ROOM_JOIN_SUCCESSFULLY, roomService.roomJoin(memberId, roomJoinRequestDto));
+    }
+
+    //혼자 하기
+    @PutMapping("/single/{member-id}")
+    public SuccessResponse<RoomJoinResponseDto> roomJoinSingle(@PathVariable("member-id") int memberId, @RequestBody RoomJoinRequestDto roomJoinRequestDto) throws OpenViduJavaClientException, OpenViduHttpException {
+        return SuccessResponse.of(SuccessType.ROOM_JOIN_SUCCESSFULLY, roomService.roomJoinSingle(memberId, roomJoinRequestDto));
     }
 
     @PutMapping("/{room-id}/start")
