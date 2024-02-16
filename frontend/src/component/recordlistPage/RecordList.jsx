@@ -183,6 +183,20 @@ export default function RecordList() {
             });
     };
 
+    function downloadBook() {
+        fetch(`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }).then(response => {
+          // 원하는 동작 수행
+          // 예를 들어, 파일 다운로드 등
+        }).catch(error => {
+          console.error('Error:', error);
+        });
+      }
+
+
     const deleteVideo = function () {
         axios
             .delete(`https://i10d209.p.ssafy.io/api/videos/2/${videoId}`, {
@@ -281,8 +295,9 @@ export default function RecordList() {
                                 }}
                             >
                                 <a
-                                    href={`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`}
+                                    href="#"
                                     className={styles.btn_text}
+                                    onClick={()=>{ downloadBook(); }}
                                 >
                                     동화책 저장하기
                                 </a>
