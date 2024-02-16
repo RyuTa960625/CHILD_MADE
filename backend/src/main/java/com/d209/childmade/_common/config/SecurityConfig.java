@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/members/**").authenticated()
                         .requestMatchers("/api/auth/**").permitAll()
-//                        .requestMatchers("/api/videos/**").permitAll()
+                        .requestMatchers("/api/videos/**").permitAll()
                         .anyRequest().authenticated())
 //                        .anyRequest().permitAll())
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
