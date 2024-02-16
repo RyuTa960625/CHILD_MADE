@@ -26,19 +26,19 @@ function Intro({ setShowHeader }) {
         setShowHeader(false);
     });
 
-    useEffect(() => {
-        try {
-            const audio = new Audio(BGM); // 배경 음악 생성
-            audio.loop = true; // 반복 재생 설정
-            audio.volume = 0.3; // 볼륨 설정
-            audio.play(); // 배경 음악 재생
-            return () => {
-                audio.pause(); // 컴포넌트 언마운트 시 음악 일시 중지
-            };
-        } catch (error) {
-            console.log('Auto-play failed:', error.message);
-        }
-    }, []);
+    // useEffect(() => {
+    //     try {
+    //         const audio = new Audio(BGM); // 배경 음악 생성
+    //         audio.loop = true; // 반복 재생 설정
+    //         audio.volume = 0.3; // 볼륨 설정
+    //         audio.play(); // 배경 음악 재생
+    //         return () => {
+    //             audio.pause(); // 컴포넌트 언마운트 시 음악 일시 중지
+    //         };
+    //     } catch (error) {
+    //         console.log('Auto-play failed:', error.message);
+    //     }
+    // }, []);
     
     return (
         <div className="Intro">
