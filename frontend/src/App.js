@@ -36,7 +36,6 @@ function App() {
 
     return (
         <div className="App custom-cursor">
-             <img src="/imgs/b5.png" alt="Icon" />
             <BrowserRouter>
                 {showHeader && <Header />}
                 <Routes>
