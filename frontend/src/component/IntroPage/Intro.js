@@ -19,7 +19,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/autoplay";
-import BGM from "../../assets/backMusic01.mp3";
+import BGM from "../../assets/backMusic04.mp3";
 
 function Intro({ setShowHeader }) {
     useEffect(() => {
