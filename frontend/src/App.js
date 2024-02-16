@@ -19,7 +19,6 @@ import ErrorPage from "./component/errorPage/ErrorPage";
 import LoginErrorPage from "./component/loginerrorPage/LoginErrorPage";
 import PrivateRoute from "./component/PrivateRoute";
 // import BGM from "./assets/backMusic01.mp3";
-// import appIcon from "../public/imgs/b5.png";
 
 function App() {
     const [showHeader, setShowHeader] = useState(true);

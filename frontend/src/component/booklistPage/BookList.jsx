@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./BookList.module.css";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import BGM from "../../assets/backMusic03.mp3";
 
 const BookList = function () {
     const location = useLocation();
@@ -34,6 +35,20 @@ const BookList = function () {
     const handleChange = (event) => {
         setSearchValue(event.target.value);
     };
+
+    useEffect(() => {
+        try {
+            const audio = new Audio(BGM); 
+            audio.loop = true;
+            audio.volume = 0.3; 
+            audio.play(); 
+            return () => {
+                audio.pause(); 
+            };
+        } catch (error) {
+            console.log('Auto-play failed:', error.message);
+        }
+    }, []);
 
     useEffect(() => {
         loadBookList();
