@@ -5,19 +5,19 @@ import BGM from "../../assets/backMusic01.mp3";
 
 const Home = function ({ setShowHeader }) {
 
-    useEffect(() => {
-        try {
-            const audio = new Audio(BGM); 
-            audio.loop = true;
-            audio.volume = 0.3; 
-            audio.play(); 
-            return () => {
-                audio.pause(); 
-            };
-        } catch (error) {
-            console.log('Auto-play failed:', error.message);
-        }
-    }, []);
+    // useEffect(() => {
+    //     try {
+    //         const audio = new Audio(BGM); 
+    //         audio.loop = true;
+    //         audio.volume = 0.3; 
+    //         audio.play(); 
+    //         return () => {
+    //             audio.pause(); 
+    //         };
+    //     } catch (error) {
+    //         console.log('Auto-play failed:', error.message);
+    //     }
+    // }, []);
     
 
 

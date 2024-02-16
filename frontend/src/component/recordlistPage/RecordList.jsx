@@ -18,19 +18,19 @@ export default function RecordList() {
         setSearchValue(event.target.value);
     };
 
-      useEffect(() => {
-        try {
-            const audio = new Audio(BGM); 
-            audio.loop = true; 
-            audio.volume = 0.4; 
-            audio.play(); 
-            return () => {
-                audio.pause(); 
-            };
-        } catch (error) {
-            console.log('Auto-play failed:', error.message);
-        }
-    }, []);
+    //   useEffect(() => {
+    //     try {
+    //         const audio = new Audio(BGM); 
+    //         audio.loop = true; 
+    //         audio.volume = 0.4; 
+    //         audio.play(); 
+    //         return () => {
+    //             audio.pause(); 
+    //         };
+    //     } catch (error) {
+    //         console.log('Auto-play failed:', error.message);
+    //     }
+    // }, []);
     
 
     useEffect(() => {
@@ -184,6 +184,10 @@ export default function RecordList() {
                 console.log(videoId);
             });
     };
+
+    const getToken = function(){
+        
+    }
 
     // function downloadBook() {
     //     fetch(`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`, {
