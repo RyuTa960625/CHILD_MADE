@@ -19,27 +19,27 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/autoplay";
+import BGM from "../../assets/backMusic01.mp3";
 
 function Intro({ setShowHeader }) {
     useEffect(() => {
         setShowHeader(false);
     });
 
-    const [isPlaying, setIsPlaying] = useState(false);
-
     useEffect(() => {
-        const audio = document.getElementById("bgm");
-        if (isPlaying) {
-            audio.play();
-        } else {
-            audio.pause();
+        try {
+            const audio = new Audio(BGM); // 배경 음악 생성
+            audio.loop = true; // 반복 재생 설정
+            audio.volume = 0.3; // 볼륨 설정
+            audio.play(); // 배경 음악 재생
+            return () => {
+                audio.pause(); // 컴포넌트 언마운트 시 음악 일시 중지
+            };
+        } catch (error) {
+            console.log('Auto-play failed:', error.message);
         }
-    }, [isPlaying]);
-
-    const handleLogin = () => {
-        setIsPlaying(true); 
-    };
-
+    }, []);
+    
     return (
         <div className="Intro">
             <Swiper
@@ -72,7 +72,7 @@ function Intro({ setShowHeader }) {
                                     to={"/login"}
                                     className={styles.buttonLoginLink}
                                 >
-                                    <div className={styles.buttonLogin} onClick={handleLogin}>
+                                    <div className={styles.buttonLogin}>
                                         <p className={styles.buttonLoginText}>
                                             로그인
                                         </p>
@@ -108,7 +108,7 @@ function Intro({ setShowHeader }) {
                                     to={"/login"}
                                     className={styles.buttonLoginLink}
                                 >
-                                    <div className={styles.buttonLogin} onClick={handleLogin}>
+                                    <div className={styles.buttonLogin}>
                                         <p className={styles.buttonLoginText}>
                                             로그인
                                         </p>
@@ -141,7 +141,7 @@ function Intro({ setShowHeader }) {
                                     to={"/login"}
                                     className={styles.buttonLoginLink}
                                 >
-                                    <div className={styles.buttonLogin} onClick={handleLogin}>
+                                    <div className={styles.buttonLogin}>
                                         <p className={styles.buttonLoginText}>
                                             로그인
                                         </p>
