@@ -144,6 +144,8 @@ export default function RecordList() {
         }
     };
 
+    
+
     const movePrevPage = function () {
         if (pageNum > 0) {
             console.log(pageNum);
@@ -183,31 +185,20 @@ export default function RecordList() {
             });
     };
 
-    function downloadBook() {
-        fetch(`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }).then(response => {
-            // 파일 다운로드 로직 추가
-            // 예를 들어, response.blob()을 사용하여 파일을 Blob으로 변환하고,
-            // URL.createObjectURL(blob)을 사용하여 URL을 생성하고,
-            // 이 URL을 사용하여 파일 다운로드를 트리거하는 등의 작업을 수행할 수 있습니다.
-            axios
-                .get(`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`,{
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "accessToken"
-                        )}`,
-                    },
-                })
-            console.log('File download initiated successfully');
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
-      }
-
+    // function downloadBook() {
+    //     fetch(`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`, {
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    //       },
+    //     })
+    //       .then(response => {
+    //         // 파일 다운로드 로직 추가
+    //         console.log('File download initiated successfully');
+    //       })
+    //       .catch(error => {
+    //         console.error('Error:', error);
+    //       });
+    //   }
 
     const deleteVideo = function () {
         axios
@@ -307,9 +298,8 @@ export default function RecordList() {
                                 }}
                             >
                                 <a
-                                    href="#"
+                                    href={`https://i10d209.p.ssafy.io/api/videos/${videoId}/download`}
                                     className={styles.btn_text}
-                                    onClick={()=>{ downloadBook(); }}
                                 >
                                     동화책 저장하기
                                 </a>
