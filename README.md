@@ -122,13 +122,14 @@
 
 ## 프로젝트 산출물
 
-- [기능명세서](https://www.notion.so/287226729deb4d6381a625983ac01f7f?pvs=21)
+- [기획서](https://www.notion.so/287226729deb4d6381a625983ac01f7f?pvs=21)
+- [기능명세서](https://evanescent-kilometer-a6e.notion.site/41409e39742e42228f03f991f4fbc3f2?pvs=4)
 - [API 명세서](https://www.notion.so/API-a4763cc8c23a4a52a533925a1c9c96c6?pvs=21)
 - [와이어프레임](https://www.figma.com/file/5q8NMpF6gTAb0tVW6MnV8g/D209?type=design&node-id=272-1672&mode=design)
-- 커밋 [컨벤션](https://www.notion.so/0df7f1a472544bce8ad6fb136dde5225?pvs=21)
+- [커밋 컨벤션](https://www.notion.so/0df7f1a472544bce8ad6fb136dde5225?pvs=21)
 - [backend 코드 컨벤션](https://www.notion.so/10b0f128142f4b43b121d4992c8ecb1b?pvs=21)
 - [frontend 코드 컨벤션](https://www.notion.so/c5b5da87eefd41c9b5caddf04ca0605f?pvs=21)
-- 회의록
+- [회의록](https://evanescent-kilometer-a6e.notion.site/d0ac7f4325ce4beab9db1061d08a85df?pvs=4)
 
 ## 우리 아이가 만들었어요 서비스 화면
 
