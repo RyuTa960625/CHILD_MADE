@@ -1,6 +1,6 @@
 # 우리 아이가 만들었어요
 
-![Untitled](/uploads/6cbe5dabb73ba2059ce4bd12d5517e28/Untitled.png)
+![Untitled](/assets/타이틀.png)
 
 ### 4세에서 10세 아이들이 함께 참여 가능한 화상 동화 서비스
 
@@ -114,11 +114,11 @@
 
 ## 아키텍처
 
-![Untitled_1](/uploads/f2a6aedd74399bdf32502a73fedd9dec/Untitled_1.png)
+![Untitled_1](/assets/아키텍처.png)
 
 ## ERD
 
-![Untitled_2](/uploads/6963e37a70594ed318b7f8f432ac3f0f/Untitled_2.png)
+![Untitled_2](/assets/ERD.png)
 
 ## 프로젝트 산출물
 
@@ -137,43 +137,43 @@
 
 - 구글 로그인 / 카카오 로그인
 
-![Untitled_3](/uploads/d287482dce62523a1abee12b58c3205c/Untitled_3.png)
+![Untitled_3](/assets/로그인.png)
 
-![Untitled_4](/uploads/48c18f89538c7a98cf400513e683a775/Untitled_4.png)
+![Untitled_4](/assets/로그인1.png)
 
 ### 회원 가입
 
 - 닉네임을 기입한다.
 
-![Untitled_5](/uploads/ef31d2c723093a89a2ed06169bc4df61/Untitled_5.png)
+![Untitled_5](/assets/회원가입.png)
 
 ### 메인 화면
 
-![Untitled_6](/uploads/e72dd4635beff7ee477601c4a10ad3f0/Untitled_6.png)
+![Untitled_6](/assets/메인화면.png)
 
 ### 책 목록 리스트 화면
 
 - 검색 기능
 
-![Untitled_7](/uploads/1c9a6e195e45091304cf1f2faa6cdf19/Untitled_7.png)
+![Untitled_7](/assets/책목록.png)
 
 ### 책 상세 정보 및 역할 선택 화면
 
 - 원하는 역할을 선택하여 플레이 할 수 있다.
 
-![Untitled_8](/uploads/813d241f32b4002388b5b4005a019c99/Untitled_8.png)
+![Untitled_8](/assets/책상세정보.png)
 
-![Untitled_9](/uploads/7e6c0c1ab855a68a9261a0807239807b/Untitled_9.png)
+![Untitled_9](/assets/책역할선택.png)
 
 ### 플레이 화면
 
-![Untitled_10](/uploads/476724eabda5f42534a19f99fd9450fe/Untitled_10.png)
+![Untitled_10](/assets/플레이화면.png)
 
 ### 나의 동화책 목록 화면
 
 - 검색 기능
 
-![Untitled_11](/uploads/40669e3cae609fd0c6479d8525c3285d/Untitled_11.png)
+![Untitled_11](/assets/나의동화책목록.png)
 
 ### 나의 동화책 상세 정보
 
@@ -181,15 +181,15 @@
 - 동화책 저장하기
 - 동화책 삭제하기
 
-![Untitled_12](/uploads/43cf1c79370e76057aea2e7b6aceed60/Untitled_12.png)
+![Untitled_12](/assets/나의동화책상세정보.png)
 
 ### 동화책 보러가기 화면
 
-![Untitled_13](/uploads/52ce1991731d9d0243adbf523d4accc2/Untitled_13.png)
+![Untitled_13](/assets/동화책보러가기화면.png)
 
 ### 마이페이지
 
 - 이름, 닉네임, 프로필 사진 수정 기능
 - 회원 탈퇴 기능
 
-![Untitled_14](/uploads/ea3aa178a3d83f8e13e57aa9e8ddc010/Untitled_14.png)
+![Untitled_14](/assets/마이페이지.png)
